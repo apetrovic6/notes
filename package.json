@@ -19,6 +19,7 @@
     "@nrwl/angular": "^14.4.3",
     "@nrwl/cli": "14.4.3",
     "@nrwl/eslint-plugin-nx": "^14.4.3",
+    "@nrwl/expo": "^14.4.4",
     "@nrwl/nest": "^14.4.3",
     "@nrwl/next": "^14.4.3",
     "@nrwl/workspace": "14.4.3",
