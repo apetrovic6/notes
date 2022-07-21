@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import {TypeOrmModule} from "@nestjs/typeorm";
+import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
+import {GraphQLModule} from "@nestjs/graphql";
 
 
 @Module({
@@ -13,6 +15,14 @@ import {TypeOrmModule} from "@nestjs/typeorm";
       database: 'notes',
       entities: [],
       synchronize: true,
+    }),
+
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: true,
+      autoSchemaFile: true,
+      sortSchema: true,
+      introspection: true,
     }),
   ],
   controllers: [],
