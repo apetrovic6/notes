@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@notes-app/auth": ["libs/auth/src/index.ts"],
+      "@notes-app/entities": ["libs/entities/src/index.ts"],
+      "@notes-app/user": ["libs/user/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
