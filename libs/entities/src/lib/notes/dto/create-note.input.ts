@@ -2,7 +2,7 @@ import { InputType, Field } from '@nestjs/graphql';
 
 
 @InputType()
-export class CreateNoteInput {
+export class CreateNoteInput extends BaseInput {
   @Field(() => String, { description: 'Title of the note' })
   title: string;
 
