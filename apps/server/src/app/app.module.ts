@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
-import {GraphQLModule} from "@nestjs/graphql";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
+import { GraphQLModule } from "@nestjs/graphql";
+import { Note } from "@notes-app/entities";
+import {NotesModule} from "../notes/notes.module";
 
 
 @Module({
@@ -13,7 +15,7 @@ import {GraphQLModule} from "@nestjs/graphql";
       username: 'postgres',
       password: 'postgres',
       database: 'notes',
-      entities: [],
+      entities: [Note],
       synchronize: true,
     }),
 
@@ -24,6 +26,7 @@ import {GraphQLModule} from "@nestjs/graphql";
       sortSchema: true,
       introspection: true,
     }),
+    NotesModule
   ],
   controllers: [],
   providers: [],
