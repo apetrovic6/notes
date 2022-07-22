@@ -1,8 +1,8 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
-import { BaseInput } from "../../base.input";
+import {Field, InputType} from "@nestjs/graphql";
+
 
 @InputType()
-export class CreateUserInput extends BaseInput{
+export class AuthInput {
   @Field(() => String, { description: 'User email' })
   email: string;
 
