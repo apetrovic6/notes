@@ -1,11 +1,15 @@
-import {Resolver, Query, Mutation, Args, ID} from '@nestjs/graphql';
+import {Resolver, Query, Mutation, Args, ID, ResolveField, Parent} from '@nestjs/graphql';
 import { NotesService } from './notes.service';
-import { CreateNoteInput, Note, UpdateNoteInput } from '@notes-app/entities';
+import { CreateNoteInput, Note, UpdateNoteInput, User } from '@notes-app/entities';
+import { NotesUserFieldResolverService } from "../notes-user-field-resolver/notes-user-field-resolver.service";
 
 
-@Resolver(of => Note)
+@Resolver(() => Note)
 export class NotesResolver {
-  constructor(private readonly notesService: NotesService) {}
+  constructor(
+    private readonly notesService: NotesService,
+    private readonly notesUserFieldResolverService: NotesUserFieldResolverService,
+  ) {}
 
   @Mutation(() => Note)
   createNote(@Args('createNoteInput') createNoteInput: CreateNoteInput) {
@@ -30,5 +34,10 @@ export class NotesResolver {
   @Mutation(() => Note)
   removeNote(@Args('id', { type: () => ID }) id: string) {
     return this.notesService.remove(id);
+  }
+
+  @ResolveField('user', () => User)
+  user(@Parent() note: Note) {
+    return this.notesUserFieldResolverService.resolveUser(note.id);
   }
 }
