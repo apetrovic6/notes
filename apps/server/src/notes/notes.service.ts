@@ -24,10 +24,10 @@ export class NotesService {
   }
 
   update(id: string, updateNoteInput: UpdateNoteInput) {
-    return `This action updates a #${id} note`;
+    return this.noteRepository.update(id, updateNoteInput);
   }
 
   remove(id: string) {
-    return `This action removes a #${id} note`;
+   this.noteRepository.delete(id);
   }
 }
