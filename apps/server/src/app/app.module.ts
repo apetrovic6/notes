@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { GraphQLModule } from "@nestjs/graphql";
-import { Note } from "@notes-app/entities";
 import {NotesModule} from "../notes/notes.module";
 import {UserModule} from "../user/user.module";
 
@@ -16,7 +15,7 @@ import {UserModule} from "../user/user.module";
       username: 'postgres',
       password: 'postgres',
       database: 'notes',
-      entities: [Note],
+      autoLoadEntities: true,
       synchronize: true,
     }),
 
