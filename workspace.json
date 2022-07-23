@@ -3,9 +3,9 @@
   "version": 2,
   "projects": {
     "auth": "libs/auth",
+    "entities": "libs/entities",
     "front-react": "apps/front-react",
     "front-react-e2e": "apps/front-react-e2e",
-    "server": "apps/server",
-    "entities": "libs/entities"
+    "server": "apps/server"
   }
 }
