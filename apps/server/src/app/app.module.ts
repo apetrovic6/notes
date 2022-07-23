@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
-import { GraphQLModule } from "@nestjs/graphql";
-import {NotesModule} from "../notes/notes.module";
-import {UserModule} from "../user/user.module";
-
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLModule } from '@nestjs/graphql';
+import { NotesModule } from '../notes/notes.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -26,7 +25,8 @@ import {UserModule} from "../user/user.module";
       sortSchema: true,
       introspection: true,
     }),
-    NotesModule, UserModule
+    NotesModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

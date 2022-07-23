@@ -1,10 +1,10 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
-import {Field, ID, ObjectType} from "@nestjs/graphql";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class BaseEntity {
   @Field(returns => ID, { name: 'id', description: 'Unique identifier' })
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Field(() => Date, { description: 'Date of creation' })

@@ -1,17 +1,19 @@
 import { Injectable } from '@nestjs/common';
 
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
-import {CreateNoteInput, Note, UpdateNoteInput} from "@notes-app/entities";
-
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateNoteInput, Note, UpdateNoteInput } from '@notes-app/entities';
 
 @Injectable()
 export class NotesService {
-  constructor(@InjectRepository(Note) private readonly noteRepository: Repository<Note> ) {
-  }
+  constructor(
+    @InjectRepository(Note) private readonly noteRepository: Repository<Note>
+  ) {}
   create(createNoteInput: CreateNoteInput) {
-    const note = this.noteRepository.create({...createNoteInput, createdAt: new Date()});
+    const note = this.noteRepository.create({
+      ...createNoteInput,
+      createdAt: new Date(),
+    });
     return this.noteRepository.save(note);
   }
 
@@ -20,7 +22,7 @@ export class NotesService {
   }
 
   findOne(id: string) {
-    return this.noteRepository.findOne({ where: { id }})
+    return this.noteRepository.findOne({ where: { id } });
   }
 
   update(id: string, updateNoteInput: UpdateNoteInput) {
@@ -28,6 +30,6 @@ export class NotesService {
   }
 
   remove(id: string) {
-   this.noteRepository.delete(id);
+    this.noteRepository.delete(id);
   }
 }
