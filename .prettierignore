@@ -2,3 +2,6 @@
 
 /dist
 /coverage
+/tmp
+/.vscode
+/**/readme.md

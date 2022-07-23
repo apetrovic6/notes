@@ -3,3 +3,5 @@
 
 yarn lint front-react
 yarn lint server
+
+prettier --write .
