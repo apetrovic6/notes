@@ -14,7 +14,7 @@ describe('NotesService', () => {
     save: fn().mockImplementation(() => noteStub()),
     find: fn().mockImplementation(() => [noteStub()]),
     findOne: fn().mockImplementation(() => noteStub()),
-  }
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
