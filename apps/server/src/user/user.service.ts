@@ -8,7 +8,7 @@ import {Repository} from "typeorm";
 export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  
+
   create(createUserInput: CreateUserInput) {
     const user = this.userRepository.create({...createUserInput, createdAt: new Date()});
     return this.userRepository.save(user);
