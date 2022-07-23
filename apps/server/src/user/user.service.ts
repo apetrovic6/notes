@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserInput, UpdateUserInput } from "@notes-app/entities";
+import {CreateUserInput, UpdateUserInput, User} from "@notes-app/entities";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
 
 
 @Injectable()
 export class UserService {
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+
+  
   create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+    const user = this.userRepository.create({...createUserInput, createdAt: new Date()});
+    return this.userRepository.save(user);
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.userRepository.find({relations: ["notes"]});
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} user`;
+    return this.userRepository.findOne({where: { id }});
   }
 
   update(id: string, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+    return this.userRepository.update(id, updateUserInput);
   }
 
   remove(id: string) {
-    return `This action removes a #${id} user`;
+    return this.userRepository.delete(id);
   }
 }
