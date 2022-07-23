@@ -64,5 +64,23 @@ describe('UserResolver', () => {
         expect(user).toEqual(userStub());
       });
     });
+
+    describe('When ResolveField notes is called', () => {
+      let notes = [];
+
+      beforeEach(async () => {
+        notes = await resolver.notes(userStub());
+      });
+
+      it('It should call notesUserFieldResolverService', async () => {
+        expect(await notesUserFieldResolverService.resolveNotes).toBeCalledWith(
+          userStub().id
+        );
+      });
+
+      it('It should return an array of notes', async () => {
+        expect([notes]).toEqual([noteStub()]);
+      });
+    });
   });
 });
