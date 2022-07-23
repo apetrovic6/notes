@@ -25,8 +25,15 @@ export class NotesService {
     return this.noteRepository.findOne({ where: { id } });
   }
 
-  update(id: string, updateNoteInput: UpdateNoteInput) {
-    return this.noteRepository.update(id, updateNoteInput);
+  async update(id: string, updateNoteInput: UpdateNoteInput) {
+    const note = await this.noteRepository.findOne({ where: { id } });
+
+    const updatedNote = {
+      ...note,
+      ...updateNoteInput,
+    };
+
+    return this.noteRepository.save(updatedNote);
   }
 
   remove(id: string) {
