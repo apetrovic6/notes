@@ -7,4 +7,5 @@ export const NotesService = fn().mockReturnValue({
   findAll: fn().mockReturnValue([noteStub()]),
   update: fn().mockReturnValue(noteStub()),
   remove: fn().mockReturnValue(null),
+  notes: fn().mockReturnValue([noteStub()]),
 });

@@ -2,6 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotesService } from '../notes.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Note } from '@notes-app/entities';
+import { userStub } from '../../user/tests/stubs/user.stub';
+import { fn } from 'jest-mock';
+import { noteStub } from './stubs/note.stub';
 
 describe('NotesService', () => {
   let service: NotesService;
@@ -24,7 +27,61 @@ describe('NotesService', () => {
     service = module.get<NotesService>(NotesService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('Notes Service', () => {
+    it('should be defined', () => {
+      expect(service).toBeDefined();
+    });
+
+    describe('When create is called', () => {
+      let createNoteInput;
+
+      beforeEach(() => {
+        createNoteInput = {
+          title: 'Test Title',
+          content: 'Test Content',
+          user: { id: userStub().id },
+        };
+      });
+
+      it('Should return a note', async () => {
+        const note = await service.create(createNoteInput);
+
+        expect(note).toBeDefined();
+        expect(note).toEqual(noteStub());
+      });
+    });
+
+    describe('When findAll is called', () => {
+      it('It should be defined', () => {
+        expect(service.findAll()).toBeDefined();
+      });
+
+      it('It should return an array of notes', async () => {
+        const notes = await service.findAll();
+        expect(notes).toEqual([noteStub()]);
+      });
+    });
+
+    describe('When findOne is called', () => {
+      let note;
+
+      beforeEach(() => {
+        note = noteStub();
+      });
+
+      it('It should be defined', () => {
+        expect(service.findOne(note)).toBeDefined();
+      });
+
+      it('It should return a note', () => {
+        expect(service.findOne(userStub().id)).toEqual(note);
+      });
+
+      //   TODO It should return an error if no note is found
+      //   it("It should return an error if no note is found", async () => {
+      //     note = null
+      //     expect(await service.findOne("asdfsdf098")).toBeNull()
+      //   })
+    });
   });
 });
