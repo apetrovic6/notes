@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateNoteInput, Note, UpdateNoteInput } from '@notes-app/entities';
+import { catchError, from, map, switchMap, throwError } from 'rxjs';
 
 @Injectable()
 export class NotesService {
@@ -14,29 +14,37 @@ export class NotesService {
       ...createNoteInput,
       createdAt: new Date(),
     });
-    return this.noteRepository.save(note);
+
+    return from(this.noteRepository.save(note)).pipe(
+      map((note: Note) => note),
+      catchError(err => throwError(err))
+    );
   }
 
   findAll() {
-    return this.noteRepository.find();
+    return from(this.noteRepository.find());
   }
 
   findOne(id: string) {
-    return this.noteRepository.findOne({ where: { id } });
+    return from(this.noteRepository.findOne({ where: { id } })).pipe(
+      map(note => {
+        if (!note) {
+          throw new NotFoundException('Note not found');
+        }
+        return note;
+      })
+    );
   }
 
-  async update(id: string, updateNoteInput: UpdateNoteInput) {
-    const note = await this.noteRepository.findOne({ where: { id } });
-
-    const updatedNote = {
-      ...note,
-      ...updateNoteInput,
-    };
-
-    return this.noteRepository.save(updatedNote);
+  update(id: string, updateNoteInput: UpdateNoteInput) {
+    return from(this.noteRepository.update(id, updateNoteInput)).pipe(
+      switchMap(() => {
+        return this.findOne(id);
+      })
+    );
   }
 
   remove(id: string) {
-    this.noteRepository.delete(id);
+    return from(this.noteRepository.delete(id)).pipe(map(() => null));
   }
 }

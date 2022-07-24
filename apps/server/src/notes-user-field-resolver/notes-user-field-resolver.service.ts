@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Note, User } from '@notes-app/entities';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { from } from 'rxjs';
 
 @Injectable()
 export class NotesUserFieldResolverService {
@@ -11,10 +12,10 @@ export class NotesUserFieldResolverService {
   ) {}
 
   resolveUser(id: string) {
-    return this.userRepository.findOne({ where: { notes: { id } } });
+    return from(this.userRepository.findOne({ where: { notes: { id } } }));
   }
 
   resolveNotes(userId: string) {
-    return this.noteRepository.find({ where: { user: { id: userId } } });
+    return from(this.noteRepository.find({ where: { user: { id: userId } } }));
   }
 }

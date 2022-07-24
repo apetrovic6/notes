@@ -1,9 +1,10 @@
 import { fn } from 'jest-mock';
 import { userStub } from '../tests/stubs/user.stub';
+import { of } from 'rxjs';
 
 export const UserService = fn().mockReturnValue({
-  create: fn().mockReturnValue(userStub()),
-  findOne: fn().mockReturnValue(userStub()),
-  findAll: fn().mockReturnValue([userStub()]),
-  update: fn().mockReturnValue(userStub()),
+  create: fn().mockReturnValue(of(userStub())),
+  findOne: fn().mockReturnValue(of(userStub())),
+  findAll: fn().mockReturnValue(of([userStub()])),
+  update: fn().mockReturnValue(of(userStub())),
 });

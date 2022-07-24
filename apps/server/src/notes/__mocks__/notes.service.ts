@@ -1,11 +1,12 @@
 import { fn } from 'jest-mock';
 import { noteStub } from '../tests/stubs/note.stub';
+import { of } from 'rxjs';
 
 export const NotesService = fn().mockReturnValue({
-  create: fn().mockReturnValue(noteStub()),
-  findOne: fn().mockReturnValue(noteStub()),
-  findAll: fn().mockReturnValue([noteStub()]),
-  update: fn().mockReturnValue(noteStub()),
-  remove: fn().mockReturnValue(null),
-  notes: fn().mockReturnValue([noteStub()]),
+  create: fn().mockReturnValue(of(noteStub())),
+  findOne: fn().mockReturnValue(of(noteStub())),
+  findAll: fn().mockReturnValue(of([noteStub(), noteStub()])),
+  update: fn().mockReturnValue(of(noteStub())),
+  remove: fn().mockReturnValue(of(null)),
+  notes: fn().mockReturnValue(of([noteStub()])),
 });

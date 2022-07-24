@@ -7,6 +7,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Note, UpdateNoteInput, User } from '@notes-app/entities';
 import { NotesUserFieldResolverService } from '../../notes-user-field-resolver/notes-user-field-resolver.service';
 import { userStub } from '../../user/tests/stubs/user.stub';
+import { NotFoundException } from '@nestjs/common';
 
 jest.mock('../notes.service');
 jest.mock('../../notes-user-field-resolver/notes-user-field-resolver.service');
@@ -50,34 +51,40 @@ describe('NotesResolver', () => {
     });
 
     describe("When 'findOne' is called", () => {
-      let note: Note;
+      let note;
 
-      beforeEach(async () => {
-        note = await noteResolver.findOne(noteStub().id);
+      beforeEach(done => {
+        noteResolver.findOne(noteStub().id).subscribe(res => {
+          note = res;
+        });
+        done();
       });
 
-      test('It should call notesService ', async () => {
-        expect(await notesService.findOne).toBeCalledWith(noteStub().id);
+      test('It should call notesService ', () => {
+        expect(notesService.findOne).toBeCalledWith(noteStub().id);
       });
 
       test('It should return the note', () => {
         expect(note).toEqual(noteStub());
       });
 
-      it("It should return null if the note doesn't exist", async () => {
-        await jest
-          .spyOn(notesService, 'findOne')
-          .mockImplementation(() => null);
+      it("It should return not found error if the note doesn't exist", () => {
+        jest.spyOn(notesService, 'findOne').mockImplementationOnce(() => {
+          throw new NotFoundException('Note not found');
+        });
 
-        expect(notesService.findOne('23jnkasdf')).toBeNull();
+        expect(() => noteResolver.findOne('someId')).toThrowError(
+          NotFoundException
+        );
       });
     });
 
     describe('When findAll is called', () => {
       let notes;
 
-      beforeEach(async () => {
-        notes = await noteResolver.findAll();
+      beforeEach(done => {
+        noteResolver.findAll().subscribe(res => (notes = res));
+        done();
       });
 
       test('It should call noteService', async () => {
@@ -85,22 +92,36 @@ describe('NotesResolver', () => {
       });
 
       it('It should return an array of notes', () => {
-        expect([noteStub()]).toEqual(notes);
+        expect(notes).toEqual([noteStub(), noteStub()]);
       });
     });
 
     describe('When createNote is called', () => {
       let note;
-      beforeEach(async () => {
-        note = await noteResolver.createNote(noteStub());
+      beforeEach(done => {
+        noteResolver.createNote(noteStub()).subscribe(res => (note = res));
+        done();
       });
 
-      test('It should call notesService', async () => {
-        expect(await notesService.create).toBeCalledWith(noteStub());
+      test('It should call notesService', () => {
+        expect(notesService.create).toBeCalledWith(noteStub());
       });
 
       test('It should return the created note', () => {
         expect(note).toEqual(noteStub());
+      });
+
+      test("It should throw an error if the user wasn't included", () => {
+        jest.spyOn(notesService, 'create').mockImplementationOnce(() => {
+          throw new Error('User not included');
+        });
+
+        const newNote = noteStub();
+        newNote.user = null;
+
+        expect(() => noteResolver.createNote(note)).toThrowError(
+          'User not included'
+        );
       });
     });
 
@@ -108,39 +129,59 @@ describe('NotesResolver', () => {
       let updateNoteInput: UpdateNoteInput;
       let note;
 
-      beforeEach(async () => {
+      beforeEach(done => {
         updateNoteInput = {
           id: noteStub().id,
           title: 'Updated Title',
         };
-        note = await noteResolver.updateNote(updateNoteInput);
+        noteResolver.updateNote(updateNoteInput).subscribe(res => (note = res));
+
+        done();
       });
 
       test('It should call notesService', async () => {
-        expect(await notesService.update).toBeCalledWith(
-          note.id,
-          updateNoteInput
-        );
+        expect(notesService.findOne).toBeCalledWith(noteStub().id),
+          updateNoteInput;
       });
 
       test('It should return the updated note', async () => {
-        note = await notesService.update(note.id, updateNoteInput);
         expect(note).toEqual(noteStub());
+      });
+
+      test("It should throw a not found error if the note doesn't exist", () => {
+        jest.spyOn(notesService, 'update').mockImplementationOnce(() => {
+          throw new NotFoundException('Note not found');
+        });
+
+        expect(() => noteResolver.updateNote(updateNoteInput)).toThrowError(
+          NotFoundException
+        );
       });
     });
 
     describe('When removeNote is called', () => {
       let note;
-      beforeEach(() => {
-        note = noteResolver.removeNote(noteStub().id);
+      beforeEach(done => {
+        noteResolver.removeNote(noteStub().id).subscribe(res => (note = res));
+        done();
       });
 
-      test('It should call notesService', async () => {
-        expect(await notesService.remove).toBeCalledWith(noteStub().id);
+      test('It should call notesService', () => {
+        expect(notesService.remove).toBeCalledWith(noteStub().id);
       });
 
       test('It should return null', async () => {
         expect(note).toBeNull();
+      });
+
+      test('It should throw a NotFound error if the note doesnt exist', () => {
+        jest.spyOn(notesService, 'remove').mockImplementationOnce(() => {
+          throw new NotFoundException('Note not found');
+        });
+
+        expect(() => noteResolver.removeNote('someId')).toThrowError(
+          NotFoundException
+        );
       });
     });
 
@@ -148,9 +189,12 @@ describe('NotesResolver', () => {
       let user;
       let note;
 
-      beforeEach(() => {
+      beforeEach(done => {
         note = noteStub();
-        user = notesUserFieldResolverService.resolveUser(note);
+        notesUserFieldResolverService
+          .resolveUser(note)
+          .subscribe(res => (user = res));
+        done();
       });
 
       test('It should call notesUserFieldResolverService', async () => {

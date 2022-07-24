@@ -5,15 +5,16 @@ import { Note } from '@notes-app/entities';
 import { userStub } from '../../user/tests/stubs/user.stub';
 import { fn } from 'jest-mock';
 import { noteStub } from './stubs/note.stub';
+import { of } from 'rxjs';
 
 describe('NotesService', () => {
   let service: NotesService;
 
   const noteRepository = {
-    create: fn().mockImplementation(() => noteStub()),
-    save: fn().mockImplementation(() => noteStub()),
-    find: fn().mockImplementation(() => [noteStub()]),
-    findOne: fn().mockImplementation(() => noteStub()),
+    create: fn().mockImplementation(() => of(noteStub())),
+    save: fn().mockImplementation(() => of(noteStub())),
+    find: fn().mockImplementation(() => of([noteStub(), noteStub()])),
+    findOne: fn().mockImplementation(() => of(noteStub())),
   };
 
   beforeEach(async () => {
@@ -43,11 +44,10 @@ describe('NotesService', () => {
         };
       });
 
-      it('Should return a note', async () => {
-        const note = await service.create(createNoteInput);
-
-        expect(note).toBeDefined();
-        expect(note).toEqual(noteStub());
+      it('Should return a note', () => {
+        service.create(createNoteInput).subscribe(res => {
+          expect(res).toEqual(noteStub());
+        });
       });
     });
 
@@ -56,9 +56,12 @@ describe('NotesService', () => {
         expect(service.findAll()).toBeDefined();
       });
 
-      it('It should return an array of notes', async () => {
-        const notes = await service.findAll();
-        expect(notes).toEqual([noteStub()]);
+      it('It should return an array of notes', () => {
+        let notes;
+
+        service
+          .findAll()
+          .subscribe(res => expect(res).toEqual([noteStub(), noteStub()]));
       });
     });
 
@@ -74,7 +77,9 @@ describe('NotesService', () => {
       });
 
       it('It should return a note', () => {
-        expect(service.findOne(userStub().id)).toEqual(note);
+        // expect(service.findOne(userStub().id)).toEqual(note);
+
+        service.findOne(note).subscribe(res => expect(res).toEqual(note));
       });
 
       //   TODO It should return an error if no note is found

@@ -52,15 +52,16 @@ describe('UserResolver', () => {
     describe('When createUser is called', () => {
       let user: User;
 
-      beforeEach(async () => {
-        user = await resolver.createUser(userStub());
+      beforeEach(done => {
+        resolver.createUser(userStub()).subscribe(res => (user = res));
+        done();
       });
 
-      it('It should call userService', async () => {
-        expect(await userService.create).toBeCalledWith(userStub());
+      it('It should call userService', () => {
+        expect(userService.create).toBeCalledWith(userStub());
       });
 
-      it('It should return the user', async () => {
+      it('It should return the user', () => {
         expect(user).toEqual(userStub());
       });
     });
@@ -68,12 +69,13 @@ describe('UserResolver', () => {
     describe('When ResolveField notes is called', () => {
       let notes = [];
 
-      beforeEach(async () => {
-        notes = await resolver.notes(userStub());
+      beforeEach(done => {
+        resolver.notes(userStub()).subscribe(res => (notes = res));
+        done();
       });
 
-      it('It should call notesUserFieldResolverService', async () => {
-        expect(await notesUserFieldResolverService.resolveNotes).toBeCalledWith(
+      it('It should call notesUserFieldResolverService', () => {
+        expect(notesUserFieldResolverService.resolveNotes).toBeCalledWith(
           userStub().id
         );
       });

@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput, User } from '@notes-app/entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { from, map, switchMap } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -14,19 +15,28 @@ export class UserService {
       ...createUserInput,
       createdAt: new Date(),
     });
-    return this.userRepository.save(user);
+    return from(this.userRepository.save(user));
   }
 
   findAll() {
-    return this.userRepository.find({ relations: ['notes'] });
+    return from(this.userRepository.find({ relations: ['notes'] }));
   }
 
   findOne(id: string) {
-    return this.userRepository.findOne({ where: { id } });
+    return from(this.userRepository.findOne({ where: { id } })).pipe(
+      map(user => {
+        if (!user) {
+          throw new NotFoundException('User not found');
+        }
+        return user;
+      })
+    );
   }
 
   update(id: string, updateUserInput: UpdateUserInput) {
-    return this.userRepository.update(id, updateUserInput);
+    return from(this.userRepository.update(id, updateUserInput)).pipe(
+      switchMap(() => this.findOne(id))
+    );
   }
 
   remove(id: string) {
