@@ -2,7 +2,7 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "auth": "libs/auth",
+    "auth-helpers": "libs/auth-helpers",
     "entities": "libs/entities",
     "front-react": "apps/front-react",
     "front-react-e2e": "apps/front-react-e2e",

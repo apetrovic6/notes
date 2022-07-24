@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@notes-app/auth": ["libs/auth/src/index.ts"],
+      "@notes-app/auth-helpers": ["libs/auth-helpers/src/index.ts"],
       "@notes-app/entities": ["libs/entities/src/index.ts"],
       "@notes-app/user": ["libs/user/src/index.ts"]
     }
