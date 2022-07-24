@@ -1,6 +1,6 @@
 import { NotesUserFieldResolverService } from '../notes-user-field-resolver.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { from, of } from 'rxjs';
+import { of } from 'rxjs';
 import { noteStub } from '../../notes/tests/stubs/note.stub';
 import { userStub } from '../../user/tests/stubs/user.stub';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -32,6 +32,8 @@ describe('NotesUserFieldResolverService', () => {
     service = module.get<NotesUserFieldResolverService>(
       NotesUserFieldResolverService
     );
+
+    jest.clearAllMocks();
   });
 
   describe('Notes User Field Resolver Service', () => {
