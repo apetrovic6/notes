@@ -5,5 +5,5 @@ import { of } from 'rxjs';
 
 export const NotesUserFieldResolverService = fn().mockReturnValue({
   resolveUser: fn().mockReturnValue(of(userStub())),
-  resolveNotes: fn().mockReturnValue(of(noteStub())),
+  resolveNotes: fn().mockReturnValue(of([noteStub()])),
 });

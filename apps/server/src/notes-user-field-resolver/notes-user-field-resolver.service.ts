@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Note, User } from '@notes-app/entities';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from } from 'rxjs';
+import { from, map } from 'rxjs';
 
 @Injectable()
 export class NotesUserFieldResolverService {
@@ -12,10 +12,26 @@ export class NotesUserFieldResolverService {
   ) {}
 
   resolveUser(id: string) {
-    return from(this.userRepository.findOne({ where: { notes: { id } } }));
+    return from(this.userRepository.findOne({ where: { notes: { id } } })).pipe(
+      map(user => {
+        if (!user) {
+          throw new NotFoundException('User not found');
+        }
+        return user;
+      })
+    );
   }
 
   resolveNotes(userId: string) {
-    return from(this.noteRepository.find({ where: { user: { id: userId } } }));
+    return from(
+      this.noteRepository.find({ where: { user: { id: userId } } })
+    ).pipe(
+      map(notes => {
+        if (!notes) {
+          throw new NotFoundException('Notes not found');
+        }
+        return notes;
+      })
+    );
   }
 }
