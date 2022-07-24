@@ -4,6 +4,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { NotesModule } from '../notes/notes.module';
 import { UserModule } from '../user/user.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UserModule } from '../user/user.module';
       sortSchema: true,
       introspection: true,
     }),
+    AuthModule,
     NotesModule,
     UserModule,
   ],
