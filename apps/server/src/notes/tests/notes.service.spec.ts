@@ -57,8 +57,6 @@ describe('NotesService', () => {
       });
 
       it('It should return an array of notes', () => {
-        let notes;
-
         service
           .findAll()
           .subscribe(res => expect(res).toEqual([noteStub(), noteStub()]));
