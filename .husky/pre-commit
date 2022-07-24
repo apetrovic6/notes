@@ -5,3 +5,6 @@ yarn lint front-react
 yarn lint server
 
 yarn prettier
+
+yarn test server
+yarn test front-react
