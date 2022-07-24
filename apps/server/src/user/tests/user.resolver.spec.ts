@@ -81,7 +81,7 @@ describe('UserResolver', () => {
       });
 
       it('It should return an array of notes', async () => {
-        expect([notes]).toEqual([noteStub()]);
+        expect(notes).toEqual([noteStub()]);
       });
     });
   });
