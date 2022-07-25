@@ -8,12 +8,7 @@ import { DbModule } from '../db/db.module';
 import { GraphQlModule } from '../graph-ql/graph-ql.module';
 
 @Module({
-  imports: [
-    DbModule,
-    GraphQlModule,
-    NotesModule,
-    UserModule,
-  ],
+  imports: [DbModule, GraphQlModule, NotesModule, UserModule],
   controllers: [],
   providers: [],
 })
