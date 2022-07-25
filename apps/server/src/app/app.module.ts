@@ -4,27 +4,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { NotesModule } from '../notes/notes.module';
 import { UserModule } from '../user/user.module';
+import { DbModule } from '../db/db.module';
+import { GraphQlModule } from '../graph-ql/graph-ql.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'notes',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
-
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      playground: true,
-      autoSchemaFile: true,
-      sortSchema: true,
-      introspection: true,
-    }),
+    DbModule,
+    GraphQlModule,
     NotesModule,
     UserModule,
   ],
