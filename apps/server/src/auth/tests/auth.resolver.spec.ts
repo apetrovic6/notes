@@ -1,9 +1,10 @@
-import { User } from '@notes-app/entities';
-
-import { AuthResolver } from '../auth.resolver';
 import { Test, TestingModule } from '@nestjs/testing';
+import { spyOn } from 'jest-mock';
+import { User } from '@notes-app/entities';
+import { AuthResolver } from '../auth.resolver';
 import { AuthService } from '../auth.service';
 import { userStub } from '../../user/tests/stubs/user.stub';
+import { UnauthorizedException } from '@nestjs/common';
 
 jest.mock('../auth.service');
 
@@ -51,6 +52,47 @@ describe('AuthResolver', () => {
 
     it('Should return user', () => {
       expect(user).toEqual(userStub());
+    });
+  });
+
+  describe('Login', () => {
+    let user;
+
+    beforeEach(done => {
+      resolver
+        .signin({ email: userStub().email, password: userStub().password })
+        .subscribe(data => (user = data));
+
+      done();
+    });
+
+    it('Should be defined', () => {
+      expect(resolver.signin).toBeDefined();
+    });
+
+    it("Should call service's login method with user's email and password", () => {
+      const { email, password } = userStub();
+      expect(service.signin).toHaveBeenCalledWith({
+        email,
+        password,
+      });
+    });
+
+    it('Should return user', () => {
+      expect(user).toEqual(userStub());
+    });
+
+    it('Should throw an error if user credentials are invalid', () => {
+      spyOn(service, 'signin').mockImplementationOnce(() => {
+        throw new UnauthorizedException('Invalid credentials');
+      });
+
+      expect(() =>
+        resolver.signin({
+          email: userStub().email,
+          password: userStub().password,
+        })
+      ).toThrow(UnauthorizedException);
     });
   });
 });
