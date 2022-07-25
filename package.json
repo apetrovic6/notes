@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/typeorm": "^9.0.0",
     "apollo-server-express": "^3.10.0",
+    "argon2": "^0.28.7",
     "core-js": "^3.6.5",
     "expo": "45.0.6",
     "expo-dev-client": "~1.0.0",
