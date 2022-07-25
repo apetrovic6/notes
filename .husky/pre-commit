@@ -3,8 +3,10 @@
 
 yarn lint front-react
 yarn lint server
+yarn lint mobile
 
 yarn prettier
 
 yarn test server
 yarn test front-react
+yarn test mobile

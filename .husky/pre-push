@@ -3,3 +3,4 @@
 
 yarn build front-react
 yarn build server
+yarn build mobile
