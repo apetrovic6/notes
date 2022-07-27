@@ -31,4 +31,19 @@ describe('DataLoaderService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  describe('getLoaders', () => {
+    it('It should be defined', () => {
+      expect(service.getLoaders).toBeDefined();
+    });
+
+    it('It should return an object', () => {
+      expect(service.getLoaders()).toBeInstanceOf(Object);
+    });
+
+    it('It should return an object with notesLoader and userLoader', () => {
+      expect(service.getLoaders()).toHaveProperty('notesLoader');
+      expect(service.getLoaders()).toHaveProperty('userLoader');
+    });
+  });
 });
