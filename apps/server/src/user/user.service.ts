@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput, User } from '@notes-app/entities';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { from, map, switchMap } from 'rxjs';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class UserService {
   }
 
   findAll() {
-    return from(this.userRepository.find({ relations: ['notes'] }));
+    return from(this.userRepository.find());
   }
 
   findOne(id: string) {
@@ -41,5 +41,19 @@ export class UserService {
 
   remove(id: string) {
     return this.userRepository.delete(id);
+  }
+
+  async loadUsers(ids: string[]) {
+    const users = await this.userRepository.findBy({
+      id: In(ids),
+    });
+
+    const userMap: { [key: string]: User } = {};
+
+    users.forEach(user => {
+      userMap[user.id] = user;
+    });
+
+    return ids.map(id => userMap[id]);
   }
 }
