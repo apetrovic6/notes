@@ -14,6 +14,9 @@ export class Note extends BaseEntity {
   @Column()
   content: string;
 
+  @Column()
+  userId: string;
+
   @Field(() => User, { description: 'User who created the note' })
   @ManyToOne(() => User, user => user.notes)
   user: User;

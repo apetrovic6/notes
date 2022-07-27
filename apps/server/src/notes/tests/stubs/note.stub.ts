@@ -7,4 +7,5 @@ export const noteStub = (): Note => ({
   content: 'This is a test note',
   user: userStub(),
   createdAt: new Date('2022-07-23T00:00:00.000Z'),
+  userId: userStub().id,
 });
