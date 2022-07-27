@@ -9,7 +9,6 @@ import { DataLoaderService } from '../../data-loader/data-loader.service';
 import { DataLoaderModule } from '../../data-loader/data-loader.module';
 
 jest.mock('../user.service');
-jest.mock('../../notes-user-field-resolver/notes-user-field-resolver.service');
 jest.mock('../../notes/notes.service');
 jest.mock('../../data-loader/data-loader.service');
 
