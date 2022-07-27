@@ -1,15 +1,23 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { DataLoaderService } from '../data-loader/data-loader.service';
+import { DataLoaderModule } from '../data-loader/data-loader.module';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      playground: true,
-      autoSchemaFile: true,
-      sortSchema: true,
-      introspection: true,
+      imports: [DataLoaderModule],
+      useFactory: (dataLoaderService: DataLoaderService) => ({
+        autoSchemaFile: true,
+        sortSchema: true,
+        introspection: true,
+        context: () => ({
+          loaders: dataLoaderService.getLoaders(),
+        }),
+      }),
+      inject: [DataLoaderService],
     }),
   ],
   exports: [GraphQLModule],
