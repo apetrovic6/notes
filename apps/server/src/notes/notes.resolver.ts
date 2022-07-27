@@ -14,14 +14,12 @@ import {
   UpdateNoteInput,
   User,
 } from '@notes-app/entities';
-import { NotesUserFieldResolverService } from '../notes-user-field-resolver/notes-user-field-resolver.service';
+import { EDataLoader, UserLoader } from '../data-loader/IDataLoaders';
+import { Loader } from '../data-loader/decorators/loader.decorator';
 
 @Resolver(() => Note)
 export class NotesResolver {
-  constructor(
-    private readonly notesService: NotesService,
-    private readonly notesUserFieldResolverService: NotesUserFieldResolverService
-  ) {}
+  constructor(private readonly notesService: NotesService) {}
 
   @Mutation(() => Note)
   createNote(@Args('createNoteInput') createNoteInput: CreateNoteInput) {
@@ -49,7 +47,10 @@ export class NotesResolver {
   }
 
   @ResolveField('user', () => User)
-  user(@Parent() note: Note) {
-    return this.notesUserFieldResolverService.resolveUser(note.id);
+  async user(
+    @Parent() note: Note,
+    @Loader(EDataLoader.user) loader: UserLoader
+  ) {
+    return loader.load(note.userId);
   }
 }
