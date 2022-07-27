@@ -8,12 +8,8 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { NotesService } from './notes.service';
-import {
-  CreateNoteInput,
-  Note,
-  UpdateNoteInput,
-  User,
-} from '@notes-app/entities';
+import { CreateNoteInput, Note, UpdateNoteInput } from '@notes/entities/notes';
+import { User } from '@notes/entities/user';
 import { EDataLoader, UserLoader } from '../data-loader/IDataLoaders';
 import { Loader } from '../data-loader/decorators/loader.decorator';
 

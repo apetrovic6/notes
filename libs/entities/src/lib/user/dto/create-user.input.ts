@@ -1,5 +1,5 @@
 import { InputType, Int, Field, OmitType } from '@nestjs/graphql';
-import { BaseInput } from '../../base.input';
+import { BaseInput } from '../../base';
 
 @InputType('UserInput')
 export class CreateUserInput extends OmitType(BaseInput, ['id'] as const) {

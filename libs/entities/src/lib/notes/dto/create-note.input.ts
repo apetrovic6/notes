@@ -1,6 +1,6 @@
 import { InputType, Field, OmitType } from '@nestjs/graphql';
-import { BaseInput } from '../../base.input';
 import { User } from '../../user';
+import { BaseInput } from '../../base';
 
 @InputType('NoteInput')
 export class CreateNoteInput extends OmitType(BaseInput, ['id'] as const) {

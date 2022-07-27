@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFolderInput } from '@notes-app/entities';
-import { UpdateFolderInput } from '@notes-app/entities';
+import { CreateFolderInput, UpdateFolderInput } from '@notes/entities/folders';
 
 @Injectable()
 export class FoldersService {

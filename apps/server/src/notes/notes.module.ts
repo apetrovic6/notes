@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { NotesResolver } from './notes.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Note } from '@notes-app/entities';
+import { Note } from '@notes/entities/notes';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Note])],

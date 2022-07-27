@@ -3,7 +3,8 @@ import { DataLoaderService } from '../data-loader.service';
 import { NotesService } from '../../notes/notes.service';
 import { UserService } from '../../user/user.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Note, User } from '@notes-app/entities';
+import { User } from '@notes/entities/user';
+import { Note } from '@notes/entities/notes';
 
 describe('DataLoaderService', () => {
   let service: DataLoaderService;

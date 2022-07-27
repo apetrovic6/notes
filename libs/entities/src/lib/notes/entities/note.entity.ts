@@ -1,7 +1,7 @@
-import { BaseEntity } from '../../base.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { User } from '../../user';
+import { BaseEntity } from '../../base';
+import { User } from '@notes/entities/user';
 
 @ObjectType()
 @Entity()

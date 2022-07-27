@@ -16,9 +16,11 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "paths": {
-      "@notes-app/auth-helpers": ["libs/auth-helpers/src/index.ts"],
-      "@notes-app/entities": ["libs/entities/src/index.ts"],
-      "@notes-app/user": ["libs/user/src/index.ts"]
+      "@notes/auth-helpers": ["libs/auth-helpers/src/index.ts"],
+      "@notes/entities/user": ["libs/entities/src/lib/user/index.ts"],
+      "@notes/entities/notes": ["libs/entities/src/lib/notes/index.ts"],
+      "@notes/entities/folders": ["libs/entities/src/lib/folders/index.ts"],
+      "@notes/entities/base": ["libs/entities/src/base/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

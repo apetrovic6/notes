@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { spyOn } from 'jest-mock';
-import { User } from '@notes-app/entities';
+import { User } from '@notes/entities/user';
 import { AuthResolver } from '../auth.resolver';
 import { AuthService } from '../auth.service';
 import { userStub } from '../../user/tests/stubs/user.stub';

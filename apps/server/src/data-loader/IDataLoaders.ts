@@ -1,5 +1,6 @@
 import DataLoader from 'dataloader';
-import { Note, User } from '@notes-app/entities';
+import { User } from '@notes/entities/user';
+import { Note } from '@notes/entities/notes';
 
 export interface IDataLoaders {
   notesLoader: DataLoader<string, Note>;
@@ -7,7 +8,6 @@ export interface IDataLoaders {
 }
 
 export type UserLoader = DataLoader<string, User>;
-
 export type NotesLoader = DataLoader<string, Note>;
 
 export enum EDataLoader {

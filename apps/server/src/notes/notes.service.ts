@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { CreateNoteInput, Note, UpdateNoteInput } from '@notes-app/entities';
+import { CreateNoteInput, Note, UpdateNoteInput } from '@notes/entities/notes';
 import { catchError, from, map, switchMap, throwError } from 'rxjs';
 
 @Injectable()

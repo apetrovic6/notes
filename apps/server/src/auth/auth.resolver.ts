@@ -1,5 +1,5 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { CreateUserInput, User } from '@notes-app/entities';
+import { CreateUserInput, User } from '@notes/entities/user';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 

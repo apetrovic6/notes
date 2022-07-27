@@ -1,4 +1,4 @@
-import { Note } from '@notes-app/entities';
+import { Note } from '@notes/entities/notes';
 import { userStub } from '../../../user/tests/stubs/user.stub';
 
 export const noteStub = (): Note => ({

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotesService } from '../notes.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Note } from '@notes-app/entities';
+import { Note } from '@notes/entities/notes';
 import { userStub } from '../../user/tests/stubs/user.stub';
 import { fn } from 'jest-mock';
 import { noteStub } from './stubs/note.stub';

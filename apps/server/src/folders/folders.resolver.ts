@@ -1,8 +1,10 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { FoldersService } from './folders.service';
-import { CreateFolderInput } from '@notes-app/entities';
-import { UpdateFolderInput } from '@notes-app/entities';
-import { Folder } from '@notes-app/entities';
+import {
+  Folder,
+  CreateFolderInput,
+  UpdateFolderInput,
+} from '@notes/entities/folders';
 
 @Resolver(() => Folder)
 export class FoldersResolver {

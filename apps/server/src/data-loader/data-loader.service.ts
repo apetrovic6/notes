@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { NotesService } from '../notes/notes.service';
 import { UserService } from '../user/user.service';
-import { Note, User } from '@notes-app/entities';
+import { Note } from '@notes/entities/notes';
+import { User } from '@notes/entities/user';
 import DataLoader from 'dataloader';
 
 @Injectable()

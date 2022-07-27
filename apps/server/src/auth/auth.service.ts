@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserInput } from '@notes-app/entities';
+import { CreateUserInput } from '@notes/entities/user';
 import { from, of } from 'rxjs';
 import { userStub } from '../user/tests/stubs/user.stub';
-import { PasswordService } from '@notes-app/auth-helpers';
+import { PasswordService } from '@notes/auth-helpers';
 
 @Injectable()
 export class AuthService {
@@ -12,8 +12,8 @@ export class AuthService {
     return from(of(userStub()));
   }
 
-  signin() {
-    return;
+  signin(authArgs: CreateUserInput) {
+    return from(of(userStub()));
   }
 
   validateUser() {

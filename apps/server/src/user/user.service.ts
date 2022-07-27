@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserInput, UpdateUserInput, User } from '@notes-app/entities';
+import { CreateUserInput, UpdateUserInput, User } from '@notes/entities/user';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { from, map, switchMap } from 'rxjs';
