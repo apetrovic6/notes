@@ -6,6 +6,7 @@ import { userStub } from '../../user/tests/stubs/user.stub';
 import { fn } from 'jest-mock';
 import { noteStub } from './stubs/note.stub';
 import { of } from 'rxjs';
+import { NotFoundException } from '@nestjs/common';
 
 describe('NotesService', () => {
   let service: NotesService;
@@ -15,6 +16,8 @@ describe('NotesService', () => {
     save: fn().mockImplementation(() => of(noteStub())),
     find: fn().mockImplementation(() => of([noteStub(), noteStub()])),
     findOne: fn().mockImplementation(() => of(noteStub())),
+    update: fn().mockImplementation(() => of(noteStub())),
+    delete: fn().mockImplementation(() => of(null)),
   };
 
   beforeEach(async () => {
@@ -75,16 +78,57 @@ describe('NotesService', () => {
       });
 
       it('It should return a note', () => {
-        // expect(service.findOne(userStub().id)).toEqual(note);
-
         service.findOne(note).subscribe(res => expect(res).toEqual(note));
       });
 
-      //   TODO It should return an error if no note is found
-      //   it("It should return an error if no note is found", async () => {
-      //     note = null
-      //     expect(await service.findOne("asdfsdf098")).toBeNull()
-      //   })
+      it('It should return an error if no note is found', async () => {
+        jest.spyOn(service, 'findOne').mockImplementationOnce(id => {
+          throw new NotFoundException('Note not found');
+        });
+        expect(() => service.findOne('123')).toThrowError(NotFoundException);
+      });
+    });
+
+    describe('When update is called', () => {
+      it('should be defined', () => {
+        expect(service.update).toBeDefined();
+      });
+
+      it('It should return an updated note', () => {
+        const updatedNote = { id: noteStub().id, title: 'Updated Title' };
+
+        service.update(noteStub().id, updatedNote).subscribe(res => {
+          expect(res).toEqual(noteStub());
+        });
+      });
+    });
+
+    describe('When remove is called', () => {
+      it('It should be defined', () => {
+        expect(service.remove).toBeDefined();
+      });
+
+      it('It should return null', () => {
+        service.remove(noteStub().id).subscribe(res => {
+          expect(res).toEqual(null);
+        });
+      });
+
+      it('It should return an error if no note is found', async () => {
+        jest.spyOn(service, 'remove').mockImplementationOnce(id => {
+          throw new NotFoundException('Note not found');
+        });
+        expect(() => service.remove('123')).toThrowError(NotFoundException);
+      });
+    });
+
+    describe('When loadNotes is called', () => {
+      it('It should be defined', () => {
+        expect(service.loadNotes).toBeDefined();
+      });
+
+      // TODO Test loadNotes
+      // it('It should return an array of notes', () => {});
     });
   });
 });
