@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateNoteInput, Note, UpdateNoteInput } from '@notes-app/entities';
 import { catchError, from, map, switchMap, throwError } from 'rxjs';
 
@@ -46,5 +46,21 @@ export class NotesService {
 
   remove(id: string) {
     return from(this.noteRepository.delete(id)).pipe(map(() => null));
+  }
+
+  async loadNotes(ids: string[]) {
+    const notes = await this.noteRepository.findBy({
+      user: {
+        id: In(ids),
+      },
+    });
+
+    const notesMap: { [key: string]: Note[] } = {};
+
+    notes.forEach(note => {
+      notesMap[note.userId] = [...(notesMap[note.userId] || []), note];
+    });
+
+    return ids.map(id => notesMap[id]);
   }
 }
