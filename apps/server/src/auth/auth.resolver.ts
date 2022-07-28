@@ -18,7 +18,7 @@ export class AuthResolver {
   @Mutation(() => User, { name: 'login' })
   signin(
     @Args('authArgs', { type: () => CreateUserInput }) authArgs: CreateUserInput
-  ): Observable<User> {
+  ) {
     return this.authService.signin(authArgs);
   }
 }
