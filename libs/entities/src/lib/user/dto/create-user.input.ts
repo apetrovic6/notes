@@ -1,4 +1,4 @@
-import { InputType, Int, Field, OmitType } from '@nestjs/graphql';
+import { InputType, Field, OmitType } from '@nestjs/graphql';
 import { BaseInput } from '../../base';
 
 @InputType('UserInput')

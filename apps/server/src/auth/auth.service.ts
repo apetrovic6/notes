@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from '@notes/entities/user';
-import { from, of } from 'rxjs';
-import { userStub } from '../user/tests/stubs/user.stub';
+import { from, map, switchMap } from 'rxjs';
 import { PasswordService } from '@notes/auth-helpers';
 
 @Injectable()
