@@ -48,6 +48,7 @@ export class NotesService {
     return from(this.noteRepository.delete(id)).pipe(map(() => null));
   }
 
+  // TODO - add tests
   async loadNotes(ids: string[]) {
     const notes = await this.noteRepository.findBy({
       user: {
