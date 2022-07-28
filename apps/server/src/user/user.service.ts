@@ -19,7 +19,10 @@ export class UserService {
       ...createUserInput,
       createdAt: new Date(),
     });
-    return from(this.userRepository.save(user));
+
+    return from(of(this.userRepository.create(user))).pipe(
+      switchMap(userEntity => this.userRepository.save(userEntity))
+    );
   }
 
   findAll() {
@@ -55,7 +58,7 @@ export class UserService {
   }
 
   remove(id: string) {
-    return this.userRepository.delete(id);
+    return from(this.userRepository.delete(id));
   }
 
   async loadUsers(ids: string[]) {
