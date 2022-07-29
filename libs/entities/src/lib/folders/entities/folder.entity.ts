@@ -11,9 +11,9 @@ export class Folder extends BaseEntity {
   @Column()
   title: string;
 
-  @Field(() => [Note], { description: 'Notes in the folder' })
-  @OneToMany(() => Note, note => note.folder)
-  notes: Note[];
+  @Field(() => [Note], { description: 'Notes in the folder', nullable: true })
+  @OneToMany(() => Note, note => note.folder, { nullable: true })
+  notes?: Note[];
 
   @Field(() => User, { description: 'User who owns the folder' })
   @ManyToOne(() => User, user => user.folders)

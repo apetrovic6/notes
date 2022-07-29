@@ -11,6 +11,9 @@ export class CreateFolderInput {
   @Field(() => BaseInput, { description: 'User who created the folder' })
   user: User;
 
-  @Field(() => [BaseInput], { description: 'Notes in the folder' })
-  notes: Note[];
+  @Field(() => [BaseInput], {
+    description: 'Notes in the folder',
+    nullable: true,
+  })
+  notes?: Note[];
 }
