@@ -7,4 +7,5 @@ export const UserService = fn().mockReturnValue({
   findOne: fn().mockReturnValue(of(userStub())),
   findAll: fn().mockReturnValue(of([userStub()])),
   update: fn().mockReturnValue(of(userStub())),
+  findByEmail: fn().mockReturnValue(of(userStub())),
 });
