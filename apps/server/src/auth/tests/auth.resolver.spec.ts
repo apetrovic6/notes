@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { fn, spyOn } from 'jest-mock';
+import { UnauthorizedException } from '@nestjs/common';
+import { spyOn } from 'jest-mock';
 import { AuthResolver } from '../auth.resolver';
 import { AuthService } from '../auth.service';
 import { userStub } from '../../user/tests/stubs/user.stub';
-import { UnauthorizedException } from '@nestjs/common';
 
 jest.mock('../auth.service');
 
