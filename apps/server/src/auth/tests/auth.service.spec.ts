@@ -29,8 +29,8 @@ describe('AuthService', () => {
 
     beforeEach(() => {
       const userArgs = {
-        email: userStub().email,
-        password: userStub().password,
+        email: userStub.email,
+        password: userStub.password,
       };
 
       service.signup(userArgs).subscribe(data => (user = data));
@@ -41,7 +41,7 @@ describe('AuthService', () => {
     });
 
     it("It should call service's signup method with user's email and password", () => {
-      const { email, password } = userStub();
+      const { email, password } = userStub;
       expect(service.signup).toHaveBeenCalledWith({
         email,
         password,
@@ -58,8 +58,8 @@ describe('AuthService', () => {
 
     beforeEach(() => {
       const authArgs = {
-        email: userStub().email,
-        password: userStub().password,
+        email: userStub.email,
+        password: userStub.password,
       };
 
       service.signin(authArgs).subscribe(data => (user = data));
@@ -70,7 +70,7 @@ describe('AuthService', () => {
     });
 
     it("It should call service's signin method with user's email and password", () => {
-      const { email, password } = userStub();
+      const { email, password } = userStub;
       expect(service.signin).toHaveBeenCalledWith({
         email,
         password,
@@ -88,7 +88,7 @@ describe('AuthService', () => {
 
       expect(() =>
         service.signin({
-          email: userStub().email,
+          email: userStub.email,
           password: 'invalidPassword',
         })
       ).toThrowError(UnauthorizedException);

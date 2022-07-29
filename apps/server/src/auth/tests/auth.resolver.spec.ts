@@ -31,7 +31,7 @@ describe('AuthResolver', () => {
 
     beforeEach(done => {
       resolver
-        .signup({ email: userStub().email, password: userStub().password })
+        .signup({ email: userStub.email, password: userStub.password })
         .subscribe(data => (user = data));
 
       done();
@@ -42,7 +42,7 @@ describe('AuthResolver', () => {
     });
 
     it("Should call service's signup method with user's email and password", () => {
-      const { email, password } = userStub();
+      const { email, password } = userStub;
       expect(service.signup).toHaveBeenCalledWith({
         email,
         password,
@@ -59,7 +59,7 @@ describe('AuthResolver', () => {
 
     beforeEach(done => {
       resolver
-        .signin({ email: userStub().email, password: userStub().password })
+        .signin({ email: userStub.email, password: userStub.password })
         .subscribe(data => (user = data));
 
       done();
@@ -70,7 +70,7 @@ describe('AuthResolver', () => {
     });
 
     it("Should call service's login method with user's email and password", () => {
-      const { email, password } = userStub();
+      const { email, password } = userStub;
       expect(service.signin).toHaveBeenCalledWith({
         email,
         password,
@@ -88,8 +88,8 @@ describe('AuthResolver', () => {
 
       expect(() =>
         resolver.signin({
-          email: userStub().email,
-          password: userStub().password,
+          email: userStub.email,
+          password: userStub.password,
         })
       ).toThrow(UnauthorizedException);
     });

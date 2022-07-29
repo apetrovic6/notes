@@ -50,16 +50,16 @@ describe('UserResolver', () => {
       let user: User;
 
       beforeEach(done => {
-        resolver.createUser(userStub()).subscribe(res => (user = res));
+        resolver.createUser(userStub).subscribe(res => (user = res));
         done();
       });
 
       it('It should call userService', () => {
-        expect(userService.create).toBeCalledWith(userStub());
+        expect(userService.create).toBeCalledWith(userStub);
       });
 
       it('It should return the user', () => {
-        expect(user).toEqual(userStub());
+        expect(user).toEqual(userStub);
       });
     });
 
@@ -67,7 +67,7 @@ describe('UserResolver', () => {
     //   let notes = [];
     //
     //   beforeEach(done => {
-    //     resolver.notes(userStub()).subscribe(res => (notes = res));
+    //     resolver.notes(userStub).subscribe(res => (notes = res));
     //     done();
     //   });
     //

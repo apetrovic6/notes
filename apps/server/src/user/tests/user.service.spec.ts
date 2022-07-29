@@ -10,11 +10,11 @@ describe('UserService', () => {
   let service: UserService;
 
   const mockRepo = {
-    create: createUserInput => userStub(),
-    save: () => of(userStub()),
-    find: () => of([userStub()]),
-    findOne: () => of(userStub()),
-    update: () => of({ ...userStub(), email: 'newemail@email.com' }),
+    create: createUserInput => userStub,
+    save: () => of(userStub),
+    find: () => of([userStub]),
+    findOne: () => of(userStub),
+    update: () => of({ ...userStub, email: 'newemail@email.com' }),
     delete: () => of(null),
   };
 
@@ -50,7 +50,7 @@ describe('UserService', () => {
 
       await expect(user).toBeDefined();
 
-      expect(user).toEqual(userStub());
+      expect(user).toEqual(userStub);
     });
   });
 
@@ -66,7 +66,7 @@ describe('UserService', () => {
 
       expect(users).toBeDefined();
 
-      expect(users).toEqual([userStub()]);
+      expect(users).toEqual([userStub]);
     });
   });
 
@@ -78,11 +78,11 @@ describe('UserService', () => {
     it('It should find one user', () => {
       let user;
 
-      service.findOne(userStub().id).subscribe(res => (user = res));
+      service.findOne(userStub.id).subscribe(res => (user = res));
 
       expect(user).toBeDefined();
 
-      expect(user).toEqual(userStub());
+      expect(user).toEqual(userStub);
     });
 
     it('It should throw an error if user is not found', () => {
@@ -103,14 +103,14 @@ describe('UserService', () => {
       let user;
 
       service
-        .update(userStub().id, {
-          id: userStub().id,
+        .update(userStub.id, {
+          id: userStub.id,
           email: 'newemail@email.com',
         })
         .subscribe(res => (user = res));
 
       expect(user).toBeDefined();
-      expect(user).toEqual({ email: 'newemail@email.com', ...userStub() });
+      expect(user).toEqual({ email: 'newemail@email.com', ...userStub });
     });
   });
 
@@ -122,7 +122,7 @@ describe('UserService', () => {
     it('It should remove a user', () => {
       let user;
 
-      service.remove(userStub().id).subscribe(res => (user = res));
+      service.remove(userStub.id).subscribe(res => (user = res));
 
       expect(user).toBeNull();
     });

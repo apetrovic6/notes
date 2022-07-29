@@ -12,11 +12,11 @@ describe('NotesService', () => {
   let service: NotesService;
 
   const noteRepository = {
-    create: fn().mockImplementation(() => of(noteStub())),
-    save: fn().mockImplementation(() => of(noteStub())),
-    find: fn().mockImplementation(() => of([noteStub(), noteStub()])),
-    findOne: fn().mockImplementation(() => of(noteStub())),
-    update: fn().mockImplementation(() => of(noteStub())),
+    create: fn().mockImplementation(() => of(noteStub)),
+    save: fn().mockImplementation(() => of(noteStub)),
+    find: fn().mockImplementation(() => of([noteStub, noteStub])),
+    findOne: fn().mockImplementation(() => of(noteStub)),
+    update: fn().mockImplementation(() => of(noteStub)),
     delete: fn().mockImplementation(() => of(null)),
   };
 
@@ -43,13 +43,13 @@ describe('NotesService', () => {
         createNoteInput = {
           title: 'Test Title',
           content: 'Test Content',
-          user: { id: userStub().id },
+          user: '6c4aa2d2-9b6f-4661-b68d-17ffaef0aa95',
         };
       });
 
       it('Should return a note', () => {
         service.create(createNoteInput).subscribe(res => {
-          expect(res).toEqual(noteStub());
+          expect(res).toEqual(noteStub);
         });
       });
     });
@@ -62,7 +62,7 @@ describe('NotesService', () => {
       it('It should return an array of notes', () => {
         service
           .findAll()
-          .subscribe(res => expect(res).toEqual([noteStub(), noteStub()]));
+          .subscribe(res => expect(res).toEqual([noteStub, noteStub]));
       });
     });
 
@@ -70,7 +70,7 @@ describe('NotesService', () => {
       let note;
 
       beforeEach(() => {
-        note = noteStub();
+        note = noteStub;
       });
 
       it('It should be defined', () => {
@@ -95,10 +95,10 @@ describe('NotesService', () => {
       });
 
       it('It should return an updated note', () => {
-        const updatedNote = { id: noteStub().id, title: 'Updated Title' };
+        const updatedNote = { id: noteStub.id, title: 'Updated Title' };
 
-        service.update(noteStub().id, updatedNote).subscribe(res => {
-          expect(res).toEqual(noteStub());
+        service.update(noteStub.id, updatedNote).subscribe(res => {
+          expect(res).toEqual(noteStub);
         });
       });
     });
@@ -109,7 +109,7 @@ describe('NotesService', () => {
       });
 
       it('It should return null', () => {
-        service.remove(noteStub().id).subscribe(res => {
+        service.remove(noteStub.id).subscribe(res => {
           expect(res).toEqual(null);
         });
       });

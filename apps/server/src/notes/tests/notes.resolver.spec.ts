@@ -20,11 +20,11 @@ describe('NotesResolver', () => {
   let dataLoaderService: DataLoaderService;
 
   const mockRepo = {
-    create: jest.fn().mockImplementation(() => userStub()),
+    create: jest.fn().mockImplementation(() => userStub),
   };
 
   const mockNoteRepository = {
-    create: jest.fn().mockImplementation(() => noteStub()),
+    create: jest.fn().mockImplementation(() => noteStub),
   };
 
   beforeEach(async () => {
@@ -54,18 +54,18 @@ describe('NotesResolver', () => {
       let note;
 
       beforeEach(done => {
-        noteResolver.findOne(noteStub().id).subscribe(res => {
+        noteResolver.findOne(noteStub.id).subscribe(res => {
           note = res;
         });
         done();
       });
 
       test('It should call notesService ', () => {
-        expect(notesService.findOne).toBeCalledWith(noteStub().id);
+        expect(notesService.findOne).toBeCalledWith(noteStub.id);
       });
 
       test('It should return the note', () => {
-        expect(note).toEqual(noteStub());
+        expect(note).toEqual(noteStub);
       });
 
       it("It should return not found error if the note doesn't exist", () => {
@@ -92,23 +92,23 @@ describe('NotesResolver', () => {
       });
 
       it('It should return an array of notes', () => {
-        expect(notes).toEqual([noteStub(), noteStub()]);
+        expect(notes).toEqual([noteStub, noteStub]);
       });
     });
 
     describe('When createNote is called', () => {
       let note;
       beforeEach(done => {
-        noteResolver.createNote(noteStub()).subscribe(res => (note = res));
+        noteResolver.createNote(noteStub).subscribe(res => (note = res));
         done();
       });
 
       test('It should call notesService', () => {
-        expect(notesService.create).toBeCalledWith(noteStub());
+        expect(notesService.create).toBeCalledWith(noteStub);
       });
 
       test('It should return the created note', () => {
-        expect(note).toEqual(noteStub());
+        expect(note).toEqual(noteStub);
       });
 
       test("It should throw an error if the user wasn't included", () => {
@@ -116,7 +116,7 @@ describe('NotesResolver', () => {
           throw new Error('User not included');
         });
 
-        const newNote = noteStub();
+        const newNote = noteStub;
         newNote.user = null;
 
         expect(() => noteResolver.createNote(note)).toThrowError(
@@ -131,7 +131,7 @@ describe('NotesResolver', () => {
 
       beforeEach(done => {
         updateNoteInput = {
-          id: noteStub().id,
+          id: noteStub.id,
           title: 'Updated Title',
         };
         noteResolver.updateNote(updateNoteInput).subscribe(res => (note = res));
@@ -140,12 +140,11 @@ describe('NotesResolver', () => {
       });
 
       test('It should call notesService', async () => {
-        expect(notesService.findOne).toBeCalledWith(noteStub().id),
-          updateNoteInput;
+        expect(notesService.findOne).toBeCalledWith(noteStub.id);
       });
 
       test('It should return the updated note', async () => {
-        expect(note).toEqual(noteStub());
+        expect(note).toEqual(noteStub);
       });
 
       test("It should throw a not found error if the note doesn't exist", () => {
@@ -162,12 +161,12 @@ describe('NotesResolver', () => {
     describe('When removeNote is called', () => {
       let note;
       beforeEach(done => {
-        noteResolver.removeNote(noteStub().id).subscribe(res => (note = res));
+        noteResolver.removeNote(noteStub.id).subscribe(res => (note = res));
         done();
       });
 
       test('It should call notesService', () => {
-        expect(notesService.remove).toBeCalledWith(noteStub().id);
+        expect(notesService.remove).toBeCalledWith(noteStub.id);
       });
 
       test('It should return null', async () => {
