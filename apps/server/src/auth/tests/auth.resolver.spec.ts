@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { spyOn } from 'jest-mock';
-import { User } from '@notes/entities/user';
+import { fn, spyOn } from 'jest-mock';
 import { AuthResolver } from '../auth.resolver';
 import { AuthService } from '../auth.service';
 import { userStub } from '../../user/tests/stubs/user.stub';
@@ -28,7 +27,7 @@ describe('AuthResolver', () => {
   });
 
   describe('Signup', () => {
-    let user: User;
+    let user: { token: string };
 
     beforeEach(done => {
       resolver
@@ -51,7 +50,7 @@ describe('AuthResolver', () => {
     });
 
     it('Should return user', () => {
-      expect(user).toEqual(userStub());
+      expect(user).toEqual({ token: expect.any(String) });
     });
   });
 
@@ -78,8 +77,8 @@ describe('AuthResolver', () => {
       });
     });
 
-    it('Should return user', () => {
-      expect(user).toEqual(userStub());
+    it('Should return a token', () => {
+      expect(user).toEqual({ token: expect.any(String) });
     });
 
     it('Should throw an error if user credentials are invalid', () => {

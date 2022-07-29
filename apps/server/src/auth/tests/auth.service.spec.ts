@@ -44,8 +44,8 @@ describe('AuthService', () => {
       });
     });
 
-    it('It should return user', () => {
-      expect(user).toEqual(userStub());
+    it('It should return a token', () => {
+      expect(user).toEqual({ token: expect.any(String) });
     });
   });
 });
