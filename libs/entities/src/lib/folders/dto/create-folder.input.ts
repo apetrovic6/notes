@@ -8,9 +8,6 @@ export class CreateFolderInput {
   @Field(() => String, { description: 'Folder name' })
   title: string;
 
-  @Field(() => BaseInput, { description: 'User who created the folder' })
-  user: User;
-
   @Field(() => [BaseInput], {
     description: 'Notes in the folder',
     nullable: true,
