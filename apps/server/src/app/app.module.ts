@@ -5,6 +5,7 @@ import { DbModule } from '../db/db.module';
 import { GraphQlModule } from '../graph-ql/graph-ql.module';
 import { AuthModule } from '../auth/auth.module';
 import { FoldersModule } from '../folders/folders.module';
+import { ConfigModule } from '../config/config.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { FoldersModule } from '../folders/folders.module';
     NotesModule,
     UserModule,
     FoldersModule,
+    ConfigModule,
   ],
   controllers: [],
   providers: [],
