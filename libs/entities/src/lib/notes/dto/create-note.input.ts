@@ -1,6 +1,7 @@
 import { InputType, Field, OmitType } from '@nestjs/graphql';
 import { User } from '../../user';
 import { BaseInput } from '../../base';
+import { Folder } from '@notes/entities/folders';
 
 @InputType('NoteInput')
 export class CreateNoteInput extends OmitType(BaseInput, ['id'] as const) {
@@ -12,4 +13,7 @@ export class CreateNoteInput extends OmitType(BaseInput, ['id'] as const) {
 
   @Field(type => BaseInput, { description: 'User who created the note' })
   user: User;
+
+  @Field(type => BaseInput, { description: 'Folder of the note' })
+  folder: Folder;
 }
