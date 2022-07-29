@@ -6,7 +6,6 @@
     "entities": "libs/entities",
     "front-react": "apps/front-react",
     "front-react-e2e": "apps/front-react-e2e",
-    "jwt-utils": "libs/jwt-utils",
     "mobile": "apps/mobile",
     "mobile-e2e": "apps/mobile-e2e",
     "server": "apps/server"
