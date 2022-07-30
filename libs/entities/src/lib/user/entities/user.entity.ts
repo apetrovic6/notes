@@ -19,6 +19,9 @@ export class User extends BaseEntity {
   @OneToMany(() => Note, note => note.user)
   notes: Note[];
 
+  @Column({ nullable: true })
+  public currentRefreshTokenHash?: string;
+
   @Field(() => [Folder], {
     nullable: true,
     description: 'User folder',
