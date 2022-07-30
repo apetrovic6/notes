@@ -74,7 +74,14 @@ export class FoldersService {
     ).pipe(switchMap(() => this.findOne(id)));
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} folder`;
+  remove(folderId: string, userId: string) {
+    return from(
+      this.folderRepository.delete({
+        id: folderId,
+        user: {
+          id: userId,
+        },
+      })
+    );
   }
 }

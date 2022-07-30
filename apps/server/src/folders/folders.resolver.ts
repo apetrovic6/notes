@@ -45,7 +45,10 @@ export class FoldersResolver {
   }
 
   @Mutation(() => Folder)
-  removeFolder(@Args('id', { type: () => ID }) id: string) {
-    return this.foldersService.remove(id);
+  removeFolder(
+    @User() user: { userId: string },
+    @Args('id', { type: () => ID }) folderId: string
+  ) {
+    return this.foldersService.remove(folderId, user.userId);
   }
 }
