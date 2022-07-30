@@ -4,6 +4,7 @@ import { spyOn } from 'jest-mock';
 import { AuthResolver } from '../auth.resolver';
 import { AuthService } from '../auth.service';
 import { userStub } from '../../user/tests/stubs/user.stub';
+import { Request } from 'express';
 
 jest.mock('../auth.service');
 
@@ -28,10 +29,13 @@ describe('AuthResolver', () => {
 
   describe('Signup', () => {
     let user: { token: string };
-
+    let req: Request;
     beforeEach(done => {
       resolver
-        .signup({ email: userStub.email, password: userStub.password })
+        .signup(req as Request, {
+          email: userStub.email,
+          password: userStub.password,
+        })
         .subscribe(data => (user = data));
 
       done();
@@ -43,10 +47,7 @@ describe('AuthResolver', () => {
 
     it("Should call service's signup method with user's email and password", () => {
       const { email, password } = userStub;
-      expect(service.signup).toHaveBeenCalledWith({
-        email,
-        password,
-      });
+      expect(service.signup).toHaveBeenCalledWith({ email, password }, req);
     });
 
     it('Should return user', () => {
@@ -56,10 +57,14 @@ describe('AuthResolver', () => {
 
   describe('Login', () => {
     let user;
+    let req;
 
     beforeEach(done => {
       resolver
-        .signin({ email: userStub.email, password: userStub.password })
+        .signin(req as Request, {
+          email: userStub.email,
+          password: userStub.password,
+        })
         .subscribe(data => (user = data));
 
       done();
@@ -71,10 +76,7 @@ describe('AuthResolver', () => {
 
     it("Should call service's login method with user's email and password", () => {
       const { email, password } = userStub;
-      expect(service.signin).toHaveBeenCalledWith({
-        email,
-        password,
-      });
+      expect(service.signin).toHaveBeenCalledWith({ email, password }, req);
     });
 
     it('Should return a token', () => {
@@ -87,7 +89,7 @@ describe('AuthResolver', () => {
       });
 
       expect(() =>
-        resolver.signin({
+        resolver.signin(req, {
           email: userStub.email,
           password: userStub.password,
         })

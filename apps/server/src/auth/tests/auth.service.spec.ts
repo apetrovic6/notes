@@ -4,6 +4,7 @@ import { JwtUtilsService, PasswordService } from '@notes/auth-helpers';
 import { userStub } from '../../user/tests/stubs/user.stub';
 import { UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../../user/user.service';
+import { Request } from 'express';
 
 jest.mock('../auth.service');
 jest.mock('../../user/user.service');
@@ -26,6 +27,7 @@ describe('AuthService', () => {
 
   describe('When signup is called', () => {
     let user;
+    const req = {} as Request;
 
     beforeEach(() => {
       const userArgs = {
@@ -33,7 +35,7 @@ describe('AuthService', () => {
         password: userStub.password,
       };
 
-      service.signup(userArgs).subscribe(data => (user = data));
+      service.signup(userArgs, req as Request).subscribe(data => (user = data));
     });
 
     it('It should be defined', () => {
@@ -42,10 +44,7 @@ describe('AuthService', () => {
 
     it("It should call service's signup method with user's email and password", () => {
       const { email, password } = userStub;
-      expect(service.signup).toHaveBeenCalledWith({
-        email,
-        password,
-      });
+      expect(service.signup).toHaveBeenCalledWith({ email, password }, req);
     });
 
     it('It should return a token', () => {
@@ -55,14 +54,14 @@ describe('AuthService', () => {
 
   describe('When signin is called', () => {
     let user;
-
+    const req = {} as Request;
     beforeEach(() => {
       const authArgs = {
         email: userStub.email,
         password: userStub.password,
       };
 
-      service.signin(authArgs).subscribe(data => (user = data));
+      service.signin(authArgs, req).subscribe(data => (user = data));
     });
 
     it('It should be defined', () => {
@@ -71,10 +70,7 @@ describe('AuthService', () => {
 
     it("It should call service's signin method with user's email and password", () => {
       const { email, password } = userStub;
-      expect(service.signin).toHaveBeenCalledWith({
-        email,
-        password,
-      });
+      expect(service.signin).toHaveBeenCalledWith({ email, password }, req);
     });
 
     it('It should return a token', () => {
@@ -87,10 +83,10 @@ describe('AuthService', () => {
       });
 
       expect(() =>
-        service.signin({
-          email: userStub.email,
-          password: 'invalidPassword',
-        })
+        service.signin(
+          { email: userStub.email, password: 'invalidPassword' },
+          req
+        )
       ).toThrowError(UnauthorizedException);
     });
   });

@@ -4,11 +4,12 @@ import { NotesService } from '../notes.service';
 import { noteStub } from './stubs/note.stub';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '@notes/entities/user';
-import { Note, UpdateNoteInput } from '@notes/entities/notes';
+import { CreateNoteInput, Note, UpdateNoteInput } from '@notes/entities/notes';
 import { userStub } from '../../user/tests/stubs/user.stub';
 import { NotFoundException } from '@nestjs/common';
 import { DataLoaderService } from '../../data-loader/data-loader.service';
 import { DataLoaderModule } from '../../data-loader/data-loader.module';
+import { folderStub } from '../../folders/tests/stubs/folderStub';
 
 jest.mock('../notes.service');
 jest.mock('../../user/user.service');
@@ -54,14 +55,16 @@ describe('NotesResolver', () => {
       let note;
 
       beforeEach(done => {
-        noteResolver.findOne(noteStub.id).subscribe(res => {
-          note = res;
-        });
+        noteResolver
+          .findOne({ userId: userStub.id }, noteStub.id)
+          .subscribe(res => {
+            note = res;
+          });
         done();
       });
 
       test('It should call notesService ', () => {
-        expect(notesService.findOne).toBeCalledWith(noteStub.id);
+        expect(notesService.findOne).toBeCalledWith(noteStub.id, userStub.id);
       });
 
       test('It should return the note', () => {
@@ -73,7 +76,7 @@ describe('NotesResolver', () => {
           throw new NotFoundException('Note not found');
         });
 
-        expect(() => noteResolver.findOne('someId')).toThrowError(
+        expect(() => noteResolver.findOne(userStub.id, 'someId')).toThrowError(
           NotFoundException
         );
       });
@@ -83,7 +86,7 @@ describe('NotesResolver', () => {
       let notes;
 
       beforeEach(done => {
-        noteResolver.findAll().subscribe(res => (notes = res));
+        noteResolver.findAll(userStub.id).subscribe(res => (notes = res));
         done();
       });
 
@@ -98,13 +101,25 @@ describe('NotesResolver', () => {
 
     describe('When createNote is called', () => {
       let note;
+      const createNoteInput: CreateNoteInput = {
+        title: noteStub.title,
+        content: noteStub.content,
+        folder: folderStub,
+      };
+
       beforeEach(done => {
-        noteResolver.createNote(noteStub).subscribe(res => (note = res));
+        note = null;
+        noteResolver
+          .createNote(createNoteInput, { userId: userStub.id })
+          .subscribe(res => (note = res));
         done();
       });
 
       test('It should call notesService', () => {
-        expect(notesService.create).toBeCalledWith(noteStub);
+        expect(notesService.create).toBeCalledWith(
+          createNoteInput,
+          userStub.id
+        );
       });
 
       test('It should return the created note', () => {
@@ -119,7 +134,7 @@ describe('NotesResolver', () => {
         const newNote = noteStub;
         newNote.user = null;
 
-        expect(() => noteResolver.createNote(note)).toThrowError(
+        expect(() => noteResolver.createNote(userStub.id, note)).toThrowError(
           'User not included'
         );
       });
@@ -134,13 +149,15 @@ describe('NotesResolver', () => {
           id: noteStub.id,
           title: 'Updated Title',
         };
-        noteResolver.updateNote(updateNoteInput).subscribe(res => (note = res));
+        noteResolver
+          .updateNote(userStub.id, updateNoteInput)
+          .subscribe(res => (note = res));
 
         done();
       });
 
       test('It should call notesService', async () => {
-        expect(notesService.findOne).toBeCalledWith(noteStub.id);
+        expect(notesService.findOne).toBeCalledWith(noteStub.id, userStub.id);
       });
 
       test('It should return the updated note', async () => {
@@ -152,9 +169,9 @@ describe('NotesResolver', () => {
           throw new NotFoundException('Note not found');
         });
 
-        expect(() => noteResolver.updateNote(updateNoteInput)).toThrowError(
-          NotFoundException
-        );
+        expect(() =>
+          noteResolver.updateNote(userStub.id, updateNoteInput)
+        ).toThrowError(NotFoundException);
       });
     });
 

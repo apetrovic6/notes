@@ -48,7 +48,7 @@ describe('NotesService', () => {
       });
 
       it('Should return a note', () => {
-        service.create(createNoteInput).subscribe(res => {
+        service.create(createNoteInput, userStub.id).subscribe(res => {
           expect(res).toEqual(noteStub);
         });
       });
@@ -56,12 +56,12 @@ describe('NotesService', () => {
 
     describe('When findAll is called', () => {
       it('It should be defined', () => {
-        expect(service.findAll()).toBeDefined();
+        expect(service.findAll(userStub.id)).toBeDefined();
       });
 
       it('It should return an array of notes', () => {
         service
-          .findAll()
+          .findAll(userStub.id)
           .subscribe(res => expect(res).toEqual([noteStub, noteStub]));
       });
     });
@@ -74,18 +74,22 @@ describe('NotesService', () => {
       });
 
       it('It should be defined', () => {
-        expect(service.findOne(note)).toBeDefined();
+        expect(service.findOne(note, userStub.id)).toBeDefined();
       });
 
       it('It should return a note', () => {
-        service.findOne(note).subscribe(res => expect(res).toEqual(note));
+        service
+          .findOne(note, userStub.id)
+          .subscribe(res => expect(res).toEqual(note));
       });
 
       it('It should return an error if no note is found', async () => {
         jest.spyOn(service, 'findOne').mockImplementationOnce(id => {
           throw new NotFoundException('Note not found');
         });
-        expect(() => service.findOne('123')).toThrowError(NotFoundException);
+        expect(() => service.findOne('123', userStub.id)).toThrowError(
+          NotFoundException
+        );
       });
     });
 
@@ -97,7 +101,7 @@ describe('NotesService', () => {
       it('It should return an updated note', () => {
         const updatedNote = { id: noteStub.id, title: 'Updated Title' };
 
-        service.update(noteStub.id, updatedNote).subscribe(res => {
+        service.update(noteStub.id, updatedNote, userStub.id).subscribe(res => {
           expect(res).toEqual(noteStub);
         });
       });
