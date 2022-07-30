@@ -9,9 +9,12 @@ export class NotesService {
   constructor(
     @InjectRepository(Note) private readonly noteRepository: Repository<Note>
   ) {}
-  create(createNoteInput: CreateNoteInput) {
+  create(createNoteInput: CreateNoteInput, userId: string) {
     const note = this.noteRepository.create({
       ...createNoteInput,
+      user: {
+        id: userId,
+      },
       createdAt: new Date(),
     });
 
@@ -21,12 +24,27 @@ export class NotesService {
     );
   }
 
-  findAll() {
-    return from(this.noteRepository.find());
+  findAll(userId: string) {
+    return from(
+      this.noteRepository.find({
+        where: {
+          user: { id: userId },
+        },
+      })
+    );
   }
 
-  findOne(id: string) {
-    return from(this.noteRepository.findOne({ where: { id } })).pipe(
+  findOne(id: string, userId: string) {
+    return from(
+      this.noteRepository.findOne({
+        where: {
+          id,
+          user: {
+            id: userId,
+          },
+        },
+      })
+    ).pipe(
       map(note => {
         if (!note) {
           throw new NotFoundException('Note not found');
@@ -36,10 +54,10 @@ export class NotesService {
     );
   }
 
-  update(id: string, updateNoteInput: UpdateNoteInput) {
+  update(id: string, updateNoteInput: UpdateNoteInput, userId: string) {
     return from(this.noteRepository.update(id, updateNoteInput)).pipe(
       switchMap(() => {
-        return this.findOne(id);
+        return this.findOne(id, userId);
       })
     );
   }

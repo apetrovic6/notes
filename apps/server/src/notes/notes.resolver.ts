@@ -9,35 +9,48 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { CreateNoteInput, Note, UpdateNoteInput } from '@notes/entities/notes';
-import { User } from '@notes/entities/user';
 import { JwtAuthGuard } from '@notes/auth-helpers';
 import { EDataLoader, UserLoader } from '../data-loader/IDataLoaders';
 import { NotesService } from './notes.service';
 import { Loader } from '../data-loader/decorators/loader.decorator';
+import { User } from '../user/get-user.decorator';
 
+@UseGuards(JwtAuthGuard)
 @Resolver(() => Note)
 export class NotesResolver {
   constructor(private readonly notesService: NotesService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Mutation(() => Note)
-  createNote(@Args('createNoteInput') createNoteInput: CreateNoteInput) {
-    return this.notesService.create(createNoteInput);
+  createNote(
+    @Args('createNoteInput') createNoteInput: CreateNoteInput,
+    @User() user: { userId: string }
+  ) {
+    return this.notesService.create(createNoteInput, user.userId);
   }
 
   @Query(() => [Note], { name: 'notes' })
-  findAll() {
-    return this.notesService.findAll();
+  findAll(@User() user: { userId: string }) {
+    return this.notesService.findAll(user.userId);
   }
 
   @Query(() => Note, { name: 'note' })
-  findOne(@Args('id', { type: () => ID }) id: string) {
-    return this.notesService.findOne(id);
+  findOne(
+    @User() user: { userId: string },
+    @Args('id', { type: () => ID }) id: string
+  ) {
+    return this.notesService.findOne(id, user.userId);
   }
 
   @Mutation(() => Note)
-  updateNote(@Args('updateNoteInput') updateNoteInput: UpdateNoteInput) {
-    return this.notesService.update(updateNoteInput.id, updateNoteInput);
+  updateNote(
+    @User() user: { userId: string },
+    @Args('updateNoteInput') updateNoteInput: UpdateNoteInput
+  ) {
+    return this.notesService.update(
+      updateNoteInput.id,
+      updateNoteInput,
+      user.userId
+    );
   }
 
   @Mutation(() => Note)
