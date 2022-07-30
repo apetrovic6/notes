@@ -6,7 +6,7 @@ import {
 } from '@notes/entities/folders';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { from, of, switchMap } from 'rxjs';
+import { from, map, NotFoundError, Observable, of, switchMap } from 'rxjs';
 
 @Injectable()
 export class FoldersService {
@@ -15,25 +15,66 @@ export class FoldersService {
     private readonly folderRepository: Repository<Folder>
   ) {}
 
-  create(createFolderInput: CreateFolderInput) {
-    return from(of(this.folderRepository.create(createFolderInput))).pipe(
-      switchMap(folder => this.folderRepository.save(folder))
+  create(createFolderInput: CreateFolderInput, userId: string) {
+    return from(
+      of(
+        this.folderRepository.create({
+          ...createFolderInput,
+          createdAt: new Date(),
+          user: { id: userId },
+        })
+      )
+    ).pipe(switchMap(folder => this.folderRepository.save(folder)));
+  }
+
+  findAll(userId: string): Observable<Folder[]> {
+    return from(
+      this.folderRepository.find({
+        where: {
+          user: {
+            id: userId,
+          },
+        },
+      })
     );
   }
 
-  findAll() {
-    return `This action returns all folders`;
+  findOne(id: string): Observable<Folder> {
+    return from(
+      this.folderRepository.findOne({
+        where: {
+          id,
+        },
+      })
+    ).pipe(
+      map(folder => {
+        if (!folder) {
+          throw new NotFoundError('Folder not found');
+        }
+        return folder;
+      })
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} folder`;
+  update(
+    id: string,
+    updateFolderInput: UpdateFolderInput,
+    userId
+  ): Observable<Folder> {
+    return from(
+      this.folderRepository.update(
+        {
+          user: {
+            id: userId,
+          },
+          id,
+        },
+        updateFolderInput
+      )
+    ).pipe(switchMap(() => this.findOne(id)));
   }
 
-  update(id: number, updateFolderInput: UpdateFolderInput) {
-    return `This action updates a #${id} folder`;
-  }
-
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} folder`;
   }
 }
