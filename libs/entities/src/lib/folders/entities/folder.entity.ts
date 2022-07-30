@@ -12,7 +12,10 @@ export class Folder extends BaseEntity {
   title: string;
 
   @Field(() => [Note], { description: 'Notes in the folder', nullable: true })
-  @OneToMany(() => Note, note => note.folder, { nullable: true })
+  @OneToMany(() => Note, note => note.folder, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   notes?: Note[];
 
   @Field(() => User, { description: 'User who owns the folder' })
