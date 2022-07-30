@@ -4,6 +4,7 @@ import { CreateUserInput } from '@notes/entities/user';
 import { PasswordService } from '@notes/auth-helpers';
 import { JwtUtilsService } from '@notes/auth-helpers';
 import { UserService } from '../user/user.service';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -13,16 +14,23 @@ export class AuthService {
     private readonly jwtService: JwtUtilsService
   ) {}
 
-  signup(userArgs: CreateUserInput) {
+  signup(userArgs: CreateUserInput, req: Request) {
     return from(this.passwordService.hashPassword(userArgs.password)).pipe(
       map(hash => (userArgs.password = hash)),
       switchMap(() => this.userService.create(userArgs)),
       switchMap(user => this.jwtService.sign(user.id)),
-      map(token => ({ token }))
+      map(token => {
+        req?.res?.cookie('Authorization', token, {
+          httpOnly: true,
+          secure: true,
+        });
+
+        return { token: 'signed in' };
+      })
     );
   }
 
-  signin(authArgs: CreateUserInput) {
+  signin(authArgs: CreateUserInput, req: Request) {
     return from(this.userService.findByEmail(authArgs.email)).pipe(
       switchMap(user =>
         merge(
@@ -37,7 +45,16 @@ export class AuthService {
             })
           )
           .pipe(switchMap(user => this.jwtService.sign(user.id)))
-          .pipe(map(token => ({ token })))
+          .pipe(
+            map(token => {
+              req.res?.cookie('Authorization', token, {
+                httpOnly: true,
+                secure: true,
+              });
+
+              return { token: 'signed in' };
+            })
+          )
       )
     );
   }
