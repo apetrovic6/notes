@@ -4,9 +4,12 @@
 yarn lint front-react
 yarn lint server
 yarn lint mobile
+yarn lint auth-helpers
+yarn lint entities
 
 yarn prettier
 
 yarn test server
 yarn test front-react
 yarn test mobile
+yarn test auth-helpers
