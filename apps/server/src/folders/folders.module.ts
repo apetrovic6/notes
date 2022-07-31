@@ -7,5 +7,6 @@ import { Folder } from '@notes/entities/folders';
 @Module({
   imports: [TypeOrmModule.forFeature([Folder])],
   providers: [FoldersResolver, FoldersService],
+  exports: [FoldersService],
 })
 export class FoldersModule {}

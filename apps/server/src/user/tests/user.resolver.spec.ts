@@ -8,6 +8,8 @@ import { noteStub } from '../../notes/tests/stubs/note.stub';
 import { userStub } from './stubs/user.stub';
 import { DataLoaderService } from '../../data-loader/data-loader.service';
 import { DataLoaderModule } from '../../data-loader/data-loader.module';
+import { Folder } from '@notes/entities/folders';
+import { folderStub } from '../../folders/tests/stubs/folderStub';
 
 jest.mock('../user.service');
 jest.mock('../../notes/notes.service');
@@ -18,10 +20,14 @@ describe('UserResolver', () => {
   let userService: UserService;
 
   const mockUserRepository = {
-    create: jest.fn().mockImplementation(() => userStub()),
+    create: jest.fn().mockImplementation(() => userStub),
   };
   const mockNoteRepository = {
-    create: jest.fn().mockImplementation(() => noteStub()),
+    create: jest.fn().mockImplementation(() => noteStub),
+  };
+
+  const mockFolderRepository = {
+    create: jest.fn().mockImplementation(() => folderStub),
   };
 
   beforeEach(async () => {
@@ -33,6 +39,8 @@ describe('UserResolver', () => {
       .useValue(mockUserRepository)
       .overrideProvider(getRepositoryToken(Note))
       .useValue(mockNoteRepository)
+      .overrideProvider(getRepositoryToken(Folder))
+      .useValue(mockFolderRepository)
       .compile();
 
     resolver = module.get<UserResolver>(UserResolver);

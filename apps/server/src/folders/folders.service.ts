@@ -5,7 +5,7 @@ import {
   UpdateFolderInput,
 } from '@notes/entities/folders';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { from, map, NotFoundError, Observable, of, switchMap } from 'rxjs';
 
 @Injectable()
@@ -83,5 +83,23 @@ export class FoldersService {
         },
       })
     );
+  }
+
+  async loadFolders(ids: string[]) {
+    const folders = await this.folderRepository.find({
+      where: {
+        user: {
+          id: In(ids),
+        },
+      },
+    });
+
+    const folderMap: { [key: string]: Folder[] } = {};
+
+    folders.forEach(folder => {
+      folderMap[folder.userId] = [...(folderMap[folder.userId] || []), folder];
+    });
+
+    return ids.map(id => folderMap[id]);
   }
 }

@@ -18,6 +18,9 @@ export class Folder extends BaseEntity {
   })
   notes?: Note[];
 
+  @Column()
+  userId: string;
+
   @Field(() => User, { description: 'User who owns the folder' })
   @ManyToOne(() => User, user => user.folders)
   user: User;

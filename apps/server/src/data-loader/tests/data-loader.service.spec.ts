@@ -5,6 +5,8 @@ import { UserService } from '../../user/user.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '@notes/entities/user';
 import { Note } from '@notes/entities/notes';
+import { Folder } from '@notes/entities/folders';
+import { FoldersService } from '../../folders/folders.service';
 
 describe('DataLoaderService', () => {
   let service: DataLoaderService;
@@ -15,12 +17,17 @@ describe('DataLoaderService', () => {
         DataLoaderService,
         NotesService,
         UserService,
+        FoldersService,
         {
           provide: getRepositoryToken(Note),
           useValue: { find: jest.fn() },
         },
         {
           provide: getRepositoryToken(User),
+          useValue: { find: jest.fn() },
+        },
+        {
+          provide: getRepositoryToken(Folder),
           useValue: { find: jest.fn() },
         },
       ],

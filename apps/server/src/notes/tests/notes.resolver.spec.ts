@@ -10,6 +10,7 @@ import { NotFoundException } from '@nestjs/common';
 import { DataLoaderService } from '../../data-loader/data-loader.service';
 import { DataLoaderModule } from '../../data-loader/data-loader.module';
 import { folderStub } from '../../folders/tests/stubs/folderStub';
+import { Folder } from '@notes/entities/folders';
 
 jest.mock('../notes.service');
 jest.mock('../../user/user.service');
@@ -28,6 +29,10 @@ describe('NotesResolver', () => {
     create: jest.fn().mockImplementation(() => noteStub),
   };
 
+  const mockFolderRepo = {
+    create: jest.fn().mockImplementation(() => folderStub),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [DataLoaderModule],
@@ -37,6 +42,8 @@ describe('NotesResolver', () => {
       .useValue(mockRepo)
       .overrideProvider(getRepositoryToken(Note))
       .useValue(mockNoteRepository)
+      .overrideProvider(getRepositoryToken(Folder))
+      .useValue(mockFolderRepo)
       .compile();
 
     noteResolver = module.get<NotesResolver>(NotesResolver);
