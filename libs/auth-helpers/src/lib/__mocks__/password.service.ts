@@ -1,5 +1,4 @@
-import { fn } from 'jest-mock';
-import { of } from 'rxjs';
+import { hash, verify } from 'argon2';
 
 export const PasswordService = fn().mockReturnValue({
   hashPassword: fn().mockReturnValue(of('hashString')),

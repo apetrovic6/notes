@@ -1,4 +1,3 @@
-import { Note } from '@notes/entities/notes';
 import { userStub } from '../../../user/tests/stubs/user.stub';
 import { folderStub } from '../../../folders/tests/stubs/folderStub';
 
