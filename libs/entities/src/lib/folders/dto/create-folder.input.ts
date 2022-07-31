@@ -1,7 +1,6 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 import { BaseInput } from '../../base';
-import { User } from '@notes/entities/user';
-import { Note } from '@notes/entities/notes';
+import { Note } from '../../notes';
 
 @InputType()
 export class CreateFolderInput {

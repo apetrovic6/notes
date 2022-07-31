@@ -2,7 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Note } from '../../notes';
 import { BaseEntity } from '../../base';
-import { Folder } from '@notes/entities/folders';
+import { Folder } from '../../folders';
 
 @ObjectType()
 @Entity()

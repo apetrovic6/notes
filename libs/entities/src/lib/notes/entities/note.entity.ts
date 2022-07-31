@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../base';
-import { User } from '@notes/entities/user';
-import { Folder } from '@notes/entities/folders';
+import { User } from '../../user';
+import { Folder } from '../../folders';
 
 @ObjectType()
 @Entity()
