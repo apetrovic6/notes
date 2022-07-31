@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PasswordService } from '../password.service';
 
-jest.mock('../password.service');
+jest.mock('argon2');
+const { hash, verify } = jest.requireActual('argon2');
 
 describe('PasswordService', () => {
   let service: PasswordService;
@@ -26,6 +27,11 @@ describe('PasswordService', () => {
 
     beforeEach(async () => {
       password = 'TestPassword';
+
+      jest
+        .spyOn(service, 'hashPassword')
+        .mockImplementationOnce(password => Promise.resolve(hash(password)));
+
       hashedPassword = await service.hashPassword(password);
     });
 
@@ -38,6 +44,7 @@ describe('PasswordService', () => {
     });
 
     it('It should return a hashed password', async () => {
+      hashedPassword = await service.hashPassword(password);
       expect(await service.hashPassword).toReturnWith(hashedPassword);
     });
 
@@ -48,13 +55,23 @@ describe('PasswordService', () => {
 
   describe('verifyPassword', () => {
     let password: string;
-    let hashedPassword: string;
-    let returnValue: boolean;
+    let hashedPassword;
+    let returnValue;
 
     beforeEach(async () => {
       password = 'TestPassword';
-      hashedPassword = await service.hashPassword(password);
 
+      jest
+        .spyOn(service, 'hashPassword')
+        .mockImplementationOnce(password => Promise.resolve(hash(password)));
+
+      jest
+        .spyOn(service, 'verifyPassword')
+        .mockImplementationOnce((hashedPassword, password) =>
+          Promise.resolve(true)
+        );
+
+      hashedPassword = await service.hashPassword(password);
       returnValue = await service.verifyPassword(hashedPassword, password);
     });
 

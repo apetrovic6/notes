@@ -5,6 +5,7 @@ import { AuthResolver } from '../auth.resolver';
 import { AuthService } from '../auth.service';
 import { userStub } from '../../user/tests/stubs/user.stub';
 import { Request } from 'express';
+import { Observable } from 'rxjs';
 
 jest.mock('../auth.service');
 
@@ -28,7 +29,7 @@ describe('AuthResolver', () => {
   });
 
   describe('Signup', () => {
-    let user: { token: string };
+    let user: Observable<{ token: string }>;
     let req: Request;
     beforeEach(done => {
       resolver
