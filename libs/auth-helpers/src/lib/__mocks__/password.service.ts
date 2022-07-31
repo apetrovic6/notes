@@ -1,6 +1,10 @@
 import { hash, verify } from 'argon2';
 
-export const PasswordService = fn().mockReturnValue({
-  hashPassword: fn().mockReturnValue(of('hashString')),
-  verifyPassword: fn().mockReturnValue(true),
-});
+export const PasswordService = {
+  hashPassword: (password: string) =>
+    hash(password, {
+      hashLength: 40,
+      timeCost: 5,
+    }),
+  verifyPassword: (hash, password) => verify(hash, password),
+};
