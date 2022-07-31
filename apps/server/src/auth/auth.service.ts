@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { from, map, merge, switchMap } from 'rxjs';
+import { from, map, merge, of, switchMap } from 'rxjs';
 import { CreateUserInput } from '@notes/entities/user';
 import { PasswordService } from '@notes/auth-helpers';
 import { JwtUtilsService } from '@notes/auth-helpers';
@@ -25,7 +25,7 @@ export class AuthService {
           secure: true,
         });
 
-        return { token: 'signed in' };
+        return of({ token: 'signed in' });
       })
     );
   }
@@ -52,7 +52,7 @@ export class AuthService {
                 secure: true,
               });
 
-              return { token: 'signed in' };
+              return of({ token: 'signed in' });
             })
           )
       )
