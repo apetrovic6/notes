@@ -5748,7 +5748,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tabler/icons@npm:^1.68.0":
+"@tabler/icons@npm:^1.68.0, @tabler/icons@npm:^1.78.1":
   version: 1.78.1
   resolution: "@tabler/icons@npm:1.78.1"
   peerDependencies:
@@ -19846,6 +19846,7 @@ __metadata:
     "@nrwl/workspace": 14.4.3
     "@reduxjs/toolkit": ^1.8.3
     "@svgr/webpack": ^5.5.0
+    "@tabler/icons": ^1.78.1
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/jest-native": 4.0.5
     "@testing-library/react": 13.3.0
