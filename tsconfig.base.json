@@ -20,7 +20,8 @@
       "@notes/entities/base": ["libs/entities/src/base/index.ts"],
       "@notes/entities/folders": ["libs/entities/src/lib/folders/index.ts"],
       "@notes/entities/notes": ["libs/entities/src/lib/notes/index.ts"],
-      "@notes/entities/user": ["libs/entities/src/lib/user/index.ts"]
+      "@notes/entities/user": ["libs/entities/src/lib/user/index.ts"],
+      "@notes/store": ["libs/store/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
