@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "auth-helpers": "libs/auth-helpers",
+    "components-react": "libs/components-react",
     "entities": "libs/entities",
     "front-react": "apps/front-react",
     "front-react-e2e": "apps/front-react-e2e",

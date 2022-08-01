@@ -17,6 +17,7 @@
     "esModuleInterop": true,
     "paths": {
       "@notes/auth-helpers": ["libs/auth-helpers/src/index.ts"],
+      "@notes/components-react": ["libs/components-react/src/index.ts"],
       "@notes/entities/base": ["libs/entities/src/base/index.ts"],
       "@notes/entities/folders": ["libs/entities/src/lib/folders/index.ts"],
       "@notes/entities/notes": ["libs/entities/src/lib/notes/index.ts"],
