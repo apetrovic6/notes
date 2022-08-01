@@ -25,7 +25,7 @@ export class AuthService {
           secure: true,
         });
 
-        return of({ token: 'signed in' });
+        return { token: 'signed in' };
       })
     );
   }
@@ -52,7 +52,7 @@ export class AuthService {
                 secure: true,
               });
 
-              return of({ token: 'signed in' });
+              return { token: 'signed in' };
             })
           )
       )

@@ -29,7 +29,7 @@ describe('AuthResolver', () => {
   });
 
   describe('Signup', () => {
-    let user: Observable<{ token: string }>;
+    let user: { token: string };
     let req: Request;
     beforeEach(done => {
       resolver
