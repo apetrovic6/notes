@@ -52,7 +52,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                 }}
               >
                 <span style={{ display: 'flex', alignItems: 'center' }}>
-                  <Burger opened={false} onClick={} />
+                  <Burger opened={false} />
                   <Text
                     mx={10}
                     variant={'gradient'}
