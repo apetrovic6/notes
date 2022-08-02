@@ -12,7 +12,7 @@ interface uiState {
 }
 
 // Define the initial state using that type
-const initialState: uiState = {
+const initialState = {
   sidebarOpen: true,
 };
 
