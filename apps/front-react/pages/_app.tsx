@@ -1,10 +1,9 @@
 import type { AppProps } from 'next/app';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { AppShell, MantineProvider } from '@mantine/core';
-import { Header } from '../components/Header';
+import { Button, MantineProvider } from '@mantine/core';
 import './styles.css';
-
+import AppShell from '../components/AppShell';
 import type { ReactElement, ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@notes/store';
@@ -32,7 +31,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
         </Head>
 
         <MantineProvider withGlobalStyles withNormalizeCSS>
-          <AppShell padding={-1000} header={<Header />}>
+          <AppShell>
             <Component {...pageProps} />
           </AppShell>
         </MantineProvider>

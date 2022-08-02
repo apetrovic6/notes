@@ -5,30 +5,39 @@ import {
   Header as MHeader,
   Menu,
   Text,
+  Box,
 } from '@mantine/core';
 import { toggleSidebar, useDispatch, useSelector } from '@notes/store';
 import { NextLink } from '@mantine/next';
+import { useRouter } from 'next/router';
 export const Header = () => {
   const dispatch = useDispatch();
   const barOpened = useSelector(state => state.ui.sidebarOpen);
-
+  const { pathname } = useRouter();
   return (
-    <MHeader height={50} p={15} className={'flex items-center justify-between'}>
-      <span className={'flex items-center'}>
-        <Burger
-          className={'lg:hidden '}
-          opened={null}
-          onClick={() => dispatch(toggleSidebar())}
-        />
-        <Text
-          mx={10}
-          variant={'gradient'}
-          size={'xl'}
-          gradient={{ from: 'yellow', to: 'green', deg: 50 }}
-        >
-          Notes
-        </Text>
-      </span>
+    <MHeader
+      height={50}
+      p={15}
+      sx={theme => ({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      })}
+    >
+      <Box
+        sx={theme => ({
+          display: 'flex',
+          alignItems: 'center',
+        })}
+      >
+        {pathname.includes('/dashboard') && (
+          <Burger
+            className={'lg:hidden '}
+            opened={null}
+            onClick={() => dispatch(toggleSidebar())}
+          />
+        )}
+      </Box>
       <Menu width={200} shadow="md" radius={'md'}>
         <Menu.Target>
           <ActionIcon>
