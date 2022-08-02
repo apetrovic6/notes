@@ -10,6 +10,25 @@ import {
 import { IconAt, IconEyeCheck, IconEyeOff } from '@tabler/icons';
 
 const Login = () => {
+  const schema = z.object({
+    email: z.string().email({ message: 'Invalid email' }).trim(),
+    password: z
+      .string()
+      .min(6, { message: 'Password must be at least 6 characters' }),
+  });
+
+  const form = useForm({
+    validate: zodResolver(schema),
+    initialValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = e => {
+    console.log(e);
+  };
+
   return (
     <Container mt={250}>
       <Center>
@@ -18,13 +37,14 @@ const Login = () => {
             Login
           </Text>
 
-          <form>
+          <form onSubmit={form.onSubmit(values => onSubmit(values))}>
             <TextInput
               label="Email"
               radius={'md'}
               placeholder="Your email"
               icon={<IconAt size={14} />}
               mb={15}
+              {...form.getInputProps('email')}
             />
 
             <PasswordInput
@@ -39,9 +59,10 @@ const Login = () => {
                 )
               }
               mb={15}
+              {...form.getInputProps('password')}
             />
 
-            <Button my={10} radius={'md'} fullWidth>
+            <Button type={'submit'} py={10} radius={'lg'} fullWidth>
               Login
             </Button>
           </form>
