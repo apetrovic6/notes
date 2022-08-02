@@ -1,21 +1,13 @@
 import type { AppProps } from 'next/app';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import {
-  AppShell,
-  Header,
-  MantineProvider,
-  Menu,
-  Text,
-  ActionIcon,
-  Avatar,
-  Burger,
-} from '@mantine/core';
-
+import { AppShell, MantineProvider } from '@mantine/core';
+import { Header } from '../components/Header';
 import './styles.css';
 
-import { ReactElement, ReactNode } from 'react';
-import { NextLink } from '@mantine/next';
+import type { ReactElement, ReactNode } from 'react';
+import { Provider } from 'react-redux';
+import { store } from '@notes/store';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -30,57 +22,21 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return getLayout(
     <>
-      <Head>
-        <title>Welcome to front-react!</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </Head>
-      <main className="app">
+      <Provider store={store}>
+        <Head>
+          <title>Welcome to front-react!</title>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width"
+          />
+        </Head>
+
         <MantineProvider withGlobalStyles withNormalizeCSS>
-          <AppShell
-            padding={-1000}
-            header={
-              <Header
-                height={50}
-                p={15}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <span style={{ display: 'flex', alignItems: 'center' }}>
-                  <Burger opened={false} />
-                  <Text
-                    mx={10}
-                    variant={'gradient'}
-                    size={'xl'}
-                    gradient={{ from: 'yellow', to: 'green', deg: 50 }}
-                  >
-                    Notes
-                  </Text>
-                </span>
-                <Menu width={200} shadow="md" radius={'md'}>
-                  <Menu.Target>
-                    <ActionIcon>
-                      <Avatar radius={'xl'} />
-                    </ActionIcon>
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    <Menu.Item component={NextLink} href={'/auth/login'}>
-                      Login
-                    </Menu.Item>
-                  </Menu.Dropdown>
-                </Menu>
-              </Header>
-            }
-          >
+          <AppShell padding={-1000} header={<Header />}>
             <Component {...pageProps} />
           </AppShell>
         </MantineProvider>
-      </main>
+      </Provider>
     </>
   );
 }
