@@ -34,7 +34,17 @@ const Login = () => {
   return (
     <Container mt={250}>
       <Center>
-        <Box my={'auto'} mx={'auto'} sx={{ maxHeight: 300, maxWidth: 300 }}>
+        <Box
+          my={'auto'}
+          mx={'auto'}
+          px={50}
+          py={50}
+          sx={theme => ({
+            borderRadius: theme.radius.xl,
+            borderColor: theme.colors.gray[5],
+            borderWidth: 1,
+          })}
+        >
           <Text size={'lg'} component={'h1'} align={'center'}>
             Login
           </Text>
