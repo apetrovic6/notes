@@ -20047,6 +20047,7 @@ __metadata:
     typeorm: ^0.3.7
     typescript: ~4.7.2
     yarn: ^1.22.19
+    zod: ^3.17.10
   languageName: unknown
   linkType: soft
 
@@ -28384,5 +28385,12 @@ __metadata:
   version: 0.8.15
   resolution: "zen-observable@npm:0.8.15"
   checksum: b7289084bc1fc74a559b7259faa23d3214b14b538a8843d2b001a35e27147833f4107590b1b44bf5bc7f6dfe6f488660d3a3725f268e09b3925b3476153b7821
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.17.10":
+  version: 3.17.10
+  resolution: "zod@npm:3.17.10"
+  checksum: 5de630b8eceda3de211cce0a734b629f8c4ca4bc887127b0ebd57e9c9be23204725e60adf2faf1c5ccb9b660c7588a8b04f60dfda1ed8e67a789e93c15f838f1
   languageName: node
   linkType: hard
