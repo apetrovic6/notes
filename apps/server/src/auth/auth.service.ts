@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { from, map, merge, of, switchMap } from 'rxjs';
 import { CreateUserInput } from '@notes/entities/user';
 import { PasswordService } from '@notes/auth-helpers';
@@ -39,7 +39,7 @@ export class AuthService {
           .pipe(
             map(isValid => {
               if (!isValid) {
-                throw new UnauthorizedException('Invalid credentials');
+                throw new BadRequestException('Invalid credentials');
               }
               return user;
             })
