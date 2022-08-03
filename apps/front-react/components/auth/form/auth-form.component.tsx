@@ -13,9 +13,19 @@ import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useMeQuery } from '@notes/apollo';
+import { useEffect } from 'react';
 
 const AuthForm = ({ onSubmit }) => {
-  const { pathname } = useRouter();
+  const { pathname, replace } = useRouter();
+
+  const { data: userData } = useMeQuery();
+
+  useEffect(() => {
+    if (userData) {
+      replace('/dashboard');
+    }
+  }, [userData]);
 
   const schema = z.object({
     email: z.string().email({ message: 'Invalid email' }).trim(),
