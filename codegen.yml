@@ -8,4 +8,4 @@ generates:
       - typescript-rtk-query:
           importBaseApiFrom: 'libs/store/src/lib/api/base'
           exportHooks: true
-          overrideExisting: "true"
+          overrideExisting: 'true'

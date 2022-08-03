@@ -1,9 +1,15 @@
 import { api } from 'libs/store/src/lib/api/base';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -61,56 +67,45 @@ export type Mutation = {
   updateUser: User;
 };
 
-
 export type MutationCreateFolderArgs = {
   createFolderInput: CreateFolderInput;
 };
-
 
 export type MutationCreateNoteArgs = {
   createNoteInput: NoteInput;
 };
 
-
 export type MutationCreateUserArgs = {
   createUserInput: UserInput;
 };
-
 
 export type MutationLoginArgs = {
   authArgs: UserInput;
 };
 
-
 export type MutationRemoveFolderArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationRemoveNoteArgs = {
   id: Scalars['ID'];
 };
 
-
 export type MutationRemoveUserArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationSignupArgs = {
   getAuthArgs: UserInput;
 };
 
-
 export type MutationUpdateFolderArgs = {
   updateFolderInput: UpdateFolderInput;
 };
 
-
 export type MutationUpdateNoteArgs = {
   updateNoteInput: UpdateNoteInput;
 };
-
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
@@ -151,21 +146,17 @@ export type Query = {
   users: Array<User>;
 };
 
-
 export type QueryFolderArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryFoldersArgs = {
   userId: Scalars['ID'];
 };
 
-
 export type QueryNoteArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryUserArgs = {
   id: Scalars['ID'];
@@ -225,9 +216,10 @@ export type SignupMutationVariables = Exact<{
   getAuthArgs: UserInput;
 }>;
 
-
-export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'AuthOutput', token: string } };
-
+export type SignupMutation = {
+  __typename?: 'Mutation';
+  signup: { __typename?: 'AuthOutput'; token: string };
+};
 
 export const SignupDocument = `
     mutation signup($getAuthArgs: UserInput!) {
@@ -239,13 +231,12 @@ export const SignupDocument = `
 
 const injectedRtkApi = api.injectEndpoints({
   overrideExisting: true,
-  endpoints: (build) => ({
+  endpoints: build => ({
     signup: build.mutation<SignupMutation, SignupMutationVariables>({
-      query: (variables) => ({ document: SignupDocument, variables })
+      query: variables => ({ document: SignupDocument, variables }),
     }),
   }),
 });
 
 export { injectedRtkApi as api };
 export const { useSignupMutation } = injectedRtkApi;
-
