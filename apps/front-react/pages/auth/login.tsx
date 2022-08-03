@@ -6,12 +6,18 @@ import {
   TextInput,
   PasswordInput,
   Button,
+  LoadingOverlay,
 } from '@mantine/core';
 import { IconAt, IconEyeCheck, IconEyeOff } from '@tabler/icons';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 
+import { useRouter } from 'next/router';
+import { useSignupMutation } from '@notes/store';
+
 const Login = () => {
+  const [signup, { isLoading, isSuccess }] = useSignupMutation();
+  const router = useRouter();
   const schema = z.object({
     email: z.string().email({ message: 'Invalid email' }).trim(),
     password: z
@@ -28,11 +34,19 @@ const Login = () => {
   });
 
   const onSubmit = e => {
-    console.log(e);
+    const { email, password } = e;
+    signup({ getAuthArgs: { email, password } });
   };
 
+  if (isLoading) {
+    return <LoadingOverlay visible={isLoading} overlayBlur={2} />;
+  }
+  if (isSuccess) {
+    router.push('/dashboard');
+  }
+
   return (
-    <Container mt={250}>
+    <Container>
       <Center>
         <Box
           my={'auto'}
