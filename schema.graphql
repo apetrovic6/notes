@@ -53,7 +53,8 @@ type Note {
 
 type Query {
   folder(id: ID!): Folder!
-  folders(userId: ID!): [Folder!]!
+  folders: [Folder!]!
+  me: User!
   note(id: ID!): Note!
   notes: [Note!]!
   user(id: ID!): User!

@@ -1,0 +1,7 @@
+query getFolders {
+  folders {
+    id
+    createdAt
+    title
+  }
+}
