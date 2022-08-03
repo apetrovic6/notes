@@ -14,9 +14,9 @@
     "lint": "nx lint",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "generate": "graphql-codegen --config codegen.yml",
-    "prestart": "yarn generate --watch",
-    "predev": "yarn generate --watch"
+    "generate": "graphql-codegen --config codegen.yml --watch",
+    "prestart": "yarn generate",
+    "predev": "yarn generate"
   },
   "private": true,
   "dependencies": {
