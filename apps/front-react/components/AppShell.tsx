@@ -115,7 +115,12 @@ export default function AppShell({ children }) {
               </Text>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Text mr={10}> Welcome {userData?.me?.email.split('@')[0]}</Text>
+              {userData && (
+                <Text mr={10}>
+                  {' '}
+                  Welcome {userData?.me?.email.split('@')[0]}
+                </Text>
+              )}
               <Menu width={200} shadow="md" radius={'md'}>
                 <Menu.Target>
                   <ActionIcon>
