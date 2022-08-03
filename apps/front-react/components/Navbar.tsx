@@ -1,5 +1,5 @@
 import { NavLink, Navbar as MNavbar } from '@mantine/core';
-import { useSelector } from '@notes/store';
+
 
 export const Navbar = () => {
   return (
