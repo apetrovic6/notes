@@ -10,7 +10,6 @@
     "front-react-e2e": "apps/front-react-e2e",
     "mobile": "apps/mobile",
     "mobile-e2e": "apps/mobile-e2e",
-    "server": "apps/server",
-    "store": "libs/store"
+    "server": "apps/server"
   }
 }
