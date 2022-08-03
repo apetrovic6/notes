@@ -6,18 +6,17 @@ import {
   TextInput,
   PasswordInput,
   Button,
-  LoadingOverlay,
+  Anchor,
 } from '@mantine/core';
 import { IconAt, IconEyeCheck, IconEyeOff } from '@tabler/icons';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-
 import { useRouter } from 'next/router';
-import { useSignupMutation } from '@notes/store';
+import Link from 'next/link';
 
-const Login = () => {
-  const [signup, { isLoading, isSuccess }] = useSignupMutation();
-  const router = useRouter();
+const AuthForm = ({ onSubmit }) => {
+  const { pathname } = useRouter();
+
   const schema = z.object({
     email: z.string().email({ message: 'Invalid email' }).trim(),
     password: z
@@ -33,24 +32,10 @@ const Login = () => {
     },
   });
 
-  const onSubmit = e => {
-    const { email, password } = e;
-    signup({ getAuthArgs: { email, password } });
-  };
-
-  if (isLoading) {
-    return <LoadingOverlay visible={isLoading} overlayBlur={2} />;
-  }
-  if (isSuccess) {
-    router.push('/dashboard');
-  }
-
   return (
     <Container>
       <Center>
         <Box
-          my={'auto'}
-          mx={'auto'}
           px={50}
           py={50}
           sx={theme => ({
@@ -60,7 +45,7 @@ const Login = () => {
           })}
         >
           <Text size={'lg'} component={'h1'} align={'center'}>
-            Login
+            {pathname.includes('login') ? 'Login' : 'Signup'}
           </Text>
 
           <form onSubmit={form.onSubmit(values => onSubmit(values))}>
@@ -89,8 +74,27 @@ const Login = () => {
             />
 
             <Button type={'submit'} py={10} radius={'lg'} fullWidth>
-              Login
+              {pathname.includes('login') ? 'Login' : 'Signup'}
             </Button>
+
+            <Link
+              href={pathname.includes('login') ? '/auth/signup' : '/auth/login'}
+              passHref
+            >
+              <Anchor
+                component="a"
+                my={10}
+                style={{
+                  textDecoration: 'none',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                {pathname.includes('login')
+                  ? "Don't have an account?"
+                  : 'Have an account?'}
+              </Anchor>
+            </Link>
           </form>
         </Box>
       </Center>
@@ -98,4 +102,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AuthForm;
