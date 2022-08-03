@@ -75,7 +75,9 @@ describe('FoldersResolver', () => {
       let folders: Folder[];
 
       beforeEach(done => {
-        resolver.findAll(userStub.id).subscribe(res => (folders = res));
+        resolver
+          .findAll({ userId: userStub.id })
+          .subscribe(res => (folders = res));
         done();
       });
 
