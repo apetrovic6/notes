@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { User } from '../user/get-user.decorator';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '@notes/auth-helpers';
+
+@UseGuards(JwtAuthGuard)
 @Resolver(() => Folder)
 export class FoldersResolver {
   constructor(private readonly foldersService: FoldersService) {}
