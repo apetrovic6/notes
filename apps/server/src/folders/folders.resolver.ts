@@ -25,7 +25,7 @@ export class FoldersResolver {
   }
 
   @Query(() => [Folder], { name: 'folders' })
-  findAll(@Args('userId', { type: () => ID }) userId: string) {
+  findAll(@User() { userId }: { userId: string }) {
     return this.foldersService.findAll(userId);
   }
 
