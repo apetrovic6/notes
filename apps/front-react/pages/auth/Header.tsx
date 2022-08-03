@@ -7,7 +7,7 @@ import {
   Text,
   Box,
 } from '@mantine/core';
-import { toggleSidebar, useDispatch, useSelector } from '@notes/store';
+import { useDispatch, useSelector } from '@notes/store';
 import { NextLink } from '@mantine/next';
 import { useRouter } from 'next/router';
 export const Header = () => {
@@ -31,11 +31,7 @@ export const Header = () => {
         })}
       >
         {pathname.includes('/dashboard') && (
-          <Burger
-            className={'lg:hidden '}
-            opened={null}
-            onClick={() => dispatch(toggleSidebar())}
-          />
+          <Burger className={'lg:hidden '} opened={null} />
         )}
       </Box>
       <Menu width={200} shadow="md" radius={'md'}>
