@@ -13,6 +13,10 @@ import { DataLoaderModule } from '../data-loader/data-loader.module';
         autoSchemaFile: true,
         sortSchema: true,
         introspection: true,
+        cors: {
+          origin: 'http://localhost:4200',
+          credentials: true,
+        },
         context: () => ({
           loaders: dataLoaderService.getLoaders(),
         }),
