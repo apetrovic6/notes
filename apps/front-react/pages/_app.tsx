@@ -8,6 +8,8 @@ import type { ReactElement, ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@notes/store';
 import { NotificationsProvider } from '@mantine/notifications';
+import { ApolloProvider } from '@apollo/client';
+import { useApollo } from '../lib/apollo';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -22,7 +24,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return getLayout(
     <>
-      <Provider store={store}>
+      <ApolloProvider client={apolloClient}>
         <Head>
           <title>Welcome to front-react!</title>
           <meta
@@ -38,7 +40,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
             </AppShell>
           </NotificationsProvider>
         </MantineProvider>
-      </Provider>
+      </ApolloProvider>
     </>
   );
 }
