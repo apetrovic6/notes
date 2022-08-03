@@ -1,12 +1,10 @@
 import type { AppProps } from 'next/app';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Button, MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import './styles.css';
 import AppShell from '../components/AppShell';
 import type { ReactElement, ReactNode } from 'react';
-import { Provider } from 'react-redux';
-import { store } from '@notes/store';
 import { NotificationsProvider } from '@mantine/notifications';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../lib/apollo';
@@ -19,10 +17,11 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? (page => page);
+function CustomApp({ Component, pageProps }) {
+  // const getLayout = Component.getLayout ?? (page => page);
+  const apolloClient = useApollo(pageProps);
 
-  return getLayout(
+  return (
     <>
       <ApolloProvider client={apolloClient}>
         <Head>
