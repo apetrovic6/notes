@@ -7,6 +7,7 @@ import AppShell from '../components/AppShell';
 import type { ReactElement, ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@notes/store';
+import { NotificationsProvider } from '@mantine/notifications';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -31,9 +32,11 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
         </Head>
 
         <MantineProvider withGlobalStyles withNormalizeCSS>
-          <AppShell>
-            <Component {...pageProps} />
-          </AppShell>
+          <NotificationsProvider>
+            <AppShell>
+              <Component {...pageProps} />
+            </AppShell>
+          </NotificationsProvider>
         </MantineProvider>
       </Provider>
     </>
