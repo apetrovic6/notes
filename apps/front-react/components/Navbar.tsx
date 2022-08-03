@@ -1,6 +1,5 @@
 import { NavLink, Navbar as MNavbar } from '@mantine/core';
 
-
 export const Navbar = () => {
   return (
     <MNavbar
