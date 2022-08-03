@@ -7,12 +7,10 @@ import {
   Text,
   Box,
 } from '@mantine/core';
-import { useDispatch, useSelector } from '@notes/store';
+
 import { NextLink } from '@mantine/next';
 import { useRouter } from 'next/router';
 export const Header = () => {
-  const dispatch = useDispatch();
-  const barOpened = useSelector(state => state.ui.sidebarOpen);
   const { pathname } = useRouter();
   return (
     <MHeader
