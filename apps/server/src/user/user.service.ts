@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -6,7 +7,7 @@ import {
 import { CreateUserInput, UpdateUserInput, User } from '@notes/entities/user';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { from, map, of, switchMap } from 'rxjs';
+import { catchError, EMPTY, from, map, of, switchMap } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,13 @@ export class UserService {
     });
 
     return from(of(this.userRepository.create(user))).pipe(
-      switchMap(userEntity => this.userRepository.save(userEntity))
+      switchMap(userEntity => this.userRepository.save(userEntity)),
+      catchError(err => {
+        if (err.code === '23505') {
+          throw new BadRequestException('Email already exists');
+        }
+        return EMPTY;
+      })
     );
   }
 
