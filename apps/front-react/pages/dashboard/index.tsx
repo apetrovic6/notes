@@ -1,16 +1,31 @@
-import type { NextPageWithLayout } from '../_app';
-import type { ReactElement } from 'react';
-import { AppShell } from '@mantine/core';
-import { store } from '@notes/store';
-import { Navbar } from '../../components/Navbar';
-import { Provider } from 'react-redux';
+import { GetServerSideProps } from 'next';
+import { gql } from '@apollo/client';
+import { addApolloState, initializeApollo } from '../../lib/apollo';
 
-const Dashboard: NextPageWithLayout = () => {
+const Dashboard = () => {
   return <div>Test Dashboard</div>;
 };
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const apolloClient = initializeApollo();
 
-Dashboard.getLayout = function GetLayout(page: ReactElement) {
-  return <Provider store={store}>{page}</Provider>;
+  await apolloClient.query({
+    query: gql(`
+  query me {
+  me {
+    id
+    email
+  }
+}
+`),
+    context: {
+      headers: {
+        cookie: ctx.req.headers.cookie,
+      },
+    },
+  });
+  return addApolloState(apolloClient, {
+    props: {},
+  });
 };
 
 export default Dashboard;
