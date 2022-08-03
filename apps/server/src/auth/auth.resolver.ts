@@ -1,8 +1,11 @@
-import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { CreateUserInput } from '@notes/entities/user';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CreateUserInput, User } from '@notes/entities/user';
 import { AuthService } from './auth.service';
 import { AuthOutput } from '@notes/entities/user';
 import { Request } from 'express';
+import { User as UserD } from '../user/get-user.decorator';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '@notes/auth-helpers';
 
 @Resolver()
 export class AuthResolver {
