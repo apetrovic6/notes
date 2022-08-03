@@ -62,4 +62,15 @@ export class AuthService {
   validateUser() {
     return;
   }
+
+  me(userId: string) {
+    return from(this.userService.findOne(userId)).pipe(
+      map(user => {
+        return {
+          id: user.id,
+          email: user.email,
+        };
+      })
+    );
+  }
 }

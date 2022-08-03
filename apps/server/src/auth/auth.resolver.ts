@@ -24,4 +24,10 @@ export class AuthResolver {
   ) {
     return this.authService.signin(authArgs, req);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => User, { name: 'me' })
+  me(@UserD() user: { userId: string }) {
+    return this.authService.me(user.userId);
+  }
 }
