@@ -13,7 +13,10 @@
     "test": "nx test",
     "lint": "nx lint",
     "prettier": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "generate": "graphql-codegen --config codegen.yml",
+    "prestart": "yarn generate --watch",
+    "predev": "yarn generate --watch"
   },
   "private": true,
   "dependencies": {
@@ -43,6 +46,7 @@
     "@nestjs/typeorm": "^9.0.0",
     "@nrwl/next": "14.4.3",
     "@reduxjs/toolkit": "^1.8.3",
+    "@rtk-query/graphql-request-base-query": "^2.2.0",
     "@tabler/icons": "^1.78.1",
     "add": "^2.0.6",
     "apollo-server-express": "^3.10.0",
@@ -83,9 +87,11 @@
     "zod": "^3.17.10"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^2.11.3",
-    "@graphql-codegen/typescript": "^2.7.2",
-    "@graphql-codegen/typescript-operations": "^2.5.2",
+    "@graphql-codegen/cli": "2.11.3",
+    "@graphql-codegen/introspection": "2.2.0",
+    "@graphql-codegen/typescript": "2.7.2",
+    "@graphql-codegen/typescript-graphql-files-modules": "2.2.0",
+    "@graphql-codegen/typescript-operations": "2.5.2",
     "@graphql-codegen/typescript-rtk-query": "^2.3.2",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",

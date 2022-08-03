@@ -1,0 +1,134 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type AuthOutput {
+  token: String!
+}
+
+type Folder {
+  "Date of creation"
+  createdAt: DateTime!
+  "Unique identifier"
+  id: ID!
+  "Notes in the folder"
+  notes: [Note!]
+  "Folder name"
+  title: String!
+  "User who owns the folder"
+  user: User!
+}
+
+type Mutation {
+  createFolder(createFolderInput: CreateFolderInput!): Folder!
+  createNote(createNoteInput: NoteInput!): Note!
+  createUser(createUserInput: UserInput!): User!
+  login(authArgs: UserInput!): AuthOutput!
+  removeFolder(id: ID!): Folder!
+  removeNote(id: ID!): Note!
+  removeUser(id: ID!): User!
+  signup(getAuthArgs: UserInput!): AuthOutput!
+  updateFolder(updateFolderInput: UpdateFolderInput!): Folder!
+  updateNote(updateNoteInput: UpdateNoteInput!): Note!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Note {
+  "Content of the note"
+  content: String!
+  "Date of creation"
+  createdAt: DateTime!
+  "Folder of the note"
+  folder: Folder!
+  "Unique identifier"
+  id: ID!
+  "Title of the note"
+  title: String!
+  "User who created the note"
+  user: User!
+}
+
+type Query {
+  folder(id: ID!): Folder!
+  folders(userId: ID!): [Folder!]!
+  note(id: ID!): Note!
+  notes: [Note!]!
+  user(id: ID!): User!
+  users: [User!]!
+}
+
+type User {
+  "Date of creation"
+  createdAt: DateTime!
+  "User email"
+  email: String!
+  "User folder"
+  folders: [Folder!]
+  "Unique identifier"
+  id: ID!
+  notes: [Note!]
+  "User password"
+  password: String!
+}
+
+"A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format."
+scalar DateTime
+
+input BaseInput {
+  "Unique identifier"
+  id: ID!
+}
+
+input CreateFolderInput {
+  "Notes in the folder"
+  notes: [BaseInput!]
+  "Folder name"
+  title: String!
+}
+
+input NoteInput {
+  "Content of the note"
+  content: String
+  "Folder of the note"
+  folder: BaseInput!
+  "Title of the note"
+  title: String!
+}
+
+input UpdateFolderInput {
+  id: ID!
+  "Notes in the folder"
+  notes: [BaseInput!]
+  "Folder name"
+  title: String
+}
+
+input UpdateNoteInput {
+  "Content of the note"
+  content: String
+  "Folder of the note"
+  folder: BaseInput
+  "Unique identifier"
+  id: ID!
+  "Title of the note"
+  title: String
+}
+
+input UpdateUserInput {
+  "User email"
+  email: String
+  "Unique identifier"
+  id: ID!
+  "User password"
+  password: String
+}
+
+input UserInput {
+  "User email"
+  email: String!
+  "User password"
+  password: String!
+}

@@ -1,0 +1,11 @@
+schema: './schema.graphql'
+documents: 'apps/**/*.graphql'
+generates:
+  libs/store/src/lib/api/types.generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-rtk-query:
+          importBaseApiFrom: 'libs/store/src/lib/api/base'
+          exportHooks: true
+          overrideExisting: "true"
