@@ -1,44 +1,42 @@
 import AuthForm from '../../../components/auth/form/auth-form.component';
-import { useSignupMutation } from '@notes/store';
 import { LoadingOverlay } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { showNotification } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons';
+import { useSignupMutation } from '@notes/apollo';
 
 const Signup = () => {
-  const [signup, { isLoading, isSuccess, isError, error }] =
-    useSignupMutation();
+  const [signup, { data, error, loading }] = useSignupMutation();
 
   const { replace } = useRouter();
 
   const onSubmit = e => {
     const { email, password } = e;
-    signup({ getAuthArgs: { email, password } });
+    signup({ variables: { getAuthArgs: { email, password } } });
   };
 
-  if (isLoading) {
+  if (loading) {
+    return <LoadingOverlay visible={loading} overlayBlur={2} />;
+  }
+
+  if (data) {
     showNotification({
-      title: 'Please wait...',
-      message: "We're signing you up...",
-      color: 'blue',
-      loading: true,
-      disallowClose: true,
+      title: 'Success',
+      message: "You've successfully registered!",
+      icon: <IconCheck size={18} />,
+      color: 'teal',
     });
-    return <LoadingOverlay visible={isLoading} overlayBlur={2} />;
+
+    setTimeout(() => replace('/dashboard'), 900);
   }
 
-  if (isSuccess) {
-    replace('/dashboard');
-  }
-
-  if (isError) {
+  if (error) {
     showNotification({
       title: error.name,
       message: error.message,
       color: 'red',
     });
   }
-
-  console.log('RERENDER');
 
   return (
     <div>
