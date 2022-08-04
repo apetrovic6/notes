@@ -158,9 +158,10 @@ export default function AppShell({ children }) {
                     <Menu.Item
                       onClick={async () => {
                         logout({
-                          refetchQueries: ['me'],
-                          awaitRefetchQueries: true,
-                          fetchPolicy: 'network-only',
+                          onCompleted: async res => {
+                            client.clearStore().then(() => client.resetStore());
+                            replace('/auth/login');
+                          },
                         });
 
                         await client.refetchQueries({
@@ -171,7 +172,6 @@ export default function AppShell({ children }) {
                           },
                         });
 
-                        replace('/auth/login');
                         showNotification({
                           title: 'Success',
                           message: "You've successfully signed out",
