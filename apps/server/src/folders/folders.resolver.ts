@@ -69,6 +69,6 @@ export class FoldersResolver {
     @Parent() folder: Folder,
     @Loader(EDataLoader.notes) loader: NotesLoader
   ) {
-    return loader.load(folder.userId);
+    return loader.load(folder.id);
   }
 }

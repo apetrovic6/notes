@@ -69,7 +69,7 @@ export class NotesService {
   // TODO - add tests
   async loadNotes(ids: string[]) {
     const notes = await this.noteRepository.findBy({
-      user: {
+      folder: {
         id: In(ids),
       },
     });
@@ -77,7 +77,7 @@ export class NotesService {
     const notesMap: { [key: string]: Note[] } = {};
 
     notes.forEach(note => {
-      notesMap[note.userId] = [...(notesMap[note.userId] || []), note];
+      notesMap[note.folderId] = [...(notesMap[note.folderId] || []), note];
     });
 
     return ids.map(id => notesMap[id]);
