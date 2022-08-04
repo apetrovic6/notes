@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RichTextEditor } from '@mantine/rte';
+import RichTextEditor from '../../../components/RichTextEditor';
 import { useRouter } from 'next/router';
 import { CreateNoteInput } from '@notes/entities/notes';
 
