@@ -19,6 +19,7 @@ import {
 import {
   GetFoldersQueryResult,
   useGetFoldersQuery,
+  useLogoutMutation,
   useMeQuery,
 } from '@notes/apollo';
 
@@ -40,6 +41,9 @@ export default function AppShell({ children }) {
   const { data, loading } = useGetFoldersQuery();
 
   const { data: userData } = useMeQuery();
+
+  const [logout, { client, data: log }] = useLogoutMutation();
+
   return (
     <MantineAppShell
       styles={{
@@ -137,7 +141,31 @@ export default function AppShell({ children }) {
                     </Menu.Item>
                   )}
                   {userData && (
-                    <Menu.Item component={NextLink} href={'/auth/logout'}>
+                    <Menu.Item
+                      onClick={async () => {
+                        logout({
+                          refetchQueries: ['me'],
+                          awaitRefetchQueries: true,
+                          fetchPolicy: 'network-only',
+                        });
+
+                        await client.refetchQueries({
+                          updateCache(cache) {
+                            cache.modify({
+                              fields: {},
+                            });
+                          },
+                        });
+
+                        replace('/auth/login');
+                        showNotification({
+                          title: 'Success',
+                          message: "You've successfully signed out",
+                          color: 'teal',
+                          icon: <IconCheck size={18} />,
+                        });
+                      }}
+                    >
                       Logout
                     </Menu.Item>
                   )}
