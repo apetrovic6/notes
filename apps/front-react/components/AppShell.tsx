@@ -17,6 +17,12 @@ import {
   Skeleton,
   useMantineColorScheme,
 } from '@mantine/core';
+import {
+  GetFoldersQueryResult,
+  useGetFoldersQuery,
+  useMeQuery,
+} from '@notes/apollo';
+
 import { useRouter } from 'next/router';
 import { NextLink } from '@mantine/next';
 
@@ -30,7 +36,9 @@ export default function AppShell({ children }) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === 'dark';
 
-  const { data, loading } = useGetFoldersQuery();
+  const { pathname, push } = useRouter();
+
+  const { data, loading } = useGetFoldersQuery<GetFoldersQueryResult>();
 
   const { data: userData } = useMeQuery();
   return (
@@ -51,7 +59,7 @@ export default function AppShell({ children }) {
             p="md"
             hiddenBreakpoint="sm"
             hidden={!opened}
-            width={{ sm: 200, lg: 300 }}
+            width={{ sm: 200, lg: 310 }}
           >
             <Text>Folders</Text>
 
@@ -65,13 +73,64 @@ export default function AppShell({ children }) {
 
             {data?.folders &&
               data?.folders?.map(folder => (
-                <NavLink
-                  label={folder.title}
+                <Box
                   key={folder.id}
-                  childrenOffset={28}
+                  sx={{ display: 'flex', alignItems: 'center' }}
                 >
-                  <NavLink label="First child link" />
-                </NavLink>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      width: '100%',
+                      position: 'relative',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div style={{ display: 'block', width: '90%' }}>
+                      <NavLink
+                        variant={'filled'}
+                        label={folder.title}
+                        key={folder.id}
+                        childrenOffset={20}
+                      >
+                        {folder?.notes.map(note => (
+                          <Link
+                            key={note.id}
+                            href={{
+                              pathname: '/dashboard/note',
+                              query: { noteId: note.id },
+                            }}
+                            as={'/dashboard/note'}
+                            passHref
+                          >
+                            <NavLink
+                              key={note.id}
+                              label={note.title}
+                              component={'a'}
+                            />
+                          </Link>
+                        ))}
+                      </NavLink>
+                    </div>
+                    <IconCirclePlus
+                      style={{ position: 'absolute', right: '-5', top: '8' }}
+                      size={20}
+                      onClick={() => {
+                        showNotification({
+                          title: 'Create new note',
+                          message: folder.id,
+                        });
+
+                        push(
+                          {
+                            pathname: '/dashboard/new',
+                            query: { folderId: folder.id },
+                          },
+                          '/dashboard/new'
+                        );
+                      }}
+                    />
+                  </Box>
+                </Box>
               ))}
           </Navbar>
         )
