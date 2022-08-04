@@ -38,7 +38,7 @@ export default function AppShell({ children }) {
 
   const { pathname, push } = useRouter();
 
-  const { data, loading } = useGetFoldersQuery<GetFoldersQueryResult>();
+  const { data, loading } = useGetFoldersQuery();
 
   const { data: userData } = useMeQuery();
   return (
