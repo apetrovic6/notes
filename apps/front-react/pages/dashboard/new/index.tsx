@@ -21,7 +21,9 @@ export const NewNote = () => {
     folder: { id: folderId as string },
     content: '',
   });
-  const [createNote, { loading, error, data }] = useCreateNoteMutation();
+  const [createNote, { loading, error, data }] = useCreateNoteMutation({
+    refetchQueries: ['getFolders'],
+  });
   const [updateNote] = useUpdateNoteMutation();
 
   useEffect(() => {
