@@ -39,7 +39,7 @@ const Login = () => {
       color: 'teal',
     });
 
-    setTimeout(() => replace('/dashboard'), 900);
+    replace('/dashboard');
   }
 
   return (
