@@ -14,6 +14,7 @@ import {
   ActionIcon,
   Avatar,
   Skeleton,
+  Button,
   useMantineColorScheme,
 } from '@mantine/core';
 import {
@@ -28,8 +29,10 @@ import { NextLink } from '@mantine/next';
 
 import { IconCirclePlus, IconMoon, IconSunHigh } from '@tabler/icons';
 import { showNotification } from '@mantine/notifications';
-import Link from 'next/link';
+import { openModal } from '@mantine/modals';
+import { CreateFolder } from './CreateFolder';
 
+import { FolderList } from './folder-list/folder-list.component';
 export default function AppShell({ children }) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
@@ -64,7 +67,20 @@ export default function AppShell({ children }) {
             hidden={!opened}
             width={{ sm: 200, lg: 310 }}
           >
-            <Text>Folders</Text>
+            <Button
+              fullWidth
+              mb={10}
+              variant="light"
+              radius="lg"
+              onClick={() =>
+                openModal({
+                  title: 'Create Folder',
+                  children: <CreateFolder />,
+                })
+              }
+            >
+              Create Folder
+            </Button>
 
             {loading && (
               <>
