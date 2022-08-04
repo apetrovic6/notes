@@ -6,6 +6,15 @@ const Dashboard = () => {
   return <div>Test Dashboard</div>;
 };
 export const getServerSideProps: GetServerSideProps = async ctx => {
+  if (!ctx.req.cookies.Authorization) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+
   const apolloClient = initializeApollo();
 
   await apolloClient.query({

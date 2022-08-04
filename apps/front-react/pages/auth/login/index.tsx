@@ -4,6 +4,7 @@ import { IconCheck, IconX } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import { showNotification } from '@mantine/notifications';
 import { useLoginMutation } from '@notes/apollo';
+import { GetServerSideProps } from 'next';
 
 const Login = () => {
   const [login, { error, loading, data }] = useLoginMutation();
@@ -47,3 +48,24 @@ const Login = () => {
 };
 
 export default Login;
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const {
+    req: {
+      cookies: { Authorization },
+    },
+  } = ctx;
+
+  if (Authorization) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
