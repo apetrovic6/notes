@@ -27,7 +27,6 @@ export const NewNote = () => {
   useEffect(() => {
     createNote({
       variables: { createNoteInput: fullNote },
-      refetchQueries: ['getFolders'],
     });
   }, []);
 
@@ -42,7 +41,6 @@ export const NewNote = () => {
         updateNote({
           variables: {
             updateNoteInput: { ...fullNote, id: data?.createNote?.id },
-            refetchQueries: ['getFolders'],
           },
         });
       }
