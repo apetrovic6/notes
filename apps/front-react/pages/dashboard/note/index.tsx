@@ -7,7 +7,7 @@ const Note = () => {
     query: { noteId },
   } = useRouter();
   const { data, loading, error } = useGetNoteQuery({
-    variables: { id: noteId },
+    variables: { id: noteId as string },
   });
 
   if (loading) {
