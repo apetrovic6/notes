@@ -28,6 +28,16 @@ export class AuthResolver {
     return this.authService.signin(authArgs, req);
   }
 
+  @Mutation(() => AuthOutput!, { name: 'logout' })
+  async logout(
+    @Context('req')
+    req: Request,
+    @UserD() user: { userId: string }
+  ) {
+    this.authService.logout(req);
+    return { token: 'Signed out' };
+  }
+
   @UseGuards(JwtAuthGuard)
   @Query(() => User, { name: 'me' })
   me(@UserD() user: { userId: string }) {

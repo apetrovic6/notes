@@ -73,4 +73,9 @@ export class AuthService {
       })
     );
   }
+
+  logout(req: Request) {
+    req.res?.clearCookie('Authorization');
+    return 'logged out';
+  }
 }
