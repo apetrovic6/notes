@@ -18,7 +18,6 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import {
-  GetFoldersQueryResult,
   useGetFoldersQuery,
   useLogoutMutation,
   useMeQuery,
@@ -27,7 +26,7 @@ import {
 import { useRouter } from 'next/router';
 import { NextLink } from '@mantine/next';
 
-import { IconCirclePlus, IconMoon, IconSunHigh } from '@tabler/icons';
+import { IconCheck, IconMoon, IconSunHigh } from '@tabler/icons';
 import { showNotification } from '@mantine/notifications';
 import { openModal } from '@mantine/modals';
 import { CreateFolder } from './CreateFolder';
@@ -38,8 +37,7 @@ export default function AppShell({ children }) {
   const [opened, setOpened] = useState(false);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === 'dark';
-
-  const { pathname, push } = useRouter();
+  const { pathname, replace } = useRouter();
 
   const { data, loading } = useGetFoldersQuery();
 
