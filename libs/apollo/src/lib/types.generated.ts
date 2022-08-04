@@ -245,7 +245,56 @@ export type GetFoldersQuery = {
     id: string;
     createdAt: any;
     title: string;
+    notes?: Array<{
+      __typename?: 'Note';
+      id: string;
+      title: string;
+      content: string;
+    }> | null;
   }>;
+};
+
+export type CreateNoteMutationVariables = Exact<{
+  createNoteInput: NoteInput;
+}>;
+
+export type CreateNoteMutation = {
+  __typename?: 'Mutation';
+  createNote: {
+    __typename?: 'Note';
+    id: string;
+    title: string;
+    content: string;
+  };
+};
+
+export type UpdateNoteMutationVariables = Exact<{
+  updateNoteInput: UpdateNoteInput;
+}>;
+
+export type UpdateNoteMutation = {
+  __typename?: 'Mutation';
+  updateNote: {
+    __typename?: 'Note';
+    id: string;
+    title: string;
+    content: string;
+  };
+};
+
+export type GetNoteQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetNoteQuery = {
+  __typename?: 'Query';
+  note: {
+    __typename?: 'Note';
+    id: string;
+    title: string;
+    content: string;
+    createdAt: any;
+  };
 };
 
 export const MeDocument = gql`
@@ -387,6 +436,11 @@ export const GetFoldersDocument = gql`
       id
       createdAt
       title
+      notes {
+        id
+        title
+        content
+      }
     }
   }
 `;
@@ -437,4 +491,159 @@ export type GetFoldersLazyQueryHookResult = ReturnType<
 export type GetFoldersQueryResult = Apollo.QueryResult<
   GetFoldersQuery,
   GetFoldersQueryVariables
+>;
+export const CreateNoteDocument = gql`
+  mutation createNote($createNoteInput: NoteInput!) {
+    createNote(createNoteInput: $createNoteInput) {
+      id
+      title
+      content
+    }
+  }
+`;
+export type CreateNoteMutationFn = Apollo.MutationFunction<
+  CreateNoteMutation,
+  CreateNoteMutationVariables
+>;
+
+/**
+ * __useCreateNoteMutation__
+ *
+ * To run a mutation, you first call `useCreateNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNoteMutation, { data, loading, error }] = useCreateNoteMutation({
+ *   variables: {
+ *      createNoteInput: // value for 'createNoteInput'
+ *   },
+ * });
+ */
+export function useCreateNoteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateNoteMutation,
+    CreateNoteMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateNoteMutation, CreateNoteMutationVariables>(
+    CreateNoteDocument,
+    options
+  );
+}
+export type CreateNoteMutationHookResult = ReturnType<
+  typeof useCreateNoteMutation
+>;
+export type CreateNoteMutationResult =
+  Apollo.MutationResult<CreateNoteMutation>;
+export type CreateNoteMutationOptions = Apollo.BaseMutationOptions<
+  CreateNoteMutation,
+  CreateNoteMutationVariables
+>;
+export const UpdateNoteDocument = gql`
+  mutation updateNote($updateNoteInput: UpdateNoteInput!) {
+    updateNote(updateNoteInput: $updateNoteInput) {
+      id
+      title
+      content
+    }
+  }
+`;
+export type UpdateNoteMutationFn = Apollo.MutationFunction<
+  UpdateNoteMutation,
+  UpdateNoteMutationVariables
+>;
+
+/**
+ * __useUpdateNoteMutation__
+ *
+ * To run a mutation, you first call `useUpdateNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateNoteMutation, { data, loading, error }] = useUpdateNoteMutation({
+ *   variables: {
+ *      updateNoteInput: // value for 'updateNoteInput'
+ *   },
+ * });
+ */
+export function useUpdateNoteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateNoteMutation,
+    UpdateNoteMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateNoteMutation, UpdateNoteMutationVariables>(
+    UpdateNoteDocument,
+    options
+  );
+}
+export type UpdateNoteMutationHookResult = ReturnType<
+  typeof useUpdateNoteMutation
+>;
+export type UpdateNoteMutationResult =
+  Apollo.MutationResult<UpdateNoteMutation>;
+export type UpdateNoteMutationOptions = Apollo.BaseMutationOptions<
+  UpdateNoteMutation,
+  UpdateNoteMutationVariables
+>;
+export const GetNoteDocument = gql`
+  query getNote($id: ID!) {
+    note(id: $id) {
+      id
+      title
+      content
+      createdAt
+    }
+  }
+`;
+
+/**
+ * __useGetNoteQuery__
+ *
+ * To run a query within a React component, call `useGetNoteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNoteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNoteQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetNoteQuery(
+  baseOptions: Apollo.QueryHookOptions<GetNoteQuery, GetNoteQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetNoteQuery, GetNoteQueryVariables>(
+    GetNoteDocument,
+    options
+  );
+}
+export function useGetNoteLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetNoteQuery, GetNoteQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetNoteQuery, GetNoteQueryVariables>(
+    GetNoteDocument,
+    options
+  );
+}
+export type GetNoteQueryHookResult = ReturnType<typeof useGetNoteQuery>;
+export type GetNoteLazyQueryHookResult = ReturnType<typeof useGetNoteLazyQuery>;
+export type GetNoteQueryResult = Apollo.QueryResult<
+  GetNoteQuery,
+  GetNoteQueryVariables
 >;

@@ -3,5 +3,10 @@ query getFolders {
     id
     createdAt
     title
+    notes {
+      id
+      title
+      content
+    }
   }
 }
