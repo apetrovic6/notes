@@ -10,7 +10,6 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
-  reactStrictMode: true,
   experimental: {
     reactRoot: true,
   },
