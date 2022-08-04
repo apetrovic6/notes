@@ -27,6 +27,7 @@ type Mutation {
   createNote(createNoteInput: NoteInput!): Note!
   createUser(createUserInput: UserInput!): User!
   login(authArgs: UserInput!): AuthOutput!
+  logout: AuthOutput!
   removeFolder(id: ID!): Folder!
   removeNote(id: ID!): Note!
   removeUser(id: ID!): User!

@@ -60,6 +60,7 @@ export type Mutation = {
   createNote: Note;
   createUser: User;
   login: AuthOutput;
+  logout: AuthOutput;
   removeFolder: Folder;
   removeNote: Note;
   removeUser: User;
@@ -227,6 +228,13 @@ export type LoginMutation = {
   login: { __typename?: 'AuthOutput'; token: string };
 };
 
+export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
+
+export type LogoutMutation = {
+  __typename?: 'Mutation';
+  logout: { __typename?: 'AuthOutput'; token: string };
+};
+
 export type SignupMutationVariables = Exact<{
   getAuthArgs: UserInput;
 }>;
@@ -234,6 +242,15 @@ export type SignupMutationVariables = Exact<{
 export type SignupMutation = {
   __typename?: 'Mutation';
   signup: { __typename?: 'AuthOutput'; token: string };
+};
+
+export type CreateFolderMutationVariables = Exact<{
+  createFolderInput: CreateFolderInput;
+}>;
+
+export type CreateFolderMutation = {
+  __typename?: 'Mutation';
+  createFolder: { __typename?: 'Folder'; title: string };
 };
 
 export type GetFoldersQueryVariables = Exact<{ [key: string]: never }>;
@@ -383,6 +400,52 @@ export type LoginMutationOptions = Apollo.BaseMutationOptions<
   LoginMutation,
   LoginMutationVariables
 >;
+export const LogoutDocument = gql`
+  mutation logout {
+    logout {
+      token
+    }
+  }
+`;
+export type LogoutMutationFn = Apollo.MutationFunction<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
+
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LogoutMutation,
+    LogoutMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(
+    LogoutDocument,
+    options
+  );
+}
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
 export const SignupDocument = gql`
   mutation signup($getAuthArgs: UserInput!) {
     signup(getAuthArgs: $getAuthArgs) {
@@ -429,6 +492,56 @@ export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<
   SignupMutation,
   SignupMutationVariables
+>;
+export const CreateFolderDocument = gql`
+  mutation createFolder($createFolderInput: CreateFolderInput!) {
+    createFolder(createFolderInput: $createFolderInput) {
+      title
+    }
+  }
+`;
+export type CreateFolderMutationFn = Apollo.MutationFunction<
+  CreateFolderMutation,
+  CreateFolderMutationVariables
+>;
+
+/**
+ * __useCreateFolderMutation__
+ *
+ * To run a mutation, you first call `useCreateFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFolderMutation, { data, loading, error }] = useCreateFolderMutation({
+ *   variables: {
+ *      createFolderInput: // value for 'createFolderInput'
+ *   },
+ * });
+ */
+export function useCreateFolderMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateFolderMutation,
+    CreateFolderMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateFolderMutation,
+    CreateFolderMutationVariables
+  >(CreateFolderDocument, options);
+}
+export type CreateFolderMutationHookResult = ReturnType<
+  typeof useCreateFolderMutation
+>;
+export type CreateFolderMutationResult =
+  Apollo.MutationResult<CreateFolderMutation>;
+export type CreateFolderMutationOptions = Apollo.BaseMutationOptions<
+  CreateFolderMutation,
+  CreateFolderMutationVariables
 >;
 export const GetFoldersDocument = gql`
   query getFolders {
