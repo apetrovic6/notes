@@ -7,7 +7,9 @@ import { useLoginMutation } from '@notes/apollo';
 import { GetServerSideProps } from 'next';
 
 const Login = () => {
-  const [login, { error, loading, data }] = useLoginMutation();
+  const [login, { error, loading, data }] = useLoginMutation({
+    refetchQueries: ['me'],
+  });
 
   const { replace } = useRouter();
 
