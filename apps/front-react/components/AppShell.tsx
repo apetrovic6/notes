@@ -5,7 +5,6 @@ import {
   Header,
   Footer,
   Aside,
-  NavLink,
   Box,
   Text,
   MediaQuery,
@@ -71,67 +70,7 @@ export default function AppShell({ children }) {
               </>
             )}
 
-            {data?.folders &&
-              data?.folders?.map(folder => (
-                <Box
-                  key={folder.id}
-                  sx={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      width: '100%',
-                      position: 'relative',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <div style={{ display: 'block', width: '90%' }}>
-                      <NavLink
-                        variant={'filled'}
-                        label={folder.title}
-                        key={folder.id}
-                        childrenOffset={20}
-                      >
-                        {folder?.notes.map(note => (
-                          <Link
-                            key={note.id}
-                            href={{
-                              pathname: '/dashboard/note',
-                              query: { noteId: note.id },
-                            }}
-                            as={'/dashboard/note'}
-                            passHref
-                          >
-                            <NavLink
-                              key={note.id}
-                              label={note.title}
-                              component={'a'}
-                            />
-                          </Link>
-                        ))}
-                      </NavLink>
-                    </div>
-                    <IconCirclePlus
-                      style={{ position: 'absolute', right: '-5', top: '8' }}
-                      size={20}
-                      onClick={() => {
-                        showNotification({
-                          title: 'Create new note',
-                          message: folder.id,
-                        });
-
-                        push(
-                          {
-                            pathname: '/dashboard/new',
-                            query: { folderId: folder.id },
-                          },
-                          '/dashboard/new'
-                        );
-                      }}
-                    />
-                  </Box>
-                </Box>
-              ))}
+            {data?.folders && <FolderList folders={data.folders} />}
           </Navbar>
         )
       }
