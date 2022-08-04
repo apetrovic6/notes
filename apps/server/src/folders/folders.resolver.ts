@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { FoldersService } from './folders.service';
 import {
   Folder,
@@ -9,6 +17,8 @@ import { Observable } from 'rxjs';
 import { User } from '../user/get-user.decorator';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '@notes/auth-helpers';
+import { Loader } from '../data-loader/decorators/loader.decorator';
+import { EDataLoader, NotesLoader } from '../data-loader/IDataLoaders';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => Folder)
@@ -52,5 +62,13 @@ export class FoldersResolver {
     @Args('id', { type: () => ID }) folderId: string
   ) {
     return this.foldersService.remove(folderId, user.userId);
+  }
+
+  @ResolveField('notes')
+  notes(
+    @Parent() folder: Folder,
+    @Loader(EDataLoader.notes) loader: NotesLoader
+  ) {
+    return loader.load(folder.userId);
   }
 }
