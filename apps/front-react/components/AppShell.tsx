@@ -15,15 +15,20 @@ import {
   ActionIcon,
   Avatar,
   Skeleton,
+  useMantineColorScheme,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { NextLink } from '@mantine/next';
-import { useGetFoldersQuery, useMeQuery } from '@notes/apollo';
+
+import { IconCirclePlus, IconMoon, IconSunHigh } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
+import Link from 'next/link';
 
 export default function AppShell({ children }) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
-  const { pathname } = useRouter();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const dark = colorScheme === 'dark';
 
   const { data, loading } = useGetFoldersQuery();
 
@@ -140,6 +145,16 @@ export default function AppShell({ children }) {
                   )}
                 </Menu.Dropdown>
               </Menu>
+              <ActionIcon
+                mx={10}
+                variant="subtle"
+                color={dark ? 'yellow' : 'blue'}
+                radius={'xl'}
+                onClick={() => toggleColorScheme()}
+                title="Toggle color scheme"
+              >
+                {dark ? <IconSunHigh size={28} /> : <IconMoon size={28} />}
+              </ActionIcon>
             </Box>
           </div>
         </Header>

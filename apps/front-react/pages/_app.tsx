@@ -1,13 +1,15 @@
-import type { AppProps } from 'next/app';
-import type { NextPage } from 'next';
+import { useState } from 'react';
 import Head from 'next/head';
-import { MantineProvider } from '@mantine/core';
-import './styles.css';
-import AppShell from '../components/AppShell';
-import type { ReactElement, ReactNode } from 'react';
+import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../lib/apollo';
+import AppShell from '../components/AppShell';
+
+import type { AppProps } from 'next/app';
+import type { NextPage } from 'next';
+import type { ColorScheme } from '@mantine/core';
+import type { ReactElement, ReactNode } from 'react';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -18,8 +20,10 @@ type AppPropsWithLayout = AppProps & {
 };
 
 function CustomApp({ Component, pageProps }) {
-  // const getLayout = Component.getLayout ?? (page => page);
   const apolloClient = useApollo(pageProps);
+  const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
   return (
     <>
@@ -31,14 +35,22 @@ function CustomApp({ Component, pageProps }) {
             content="minimum-scale=1, initial-scale=1, width=device-width"
           />
         </Head>
-
-        <MantineProvider withGlobalStyles withNormalizeCSS>
-          <NotificationsProvider>
-            <AppShell>
-              <Component {...pageProps} />
-            </AppShell>
-          </NotificationsProvider>
-        </MantineProvider>
+        <ColorSchemeProvider
+          colorScheme={colorScheme}
+          toggleColorScheme={toggleColorScheme}
+        >
+          <MantineProvider
+            theme={{ colorScheme }}
+            withGlobalStyles
+            withNormalizeCSS
+          >
+            <NotificationsProvider>
+              <AppShell>
+                <Component {...pageProps} />
+              </AppShell>
+            </NotificationsProvider>
+          </MantineProvider>
+        </ColorSchemeProvider>
       </ApolloProvider>
     </>
   );
