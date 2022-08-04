@@ -10,6 +10,7 @@ import type { AppProps } from 'next/app';
 import type { NextPage } from 'next';
 import type { ColorScheme } from '@mantine/core';
 import type { ReactElement, ReactNode } from 'react';
+import { ModalsProvider } from '@mantine/modals';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -44,11 +45,13 @@ function CustomApp({ Component, pageProps }) {
             withGlobalStyles
             withNormalizeCSS
           >
-            <NotificationsProvider>
-              <AppShell>
-                <Component {...pageProps} />
-              </AppShell>
-            </NotificationsProvider>
+            <ModalsProvider>
+              <NotificationsProvider>
+                <AppShell>
+                  <Component {...pageProps} />
+                </AppShell>
+              </NotificationsProvider>
+            </ModalsProvider>
           </MantineProvider>
         </ColorSchemeProvider>
       </ApolloProvider>
