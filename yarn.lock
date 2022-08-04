@@ -3219,7 +3219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typescript@npm:2.7.2, @graphql-codegen/typescript@npm:^2.7.2":
+"@graphql-codegen/typescript@npm:^2.7.2":
   version: 2.7.2
   resolution: "@graphql-codegen/typescript@npm:2.7.2"
   dependencies:
@@ -21263,7 +21263,7 @@ __metadata:
     "@expo/metro-config": 0.3.17
     "@graphql-codegen/cli": 2.11.3
     "@graphql-codegen/introspection": 2.2.0
-    "@graphql-codegen/typescript": 2.7.2
+    "@graphql-codegen/typescript": ^2.7.2
     "@graphql-codegen/typescript-graphql-files-modules": 2.2.0
     "@graphql-codegen/typescript-operations": 2.5.2
     "@graphql-codegen/typescript-react-apollo": ^3.3.2
