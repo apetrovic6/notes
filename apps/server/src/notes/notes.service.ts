@@ -62,8 +62,15 @@ export class NotesService {
     );
   }
 
-  remove(id: string) {
-    return from(this.noteRepository.delete(id)).pipe(map(() => null));
+  remove(id: string, userId: string) {
+    return from(
+      this.noteRepository.findOne({
+        where: {
+          id,
+          user: { id: userId },
+        },
+      })
+    ).pipe(switchMap(note => this.noteRepository.remove(note)));
   }
 
   // TODO - add tests
