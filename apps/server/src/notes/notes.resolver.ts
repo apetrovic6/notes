@@ -54,8 +54,11 @@ export class NotesResolver {
   }
 
   @Mutation(() => Note)
-  removeNote(@Args('id', { type: () => ID }) id: string) {
-    return this.notesService.remove(id);
+  removeNote(
+    @User() user: { userId: string },
+    @Args('id', { type: () => ID }) id: string
+  ) {
+    return this.notesService.remove(id, user.userId);
   }
 
   @ResolveField('user', () => User)
