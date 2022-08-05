@@ -117,7 +117,7 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                   key={folder.id}
                   childrenOffset={20}
                 >
-                  <NoteList notes={folder.notes} folderId={folder.id} />
+                  <NoteList notes={folder.notes} />
                 </NavLink>
               </div>
             </Box>
