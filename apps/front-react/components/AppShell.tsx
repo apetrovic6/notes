@@ -18,6 +18,8 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import {
+  MeDocument,
+  useCreateFolderMutation,
   useGetFoldersQuery,
   useLogoutMutation,
   useMeQuery,
@@ -43,7 +45,13 @@ export default function AppShell({ children }) {
 
   const { data: userData } = useMeQuery();
 
-  const [logout, { client, data: log }] = useLogoutMutation();
+  const [logout, { client, data: logoutCall }] = useLogoutMutation({
+    refetchQueries: [{ query: MeDocument }],
+  });
+
+  const [createFolder] = useCreateFolderMutation({
+    refetchQueries: ['getFolders'],
+  });
 
   return (
     <MantineAppShell
@@ -73,7 +81,16 @@ export default function AppShell({ children }) {
               onClick={() =>
                 openModal({
                   title: 'Create Folder',
-                  children: <CreateFolder />,
+                  children: (
+                    <>
+                      <CreateUpdateFolder
+                        mutation={() => createFolder}
+                        payload={{
+                          variables: { createFolderInput: { title: null } },
+                        }}
+                      />
+                    </>
+                  ),
                 })
               }
             >

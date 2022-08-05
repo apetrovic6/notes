@@ -2,7 +2,20 @@ import { Box, Menu, NavLink } from '@mantine/core';
 import { NoteList } from './note-list.component';
 import { IconDotsVertical, IconTrash } from '@tabler/icons';
 
-export const FolderList = ({ folders }) => {
+export const FolderList: FC<IFolderList> = ({ folders }) => {
+  const { push } = useRouter();
+
+  const [createNote, { data: newNote }] = useCreateNoteMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [{ query: GetFoldersDocument }],
+  });
+
+  const [removeFolder, { loading, error }] = useRemoveFolderMutation({
+    refetchQueries: [{ query: GetFoldersDocument }],
+  });
+
+  const [updateFolder] = useUpdateFolderMutation();
+
   return (
     <>
       {folders?.map(folder => (
@@ -21,8 +34,42 @@ export const FolderList = ({ folders }) => {
                 }}
               />
             </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item icon={<IconTrash size={15} />}>Delete</Menu.Item>
+            <Menu.Dropdown
+              sx={{
+                marginRight: -10,
+                marginLeft: -15,
+                position: 'absolute',
+                top: 30,
+              }}
+            >
+              <Menu.Item
+                onClick={() =>
+                  openModal({
+                    title: 'Edit Title',
+                    children: (
+                      <CreateUpdateFolder
+                        possibleTitle={folder.title}
+                        mutation={() => updateFolder}
+                        payload={{
+                          variables: {
+                            updateFolderInput: { title: null, id: folder.id },
+                          },
+                        }}
+                      />
+                    ),
+                  })
+                }
+                icon={<IconEdit size={15} />}
+              >
+                Edit
+              </Menu.Item>
+
+              <Menu.Item
+                onClick={() => removeFolder({ variables: { id: folder.id } })}
+                icon={<IconTrash size={15} />}
+              >
+                Delete
+              </Menu.Item>
             </Menu.Dropdown>
           </Menu>
 
