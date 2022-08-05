@@ -1,9 +1,23 @@
 import dynamic from 'next/dynamic';
+import { Editor, RichTextEditorProps } from '@mantine/rte';
+import { Ref } from 'react';
 
-export default dynamic(() => import('@mantine/rte'), {
-  // Disable during server side rendering
-  ssr: false,
+/* eslint-disable */
+const TextEdit = dynamic(
+  async () => {
+    const { default: RQ } = await import('@mantine/rte');
 
-  // Render anything as fallback on server, e.g. loader or html content without editor
-  loading: () => null,
-});
+    return ({
+      editorRef,
+      ...props
+    }: RichTextEditorProps & { editorRef: Ref<Editor> }) => (
+      <RQ ref={editorRef} {...props} />
+    );
+  },
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+
+export default TextEdit;
