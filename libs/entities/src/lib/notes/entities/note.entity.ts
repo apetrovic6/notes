@@ -26,6 +26,6 @@ export class Note extends BaseEntity {
   user: User;
 
   @Field(() => Folder, { description: 'Folder of the note' })
-  @ManyToOne(() => Folder, folder => folder.notes)
+  @ManyToOne(() => Folder, folder => folder.notes, { onDelete: 'CASCADE' })
   folder: Folder;
 }
