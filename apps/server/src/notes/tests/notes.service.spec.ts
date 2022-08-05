@@ -113,7 +113,7 @@ describe('NotesService', () => {
       });
 
       it('It should return null', () => {
-        service.remove(noteStub.id).subscribe(res => {
+        service.remove(noteStub.id, userStub.id).subscribe(res => {
           expect(res).toEqual(null);
         });
       });
@@ -122,7 +122,9 @@ describe('NotesService', () => {
         jest.spyOn(service, 'remove').mockImplementationOnce(id => {
           throw new NotFoundException('Note not found');
         });
-        expect(() => service.remove('123')).toThrowError(NotFoundException);
+        expect(() => service.remove('123', userStub.id)).toThrowError(
+          NotFoundException
+        );
       });
     });
 
