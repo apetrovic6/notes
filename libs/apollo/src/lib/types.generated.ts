@@ -253,6 +253,24 @@ export type CreateFolderMutation = {
   createFolder: { __typename?: 'Folder'; title: string };
 };
 
+export type RemoveFolderMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type RemoveFolderMutation = {
+  __typename?: 'Mutation';
+  removeFolder: { __typename: 'Folder' };
+};
+
+export type RemoveNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type RemoveNoteMutation = {
+  __typename?: 'Mutation';
+  removeNote: { __typename?: 'Note'; title: string };
+};
+
 export type GetFoldersQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetFoldersQuery = {
@@ -260,14 +278,8 @@ export type GetFoldersQuery = {
   folders: Array<{
     __typename?: 'Folder';
     id: string;
-    createdAt: any;
     title: string;
-    notes?: Array<{
-      __typename?: 'Note';
-      id: string;
-      title: string;
-      content: string;
-    }> | null;
+    notes?: Array<{ __typename?: 'Note'; id: string; title: string }> | null;
   }>;
 };
 
@@ -312,6 +324,15 @@ export type GetNoteQuery = {
     content: string;
     createdAt: any;
   };
+};
+
+export type UpdateFolderMutationVariables = Exact<{
+  updateFolderInput: UpdateFolderInput;
+}>;
+
+export type UpdateFolderMutation = {
+  __typename?: 'Mutation';
+  updateFolder: { __typename?: 'Folder'; id: string; title: string };
 };
 
 export const MeDocument = gql`
@@ -543,16 +564,114 @@ export type CreateFolderMutationOptions = Apollo.BaseMutationOptions<
   CreateFolderMutation,
   CreateFolderMutationVariables
 >;
+export const RemoveFolderDocument = gql`
+  mutation removeFolder($id: ID!) {
+    removeFolder(id: $id) {
+      __typename
+    }
+  }
+`;
+export type RemoveFolderMutationFn = Apollo.MutationFunction<
+  RemoveFolderMutation,
+  RemoveFolderMutationVariables
+>;
+
+/**
+ * __useRemoveFolderMutation__
+ *
+ * To run a mutation, you first call `useRemoveFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeFolderMutation, { data, loading, error }] = useRemoveFolderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveFolderMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveFolderMutation,
+    RemoveFolderMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RemoveFolderMutation,
+    RemoveFolderMutationVariables
+  >(RemoveFolderDocument, options);
+}
+export type RemoveFolderMutationHookResult = ReturnType<
+  typeof useRemoveFolderMutation
+>;
+export type RemoveFolderMutationResult =
+  Apollo.MutationResult<RemoveFolderMutation>;
+export type RemoveFolderMutationOptions = Apollo.BaseMutationOptions<
+  RemoveFolderMutation,
+  RemoveFolderMutationVariables
+>;
+export const RemoveNoteDocument = gql`
+  mutation removeNote($id: ID!) {
+    removeNote(id: $id) {
+      title
+    }
+  }
+`;
+export type RemoveNoteMutationFn = Apollo.MutationFunction<
+  RemoveNoteMutation,
+  RemoveNoteMutationVariables
+>;
+
+/**
+ * __useRemoveNoteMutation__
+ *
+ * To run a mutation, you first call `useRemoveNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeNoteMutation, { data, loading, error }] = useRemoveNoteMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveNoteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveNoteMutation,
+    RemoveNoteMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveNoteMutation, RemoveNoteMutationVariables>(
+    RemoveNoteDocument,
+    options
+  );
+}
+export type RemoveNoteMutationHookResult = ReturnType<
+  typeof useRemoveNoteMutation
+>;
+export type RemoveNoteMutationResult =
+  Apollo.MutationResult<RemoveNoteMutation>;
+export type RemoveNoteMutationOptions = Apollo.BaseMutationOptions<
+  RemoveNoteMutation,
+  RemoveNoteMutationVariables
+>;
 export const GetFoldersDocument = gql`
   query getFolders {
     folders {
       id
-      createdAt
       title
       notes {
         id
         title
-        content
       }
     }
   }
@@ -759,4 +878,55 @@ export type GetNoteLazyQueryHookResult = ReturnType<typeof useGetNoteLazyQuery>;
 export type GetNoteQueryResult = Apollo.QueryResult<
   GetNoteQuery,
   GetNoteQueryVariables
+>;
+export const UpdateFolderDocument = gql`
+  mutation updateFolder($updateFolderInput: UpdateFolderInput!) {
+    updateFolder(updateFolderInput: $updateFolderInput) {
+      id
+      title
+    }
+  }
+`;
+export type UpdateFolderMutationFn = Apollo.MutationFunction<
+  UpdateFolderMutation,
+  UpdateFolderMutationVariables
+>;
+
+/**
+ * __useUpdateFolderMutation__
+ *
+ * To run a mutation, you first call `useUpdateFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFolderMutation, { data, loading, error }] = useUpdateFolderMutation({
+ *   variables: {
+ *      updateFolderInput: // value for 'updateFolderInput'
+ *   },
+ * });
+ */
+export function useUpdateFolderMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateFolderMutation,
+    UpdateFolderMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateFolderMutation,
+    UpdateFolderMutationVariables
+  >(UpdateFolderDocument, options);
+}
+export type UpdateFolderMutationHookResult = ReturnType<
+  typeof useUpdateFolderMutation
+>;
+export type UpdateFolderMutationResult =
+  Apollo.MutationResult<UpdateFolderMutation>;
+export type UpdateFolderMutationOptions = Apollo.BaseMutationOptions<
+  UpdateFolderMutation,
+  UpdateFolderMutationVariables
 >;
