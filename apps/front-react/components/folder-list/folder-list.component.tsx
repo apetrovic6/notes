@@ -1,6 +1,31 @@
 import { Box, Menu, NavLink } from '@mantine/core';
 import { NoteList } from './note-list.component';
-import { IconDotsVertical, IconTrash } from '@tabler/icons';
+import {
+  IconCirclePlus,
+  IconDotsVertical,
+  IconEdit,
+  IconTrash,
+} from '@tabler/icons';
+import {
+  GetFoldersDocument,
+  useCreateNoteMutation,
+  useRemoveFolderMutation,
+  useUpdateFolderMutation,
+} from '@notes/apollo';
+import { showNotification } from '@mantine/notifications';
+import { useRouter } from 'next/router';
+import { FC } from 'react';
+import { Note } from '@notes/entities/notes';
+import { openModal } from '@mantine/modals';
+import { CreateUpdateFolder } from '../CreateUpdateFolder';
+
+export interface IFolderList {
+  folders: {
+    id: string;
+    title: string;
+    notes?: Pick<Note, 'id' | 'title'>[];
+  }[];
+}
 
 export const FolderList: FC<IFolderList> = ({ folders }) => {
   const { push } = useRouter();
@@ -96,6 +121,40 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                 </NavLink>
               </div>
             </Box>
+            <IconCirclePlus
+              style={{ position: 'absolute', right: '-5', top: '8' }}
+              size={20}
+              onClick={() => {
+                createNote({
+                  awaitRefetchQueries: true,
+                  variables: {
+                    createNoteInput: {
+                      folder: { id: folder.id },
+                      title: 'New Note',
+                      content: 'Example content',
+                    },
+                  },
+                });
+
+                if (newNote) {
+                  push(
+                    {
+                      pathname: '/dashboard/note',
+                      query: {
+                        noteId: newNote.createNote.id,
+                        folderId: folder.id,
+                      },
+                    },
+                    '/dashboard/note'
+                  );
+
+                  showNotification({
+                    title: 'Create new note',
+                    message: folder.id,
+                  });
+                }
+              }}
+            />
           </Box>
         </Box>
       ))}
