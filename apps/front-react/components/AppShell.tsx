@@ -31,7 +31,7 @@ import { NextLink } from '@mantine/next';
 import { IconCheck, IconMoon, IconSunHigh } from '@tabler/icons';
 import { showNotification } from '@mantine/notifications';
 import { openModal } from '@mantine/modals';
-import { CreateFolder } from './CreateFolder';
+import { CreateUpdateFolder } from './CreateUpdateFolder';
 
 import { FolderList } from './folder-list/folder-list.component';
 export default function AppShell({ children }) {
@@ -174,27 +174,20 @@ export default function AppShell({ children }) {
                   {userData && (
                     <Menu.Item
                       onClick={async () => {
+                        // TODO fix logout
                         logout({
                           onCompleted: async res => {
-                            client.clearStore().then(() => client.resetStore());
+                            client.clearStore();
                             replace('/auth/login');
                           },
                         });
-
-                        await client.refetchQueries({
-                          updateCache(cache) {
-                            cache.modify({
-                              fields: {},
-                            });
-                          },
-                        });
-
-                        showNotification({
-                          title: 'Success',
-                          message: "You've successfully signed out",
-                          color: 'teal',
-                          icon: <IconCheck size={18} />,
-                        });
+                        logoutCall &&
+                          showNotification({
+                            title: 'Success',
+                            message: "You've successfully signed out",
+                            color: 'teal',
+                            icon: <IconCheck size={18} />,
+                          });
                       }}
                     >
                       Logout
