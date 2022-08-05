@@ -1,12 +1,10 @@
 query getFolders {
   folders {
     id
-    createdAt
     title
     notes {
       id
       title
-      content
     }
   }
 }

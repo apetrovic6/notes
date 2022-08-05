@@ -1,0 +1,5 @@
+mutation removeFolder($id: ID!) {
+  removeFolder(id: $id) {
+    __typename
+  }
+}

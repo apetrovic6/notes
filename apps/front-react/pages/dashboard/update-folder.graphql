@@ -1,0 +1,6 @@
+mutation updateFolder($updateFolderInput: UpdateFolderInput!) {
+  updateFolder(updateFolderInput: $updateFolderInput) {
+    id
+    title
+  }
+}
