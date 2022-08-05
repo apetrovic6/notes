@@ -25,7 +25,6 @@ import { EDataLoader, NotesLoader } from '../data-loader/IDataLoaders';
 export class FoldersResolver {
   constructor(private readonly foldersService: FoldersService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Mutation(() => Folder)
   createFolder(
     @User() user: { userId: string },
