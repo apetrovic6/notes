@@ -143,7 +143,12 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
               </div>
             </Box>
             <IconCirclePlus
-              style={{ position: 'absolute', right: '-5', top: '8' }}
+              style={{
+                position: 'absolute',
+                right: '-5',
+                top: '8',
+                cursor: 'pointer',
+              }}
               size={20}
               onClick={() => {
                 createNote({
