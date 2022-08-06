@@ -61,7 +61,7 @@ export const NewNote: FC<INewNote> = () => {
   useEffect(() => {
     const test = setTimeout(() => {
       // Get and set the caret state before it updates
-      setCaret(editorRef?.current?.editor.getSelection()?.index);
+      setCaret(() => editorRef?.current?.editor.getSelection()?.index);
       if (fullNote?.id) {
         updateNote();
       }
