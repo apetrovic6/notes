@@ -43,7 +43,7 @@ export const CreateUpdateFolder: FC<ICreateUpdateFolder> = ({
           closeAllModals();
         }}
       >
-        Create
+        {possibleTitle ? 'Update' : 'Create'}
       </Button>
     </>
   );
