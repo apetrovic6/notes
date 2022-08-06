@@ -31,14 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   const apolloClient = initializeApollo();
 
   await apolloClient.query({
-    query: gql(`
-  query me {
-  me {
-    id
-    email
-  }
-}
-`),
+    query: MeDocument,
     context: {
       headers: {
         cookie: ctx.req.headers.cookie,
