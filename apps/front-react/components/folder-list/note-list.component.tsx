@@ -18,14 +18,14 @@ export const NoteList: FC<INote> = ({ notes }) => {
     awaitRefetchQueries: true,
   });
 
-  function onDeleteNote(note: Pick<Note, 'id' | 'title'>) {
-    removeNote({ variables: { id: note.id } });
-    if (note.id === query.noteId) {
+  function onDeleteNote({ id, title }: Pick<Note, 'id' | 'title'>) {
+    removeNote({ variables: { id } });
+    if (id === query.noteId) {
       replace('/dashboard');
     }
     showNotification({
       title: 'Note deleted',
-      message: note.title,
+      message: title,
       icon: <IconTrash size={20} />,
       color: 'red',
     });
