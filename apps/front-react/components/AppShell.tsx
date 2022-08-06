@@ -34,12 +34,18 @@ import { openModal } from '@mantine/modals';
 import { CreateUpdateFolder } from './CreateUpdateFolder';
 
 import { FolderList } from './folder-list/folder-list.component';
+import { useReactiveVar } from '@apollo/client';
+import { loggedIn, loggedUser } from '../lib/apollo';
+
 export default function AppShell({ children }) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === 'dark';
   const { pathname, replace } = useRouter();
+
+  const loggedInR = useReactiveVar(loggedIn);
+  const userR = useReactiveVar(loggedUser);
 
   const { data, loading } = useGetFoldersQuery();
 
