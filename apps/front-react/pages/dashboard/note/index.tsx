@@ -7,6 +7,7 @@ import { useGetNoteQuery, useUpdateNoteMutation } from '@notes/apollo';
 import { LoadingOverlay, TextInput } from '@mantine/core';
 import { Editor } from '@mantine/rte';
 import { showNotification } from '@mantine/notifications';
+import { GetServerSideProps } from 'next';
 
 interface INewNote extends Omit<CreateNoteInput, 'folder'> {
   id: string;
@@ -109,3 +110,17 @@ export const NewNote: FC<INewNote> = () => {
 };
 
 export default NewNote;
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  if (!ctx.req.cookies.Authorization) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};
