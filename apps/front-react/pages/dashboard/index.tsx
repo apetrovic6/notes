@@ -1,8 +1,21 @@
 import { GetServerSideProps } from 'next';
-import { gql } from '@apollo/client';
-import { addApolloState, initializeApollo } from '../../lib/apollo';
+import {
+  addApolloState,
+  initializeApollo,
+  loggedIn,
+  loggedUser,
+} from '../../lib/apollo';
+import { MeDocument, useMeQuery } from '@notes/apollo';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
+  const { data: userData } = useMeQuery();
+
+  useEffect(() => {
+    loggedIn(userData ? true : false);
+    loggedUser({ ...userData?.me } ?? null);
+  }, [userData]);
+
   return <div>Test Dashboard</div>;
 };
 export const getServerSideProps: GetServerSideProps = async ctx => {
