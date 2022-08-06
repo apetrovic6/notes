@@ -30,12 +30,12 @@ export interface IFolderList {
 export const FolderList: FC<IFolderList> = ({ folders }) => {
   const { push } = useRouter();
 
-  const [createNote, { data: newNote }] = useCreateNoteMutation({
+  const [createNote] = useCreateNoteMutation({
     awaitRefetchQueries: true,
     refetchQueries: [{ query: GetFoldersDocument }],
   });
 
-  const [removeFolder, { loading, error }] = useRemoveFolderMutation({
+  const [removeFolder] = useRemoveFolderMutation({
     refetchQueries: [{ query: GetFoldersDocument }],
   });
 
@@ -126,7 +126,6 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
               size={20}
               onClick={() => {
                 createNote({
-                  awaitRefetchQueries: true,
                   variables: {
                     createNoteInput: {
                       folder: { id: folder.id },
