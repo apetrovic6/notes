@@ -41,6 +41,26 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
 
   const [updateFolder] = useUpdateFolderMutation();
 
+  const afterCreateNote = (noteId, { id: folderId, title: folderTitle }) => {
+    push(
+      {
+        pathname: '/dashboard/note',
+        query: {
+          noteId: noteId,
+          folderId: folderId,
+        },
+      },
+      '/dashboard/note'
+    );
+
+    showNotification({
+      title: `Created new note in folder ${folderTitle}`,
+      message: 'You can edit it later',
+      color: 'teal',
+      icon: <IconNote />,
+    });
+  };
+
   return (
     <>
       {folders?.map(folder => (
@@ -133,23 +153,9 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                       content: 'Example content',
                     },
                   },
-                }).then(({ data: { createNote } }) => {
-                  push(
-                    {
-                      pathname: '/dashboard/note',
-                      query: {
-                        noteId: createNote.id,
-                        folderId: folder.id,
-                      },
-                    },
-                    '/dashboard/note'
-                  );
-
-                  showNotification({
-                    title: `Created new note in folder ${folder.title}`,
-                    message: 'You can edit it later',
-                  });
-                });
+                }).then(({ data: { createNote } }) =>
+                  afterCreateNote(createNote.id, folder)
+                );
               }}
             />
           </Box>
