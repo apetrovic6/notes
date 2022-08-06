@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const AuthForm = ({ onSubmit }) => {
-  const { pathname, replace } = useRouter();
+  const { pathname } = useRouter();
 
   const schema = z.object({
     email: z.string().email({ message: 'Invalid email' }).trim(),
