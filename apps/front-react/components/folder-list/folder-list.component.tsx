@@ -4,6 +4,7 @@ import {
   IconCirclePlus,
   IconDotsVertical,
   IconEdit,
+  IconNote,
   IconTrash,
 } from '@tabler/icons';
 import {
