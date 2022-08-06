@@ -30,7 +30,7 @@ function CustomApp({ Component, pageProps }) {
     <>
       <ApolloProvider client={apolloClient}>
         <Head>
-          <title>Welcome to front-react!</title>
+          <title>Welcome to Notes!</title>
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width"
