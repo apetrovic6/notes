@@ -59,6 +59,23 @@ export default function AppShell({ children }) {
     refetchQueries: ['getFolders'],
   });
 
+  const onLogout = () => {
+    logout();
+    client.clearStore();
+
+    loggedUser(null);
+    loggedIn(null);
+
+    replace('/auth/login');
+    logoutCall &&
+      showNotification({
+        title: 'Success',
+        message: "You've successfully signed out",
+        color: 'teal',
+        icon: <IconCheck size={18} />,
+      });
+  };
+
   return (
     <MantineAppShell
       styles={{
