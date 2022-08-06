@@ -18,11 +18,9 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import {
-  MeDocument,
   useCreateFolderMutation,
   useGetFoldersQuery,
   useLogoutMutation,
-  useMeQuery,
 } from '@notes/apollo';
 
 import { useRouter } from 'next/router';
@@ -49,12 +47,7 @@ export default function AppShell({ children }) {
 
   const { data, loading } = useGetFoldersQuery();
 
-  const { data: userData } = useMeQuery();
-
-  const [logout, { client, data: logoutCall }] = useLogoutMutation({
-    refetchQueries: [{ query: MeDocument }],
-  });
-
+  const [logout, { client, data: logoutCall }] = useLogoutMutation();
   const [createFolder] = useCreateFolderMutation({
     refetchQueries: ['getFolders'],
   });
