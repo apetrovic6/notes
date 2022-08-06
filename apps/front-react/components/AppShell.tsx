@@ -153,11 +153,10 @@ export default function AppShell({ children }) {
               </Text>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {userData && (
-                <Text mr={10}>
-                  {' '}
-                  Welcome {userData?.me?.email.split('@')[0]}
-                </Text>
+              {loggedInR && (
+                <MediaQuery smallerThan={'xs'} styles={{ display: 'none' }}>
+                  <Text mr={10}>Welcome {userR?.email.split('@')[0]}</Text>
+                </MediaQuery>
               )}
               <Menu width={200} shadow="md" radius={'md'}>
                 <Menu.Target>
