@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { NavLink, Box } from '@mantine/core';
+import { NavLink, Box, ActionIcon } from '@mantine/core';
 import { IconTrash } from '@tabler/icons';
 import { GetFoldersDocument, useRemoveNoteMutation } from '@notes/apollo';
 import { Note } from '@notes/entities/notes';
@@ -31,14 +31,16 @@ export const NoteList: FC<INote> = ({ notes }) => {
           >
             <NavLink key={note.id} label={note.title} component={'a'} />
           </Link>
-          <IconTrash
-            onClick={() => {
-              removeNote({ variables: { id: note.id } });
-              if (note.id === query.noteId) {
-                replace('/dashboard');
-              }
-            }}
-          />
+          <ActionIcon variant={'subtle'}>
+            <IconTrash
+              onClick={() => {
+                removeNote({ variables: { id: note.id } });
+                if (note.id === query.noteId) {
+                  replace('/dashboard');
+                }
+              }}
+            />
+          </ActionIcon>
         </Box>
       ))}
     </>
