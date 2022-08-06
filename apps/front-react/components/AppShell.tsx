@@ -165,32 +165,13 @@ export default function AppShell({ children }) {
                   </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  {!userData && (
+                  {!loggedInR && (
                     <Menu.Item component={NextLink} href={'/auth/login'}>
                       Login
                     </Menu.Item>
                   )}
-                  {userData && (
-                    <Menu.Item
-                      onClick={async () => {
-                        // TODO fix logout
-                        logout({
-                          onCompleted: async res => {
-                            client.clearStore();
-                            replace('/auth/login');
-                          },
-                        });
-                        logoutCall &&
-                          showNotification({
-                            title: 'Success',
-                            message: "You've successfully signed out",
-                            color: 'teal',
-                            icon: <IconCheck size={18} />,
-                          });
-                      }}
-                    >
-                      Logout
-                    </Menu.Item>
+                  {loggedInR && (
+                    <Menu.Item onClick={onLogout}>Logout</Menu.Item>
                   )}
                 </Menu.Dropdown>
               </Menu>
