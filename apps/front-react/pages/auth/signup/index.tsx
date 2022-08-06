@@ -19,6 +19,14 @@ const Signup = () => {
     return <LoadingOverlay visible={loading} overlayBlur={2} />;
   }
 
+  if (error) {
+    showNotification({
+      title: error.name,
+      message: error.message,
+      color: 'red',
+    });
+  }
+
   if (data) {
     showNotification({
       title: 'Success',
@@ -27,15 +35,7 @@ const Signup = () => {
       color: 'teal',
     });
 
-    setTimeout(() => replace('/dashboard'), 900);
-  }
-
-  if (error) {
-    showNotification({
-      title: error.name,
-      message: error.message,
-      color: 'red',
-    });
+    replace('/dashboard');
   }
 
   return (
