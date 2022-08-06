@@ -197,7 +197,7 @@ export default function AppShell({ children }) {
               <ActionIcon
                 mx={10}
                 variant="subtle"
-                color={dark ? 'yellow' : 'blue'}
+                color={dark ? 'orange' : 'blue'}
                 radius={'xl'}
                 onClick={() => toggleColorScheme()}
                 title="Toggle color scheme"
