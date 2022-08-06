@@ -1,10 +1,8 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable id-length */
-// eslint-disable-next-line import/named
 import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
+  makeVar,
   NormalizedCacheObject,
 } from '@apollo/client';
 import isEqual from 'lodash/isEqual';
@@ -15,13 +13,29 @@ export const APOLLO_STATE_PROP_NAME = 'APOLLO_STATE';
 
 export let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
-const isServer = () => typeof window === `undefined`;
-
-const fixedUrl = isServer() ? 'http://localhost:3333/graphql' : '/graphql';
+export const loggedIn = makeVar(false);
+export const loggedUser = makeVar(null);
 
 function createApolloClient() {
   return new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            loggedIn: {
+              read() {
+                return loggedIn();
+              },
+            },
+            user: {
+              read() {
+                return loggedUser();
+              },
+            },
+          },
+        },
+      },
+    }),
     link: new HttpLink({
       uri: 'http://localhost:3333/graphql',
       credentials: 'include',
