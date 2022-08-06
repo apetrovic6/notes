@@ -133,14 +133,12 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                       content: 'Example content',
                     },
                   },
-                });
-
-                if (newNote) {
+                }).then(({ data: { createNote } }) => {
                   push(
                     {
                       pathname: '/dashboard/note',
                       query: {
-                        noteId: newNote.createNote.id,
+                        noteId: createNote.id,
                         folderId: folder.id,
                       },
                     },
@@ -148,10 +146,10 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                   );
 
                   showNotification({
-                    title: 'Create new note',
-                    message: folder.id,
+                    title: `Created new note in folder ${folder.title}`,
+                    message: 'You can edit it later',
                   });
-                }
+                });
               }}
             />
           </Box>
