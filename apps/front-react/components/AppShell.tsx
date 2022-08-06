@@ -115,9 +115,9 @@ export default function AppShell({ children }) {
 
             {loading && (
               <>
-                <Skeleton height={8} radius="xl" />
-                <Skeleton height={8} mt={6} radius="xl" />
-                <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                <Skeleton height={15} radius="xl" />
+                <Skeleton height={15} mt={10} radius="xl" />
+                <Skeleton height={15} mt={10} radius="xl" />
               </>
             )}
 
