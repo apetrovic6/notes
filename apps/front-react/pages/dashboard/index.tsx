@@ -12,7 +12,7 @@ const Dashboard = () => {
   const { data: userData } = useMeQuery();
 
   useEffect(() => {
-    loggedIn(userData ? true : false);
+    loggedIn(!!userData);
     loggedUser({ ...userData?.me } ?? null);
   }, [userData]);
 
