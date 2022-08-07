@@ -93,9 +93,19 @@ const AuthForm = ({ onSubmit }) => {
                 {...form.getInputProps('password')}
               />
 
-            <Button type={'submit'} py={10} radius={'lg'} fullWidth>
-              {pathname.includes('login') ? 'Login' : 'Signup'}
-            </Button>
+              <Group position="apart" mt="lg" my={'xl'}>
+                <Checkbox label="Remember me" />
+                <Anchor<'a'>
+                  onClick={event => event.preventDefault()}
+                  href="#"
+                  size="sm"
+                >
+                  Forgot password?
+                </Anchor>
+              </Group>
+              <Button type={'submit'} py={10} radius={'lg'} fullWidth>
+                {pathname.includes('login') ? 'Login' : 'Signup'}
+              </Button>
 
               <Link
                 href={
