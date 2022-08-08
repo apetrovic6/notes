@@ -164,6 +164,7 @@ export default function AppShell({ children }) {
                 variant={'gradient'}
                 size={'xl'}
                 gradient={{ from: 'yellow', to: 'green', deg: 50 }}
+                sx={{ userSelect: 'none' }}
               >
                 Notes
               </Text>

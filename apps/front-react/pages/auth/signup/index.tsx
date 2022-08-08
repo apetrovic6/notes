@@ -12,19 +12,17 @@ const Signup = () => {
 
   const onSubmit = e => {
     const { email, password } = e;
-    signup({ variables: { getAuthArgs: { email, password } } });
+    signup({ variables: { getAuthArgs: { email, password } } }).catch(error =>
+      showNotification({
+        title: error.name,
+        message: error.message,
+        color: 'red',
+      })
+    );
   };
 
   if (loading) {
     return <LoadingOverlay visible={loading} overlayBlur={2} />;
-  }
-
-  if (error) {
-    showNotification({
-      title: error.name,
-      message: error.message,
-      color: 'red',
-    });
   }
 
   if (data) {

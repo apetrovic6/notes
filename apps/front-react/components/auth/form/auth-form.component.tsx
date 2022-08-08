@@ -7,6 +7,10 @@ import {
   PasswordInput,
   Button,
   Anchor,
+  Paper,
+  Group,
+  Checkbox,
+  createStyles,
 } from '@mantine/core';
 import { IconAt, IconEyeCheck, IconEyeOff } from '@tabler/icons';
 import { useForm, zodResolver } from '@mantine/form';
@@ -32,70 +36,99 @@ const AuthForm = ({ onSubmit }) => {
     },
   });
 
+  const useStyles = createStyles(theme => ({
+    formContainer: {
+      [`@media (max-width: ${theme.breakpoints.xs}px)`]: {
+        width: theme.breakpoints.xs / 2,
+      },
+      [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
+        width: theme.breakpoints.sm / 2,
+      },
+
+      [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+        width: theme.breakpoints.md / 2,
+      },
+    },
+  }));
+
+  const { classes } = useStyles();
   return (
     <Container>
       <Center>
-        <Box
-          px={50}
-          py={50}
-          sx={theme => ({
-            borderRadius: theme.radius.xl,
-            borderColor: theme.colors.gray[5],
-            borderWidth: 1,
-          })}
-        >
+        <Box px={50} py={50}>
           <Text size={'lg'} component={'h1'} align={'center'}>
             {pathname.includes('login') ? 'Login' : 'Signup'}
           </Text>
 
-          <form onSubmit={form.onSubmit(values => onSubmit(values))}>
-            <TextInput
-              label="Email"
-              radius={'md'}
-              placeholder="Your email"
-              icon={<IconAt size={14} />}
-              mb={15}
-              {...form.getInputProps('email')}
-            />
+          <Paper
+            withBorder
+            shadow="md"
+            p={30}
+            mt={30}
+            radius="md"
+            className={classes.formContainer}
+          >
+            <form onSubmit={form.onSubmit(values => onSubmit(values))}>
+              <TextInput
+                label="Email"
+                radius={'md'}
+                placeholder="Your email"
+                icon={<IconAt size={14} />}
+                mb={15}
+                {...form.getInputProps('email')}
+              />
 
-            <PasswordInput
-              label="Password"
-              radius={'md'}
-              placeholder="Your password"
-              visibilityToggleIcon={({ reveal, size }) =>
-                reveal ? (
-                  <IconEyeOff size={size} />
-                ) : (
-                  <IconEyeCheck size={size} />
-                )
-              }
-              mb={15}
-              {...form.getInputProps('password')}
-            />
+              <PasswordInput
+                label="Password"
+                radius={'md'}
+                placeholder="Your password"
+                visibilityToggleIcon={({ reveal, size }) =>
+                  reveal ? (
+                    <IconEyeOff size={size} />
+                  ) : (
+                    <IconEyeCheck size={size} />
+                  )
+                }
+                mb={15}
+                {...form.getInputProps('password')}
+              />
 
-            <Button type={'submit'} py={10} radius={'lg'} fullWidth>
-              {pathname.includes('login') ? 'Login' : 'Signup'}
-            </Button>
+              <Group position="apart" mt="lg" my={'xl'}>
+                <Checkbox label="Remember me" />
+                <Anchor<'a'>
+                  onClick={event => event.preventDefault()}
+                  href="#"
+                  size="sm"
+                >
+                  Forgot password?
+                </Anchor>
+              </Group>
+              <Button type={'submit'} py={10} radius={'lg'} fullWidth>
+                {pathname.includes('login') ? 'Login' : 'Signup'}
+              </Button>
 
-            <Link
-              href={pathname.includes('login') ? '/auth/signup' : '/auth/login'}
-              passHref
-            >
-              <Anchor
-                component="a"
-                my={10}
-                style={{
-                  textDecoration: 'none',
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
+              <Link
+                href={
+                  pathname.includes('login') ? '/auth/signup' : '/auth/login'
+                }
+                passHref
               >
-                {pathname.includes('login')
-                  ? "Don't have an account?"
-                  : 'Have an account?'}
-              </Anchor>
-            </Link>
-          </form>
+                <Anchor
+                  component="a"
+                  my={10}
+                  style={{
+                    textDecoration: 'none',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {pathname.includes('login')
+                    ? "Don't have an account?"
+                    : 'Have an account?'}
+                </Anchor>
+              </Link>
+            </form>
+          </Paper>
         </Box>
       </Center>
     </Container>

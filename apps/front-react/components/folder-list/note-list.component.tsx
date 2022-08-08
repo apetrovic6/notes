@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { NavLink, Box } from '@mantine/core';
+import { NavLink, Box, ActionIcon } from '@mantine/core';
 import { IconTrash } from '@tabler/icons';
 import { GetFoldersDocument, useRemoveNoteMutation } from '@notes/apollo';
 import { Note } from '@notes/entities/notes';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+import { showNotification } from '@mantine/notifications';
 
 export interface INote {
   notes: Pick<Note, 'id' | 'title'>[];
@@ -16,6 +17,20 @@ export const NoteList: FC<INote> = ({ notes }) => {
     refetchQueries: [{ query: GetFoldersDocument }],
     awaitRefetchQueries: true,
   });
+
+  function onDeleteNote({ id, title }: Pick<Note, 'id' | 'title'>) {
+    removeNote({ variables: { id } });
+    if (id === query.noteId) {
+      replace('/dashboard');
+    }
+    showNotification({
+      title: 'Note deleted',
+      message: title,
+      icon: <IconTrash size={20} />,
+      color: 'red',
+    });
+  }
+
   return (
     <>
       {notes?.map(note => (
@@ -31,14 +46,9 @@ export const NoteList: FC<INote> = ({ notes }) => {
           >
             <NavLink key={note.id} label={note.title} component={'a'} />
           </Link>
-          <IconTrash
-            onClick={() => {
-              removeNote({ variables: { id: note.id } });
-              if (note.id === query.noteId) {
-                replace('/dashboard');
-              }
-            }}
-          />
+          <ActionIcon variant={'subtle'}>
+            <IconTrash onClick={onDeleteNote.bind(this, note)} />
+          </ActionIcon>
         </Box>
       ))}
     </>

@@ -15,7 +15,7 @@ interface INewNote extends Omit<CreateNoteInput, 'folder'> {
 }
 
 export const NewNote: FC<INewNote> = () => {
-  const { query } = useRouter();
+  const { query, replace } = useRouter();
   const editorRef = useRef<Editor>();
 
   const {
@@ -40,6 +40,10 @@ export const NewNote: FC<INewNote> = () => {
       },
     },
   });
+
+  useEffect(() => {
+    !query.noteId && replace('/dashboard');
+  }, []);
 
   useEffect(() => {
     // Sets new note data
@@ -72,6 +76,10 @@ export const NewNote: FC<INewNote> = () => {
       clearTimeout(test);
     };
   }, [fullNote.title, fullNote.content]);
+
+  if (!query.noteId) {
+    return <LoadingOverlay visible={!!query.noteId} />;
+  }
 
   if (loading) {
     return <LoadingOverlay visible={loading} />;

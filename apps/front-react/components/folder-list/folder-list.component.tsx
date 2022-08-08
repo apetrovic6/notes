@@ -4,6 +4,7 @@ import {
   IconCirclePlus,
   IconDotsVertical,
   IconEdit,
+  IconNote,
   IconTrash,
 } from '@tabler/icons';
 import {
@@ -40,6 +41,26 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
   });
 
   const [updateFolder] = useUpdateFolderMutation();
+
+  const afterCreateNote = (noteId, { id: folderId, title: folderTitle }) => {
+    push(
+      {
+        pathname: '/dashboard/note',
+        query: {
+          noteId: noteId,
+          folderId: folderId,
+        },
+      },
+      '/dashboard/note'
+    );
+
+    showNotification({
+      title: `Created new note in folder ${folderTitle}`,
+      message: 'You can edit it later',
+      color: 'teal',
+      icon: <IconNote />,
+    });
+  };
 
   return (
     <>
@@ -122,7 +143,12 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
               </div>
             </Box>
             <IconCirclePlus
-              style={{ position: 'absolute', right: '-5', top: '8' }}
+              style={{
+                position: 'absolute',
+                right: '-5',
+                top: '8',
+                cursor: 'pointer',
+              }}
               size={20}
               onClick={() => {
                 createNote({
@@ -133,23 +159,9 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                       content: 'Example content',
                     },
                   },
-                }).then(({ data: { createNote } }) => {
-                  push(
-                    {
-                      pathname: '/dashboard/note',
-                      query: {
-                        noteId: createNote.id,
-                        folderId: folder.id,
-                      },
-                    },
-                    '/dashboard/note'
-                  );
-
-                  showNotification({
-                    title: `Created new note in folder ${folder.title}`,
-                    message: 'You can edit it later',
-                  });
-                });
+                }).then(({ data: { createNote } }) =>
+                  afterCreateNote(createNote.id, folder)
+                );
               }}
             />
           </Box>
