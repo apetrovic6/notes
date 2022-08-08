@@ -15,7 +15,8 @@ import { UserService } from '../user/user.service';
 @Injectable()
 export class NotesService {
   constructor(
-    @InjectRepository(Note) private readonly noteRepository: Repository<Note>
+    @InjectRepository(Note) private readonly noteRepository: Repository<Note>,
+    private readonly userService: UserService
   ) {}
   create(createNoteInput: CreateNoteInput, userId: string) {
     const note = this.noteRepository.create({
