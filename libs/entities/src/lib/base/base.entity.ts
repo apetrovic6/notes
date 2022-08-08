@@ -1,4 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -8,10 +12,10 @@ export class BaseEntity {
   id: string;
 
   @Field(() => Date, { description: 'Date of creation' })
-  @Column()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
-  // @Field(() => Date, { description: 'Last updated' })
-  // @Column()
-  // updatedAt: Date;
+  @Field(() => Date, { description: 'Last updated' })
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
