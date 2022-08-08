@@ -22,6 +22,7 @@ import {
   useCreateFolderMutation,
   useGetFoldersQuery,
   useLogoutMutation,
+  useGetSharedNotesQuery,
 } from '@notes/apollo';
 
 import { useRouter } from 'next/router';
@@ -35,6 +36,7 @@ import { CreateUpdateFolder } from './CreateUpdateFolder';
 import { FolderList } from './folder-list/folder-list.component';
 import { useReactiveVar } from '@apollo/client';
 import { loggedIn, loggedUser } from '../lib/apollo';
+import { NoteList } from './folder-list/note-list.component';
 
 export default function AppShell({ children }) {
   const theme = useMantineTheme();
@@ -53,6 +55,8 @@ export default function AppShell({ children }) {
   const [createFolder] = useCreateFolderMutation({
     refetchQueries: ['getFolders'],
   });
+
+  const { data: sharedNotes } = useGetSharedNotesQuery();
 
   const onLogout = () => {
     logout();
@@ -140,7 +144,13 @@ export default function AppShell({ children }) {
               </>
             )}
 
-            {data?.folders && <FolderList folders={data.folders} />}
+            {showShared === 'my-notes' && data?.folders && (
+              <FolderList folders={data.folders} />
+            )}
+
+            {showShared === 'shared' && sharedNotes && (
+              <NoteList notes={sharedNotes?.getNotesForCollaborator} />
+            )}
           </Navbar>
         )
       }
