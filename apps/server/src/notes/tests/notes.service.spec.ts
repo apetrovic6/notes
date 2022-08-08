@@ -7,6 +7,9 @@ import { fn } from 'jest-mock';
 import { noteStub } from './stubs/note.stub';
 import { of } from 'rxjs';
 import { NotFoundException } from '@nestjs/common';
+import { UserService } from '../../user/user.service';
+
+jest.mock('../../user/user.service');
 
 describe('NotesService', () => {
   let service: NotesService;
@@ -25,6 +28,7 @@ describe('NotesService', () => {
       providers: [
         NotesService,
         { provide: getRepositoryToken(Note), useValue: noteRepository },
+        UserService,
       ],
     }).compile();
 
