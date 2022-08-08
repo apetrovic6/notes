@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../base';
 import { User } from '../../user';
@@ -28,4 +28,9 @@ export class Note extends BaseEntity {
   @Field(() => Folder, { description: 'Folder of the note' })
   @ManyToOne(() => Folder, folder => folder.notes, { onDelete: 'CASCADE' })
   folder: Folder;
+
+  @ManyToMany(() => User, { cascade: true, eager: true, persistence: true })
+  @JoinTable()
+  @Field(() => [User], { description: 'Collaborators' })
+  collaborators: User[];
 }
