@@ -121,4 +121,15 @@ export class NotesService {
 
     return ids.map(id => notesMap[id]);
   }
+
+  getNotesForCollaborator(userId: string) {
+    return this.noteRepository.find({
+      relations: ['folder'],
+      where: {
+        collaborators: {
+          id: userId,
+        },
+      },
+    });
+  }
 }

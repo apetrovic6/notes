@@ -65,7 +65,10 @@ export class NotesResolver {
       collaboratorEmail
     );
   }
-
+  @Query(() => [Note], { name: 'getNotesForCollaborator' })
+  getNotesForCollaborator(@User() user: { userId: string }) {
+    return this.notesService.getNotesForCollaborator(user.userId);
+  }
 
   @Mutation(() => Note)
   removeNote(
