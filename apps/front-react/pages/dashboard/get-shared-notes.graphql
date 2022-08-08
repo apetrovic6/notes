@@ -1,0 +1,10 @@
+query getSharedNotes {
+  getNotesForCollaborator {
+    id
+    title
+    folder {
+      id
+      title
+    }
+  }
+}
