@@ -2,7 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { CreateNoteInput, Note, UpdateNoteInput } from '@notes/entities/notes';
-import { catchError, from, map, switchMap, throwError } from 'rxjs';
+import {
+  catchError,
+  from,
+  lastValueFrom,
+  map,
+  switchMap,
+  throwError,
+} from 'rxjs';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class NotesService {
@@ -71,6 +79,30 @@ export class NotesService {
         },
       })
     ).pipe(switchMap(note => this.noteRepository.remove(note)));
+  }
+
+  async addCollaborator(
+    noteId: string,
+    userId: string,
+    collaboratorEmail: string
+  ) {
+    const note = await this.noteRepository.findOne({
+      where: {
+        id: noteId,
+        user: { id: userId },
+      },
+    });
+
+    if (!note) {
+      throw new NotFoundException('Note not found');
+    }
+
+    const user = await lastValueFrom(
+      this.userService.findByEmail(collaboratorEmail)
+    );
+
+    note.collaborators = [...note.collaborators, user];
+    return this.noteRepository.save(note);
   }
 
   // TODO - add tests
