@@ -16,6 +16,7 @@ import {
   Skeleton,
   Button,
   useMantineColorScheme,
+  SegmentedControl,
 } from '@mantine/core';
 import {
   useCreateFolderMutation,
@@ -38,6 +39,7 @@ import { loggedIn, loggedUser } from '../lib/apollo';
 export default function AppShell({ children }) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const [showShared, setShowShared] = useState('my-notes');
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === 'dark';
   const { pathname, replace } = useRouter();
@@ -112,6 +114,23 @@ export default function AppShell({ children }) {
             >
               Create Folder
             </Button>
+
+            <SegmentedControl
+              value={showShared}
+              onChange={setShowShared}
+              color={'blue'}
+              radius={'lg'}
+              data={[
+                {
+                  label: 'My notes',
+                  value: 'my-notes',
+                },
+                {
+                  label: 'Shared',
+                  value: 'shared',
+                },
+              ]}
+            />
 
             {loading && (
               <>
