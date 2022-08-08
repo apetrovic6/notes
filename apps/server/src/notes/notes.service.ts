@@ -55,7 +55,15 @@ export class NotesService {
     ).pipe(
       map(note => {
         if (!note) {
-          throw new NotFoundException('Note not found');
+          // throw new NotFoundException('Note not found');
+          return this.noteRepository.findOne({
+            where: {
+              id,
+              collaborators: {
+                id: userId,
+              },
+            },
+          });
         }
         return note;
       })
