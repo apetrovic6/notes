@@ -56,6 +56,7 @@ export type Folder = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addCollaborator: Note;
   createFolder: Folder;
   createNote: Note;
   createUser: User;
@@ -68,6 +69,11 @@ export type Mutation = {
   updateFolder: Folder;
   updateNote: Note;
   updateUser: User;
+};
+
+export type MutationAddCollaboratorArgs = {
+  collaboratorEmail: Scalars['String'];
+  noteId: Scalars['String'];
 };
 
 export type MutationCreateFolderArgs = {
@@ -116,6 +122,8 @@ export type MutationUpdateUserArgs = {
 
 export type Note = {
   __typename?: 'Note';
+  /** Collaborators */
+  collaborators: Array<User>;
   /** Content of the note */
   content: Scalars['String'];
   /** Date of creation */
@@ -143,6 +151,7 @@ export type Query = {
   __typename?: 'Query';
   folder: Folder;
   folders: Array<Folder>;
+  getNotesForCollaborator: Array<Note>;
   me: User;
   note: Note;
   notes: Array<Note>;
@@ -201,8 +210,6 @@ export type User = {
   /** Unique identifier */
   id: Scalars['ID'];
   notes?: Maybe<Array<Note>>;
-  /** User password */
-  password: Scalars['String'];
 };
 
 export type UserInput = {
@@ -280,6 +287,18 @@ export type GetFoldersQuery = {
     id: string;
     title: string;
     notes?: Array<{ __typename?: 'Note'; id: string; title: string }> | null;
+  }>;
+};
+
+export type GetSharedNotesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetSharedNotesQuery = {
+  __typename?: 'Query';
+  getNotesForCollaborator: Array<{
+    __typename?: 'Note';
+    id: string;
+    title: string;
+    folder: { __typename?: 'Folder'; id: string; title: string };
   }>;
 };
 
@@ -723,6 +742,68 @@ export type GetFoldersLazyQueryHookResult = ReturnType<
 export type GetFoldersQueryResult = Apollo.QueryResult<
   GetFoldersQuery,
   GetFoldersQueryVariables
+>;
+export const GetSharedNotesDocument = gql`
+  query getSharedNotes {
+    getNotesForCollaborator {
+      id
+      title
+      folder {
+        id
+        title
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetSharedNotesQuery__
+ *
+ * To run a query within a React component, call `useGetSharedNotesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSharedNotesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSharedNotesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSharedNotesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetSharedNotesQuery,
+    GetSharedNotesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetSharedNotesQuery, GetSharedNotesQueryVariables>(
+    GetSharedNotesDocument,
+    options
+  );
+}
+export function useGetSharedNotesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetSharedNotesQuery,
+    GetSharedNotesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetSharedNotesQuery, GetSharedNotesQueryVariables>(
+    GetSharedNotesDocument,
+    options
+  );
+}
+export type GetSharedNotesQueryHookResult = ReturnType<
+  typeof useGetSharedNotesQuery
+>;
+export type GetSharedNotesLazyQueryHookResult = ReturnType<
+  typeof useGetSharedNotesLazyQuery
+>;
+export type GetSharedNotesQueryResult = Apollo.QueryResult<
+  GetSharedNotesQuery,
+  GetSharedNotesQueryVariables
 >;
 export const CreateNoteDocument = gql`
   mutation createNote($createNoteInput: NoteInput!) {
