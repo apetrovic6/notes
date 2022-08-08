@@ -73,9 +73,7 @@ export class NotesService {
 
   update(id: string, updateNoteInput: UpdateNoteInput, userId: string) {
     return from(this.noteRepository.update(id, updateNoteInput)).pipe(
-      switchMap(() => {
-        return this.findOne(id, userId);
-      })
+      switchMap(() => this.findOne(id, userId))
     );
   }
 
