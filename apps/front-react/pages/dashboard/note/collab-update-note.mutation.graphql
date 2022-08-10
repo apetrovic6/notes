@@ -1,0 +1,7 @@
+mutation collabUpdateNote($updateNoteInput: UpdateNoteInput!) {
+  collabUpdateNote(updateNoteInput: $updateNoteInput) {
+    id
+    title
+    content
+  }
+}
