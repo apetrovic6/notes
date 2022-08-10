@@ -12,6 +12,7 @@ import { DataLoaderModule } from '../../data-loader/data-loader.module';
 import { folderStub } from '../../folders/tests/stubs/folderStub';
 import { Folder } from '@notes/entities/folders';
 import { of } from 'rxjs';
+import { PubSub } from 'graphql-subscriptions';
 
 jest.mock('../notes.service');
 jest.mock('../../user/user.service');
@@ -39,7 +40,15 @@ describe('NotesResolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [DataLoaderModule],
-      providers: [NotesResolver, NotesService, DataLoaderService],
+      providers: [
+        NotesResolver,
+        NotesService,
+        DataLoaderService,
+        {
+          provide: 'PUB_SUB',
+          useValue: new PubSub(),
+        },
+      ],
     })
       .overrideProvider(getRepositoryToken(User))
       .useValue(mockRepo)
