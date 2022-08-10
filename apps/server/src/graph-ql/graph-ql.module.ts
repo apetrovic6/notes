@@ -13,12 +13,27 @@ import { DataLoaderModule } from '../data-loader/data-loader.module';
         autoSchemaFile: true,
         sortSchema: true,
         introspection: true,
+        installSubscriptionHandlers: true,
+        subscriptions: {
+          'graphql-ws': {
+            onConnect: (context: any) => {
+              context.request = { ...context.extra.request.headers };
+            },
+          },
+          'subscriptions-transport-ws': {
+            onConnect: (_, ws) => {
+              return ws.upgradeReq;
+            },
+          },
+        },
         cors: {
           origin: 'http://localhost:4200',
           credentials: true,
         },
-        context: () => ({
+        context: ({ req, res }) => ({
           loaders: dataLoaderService.getLoaders(),
+          req,
+          res,
         }),
       }),
       inject: [DataLoaderService],
