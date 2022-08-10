@@ -6,14 +6,17 @@ import {
   ID,
   ResolveField,
   Parent,
+  Subscription,
 } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { PubSub } from 'graphql-subscriptions';
+import { Inject, UseGuards } from '@nestjs/common';
 import { CreateNoteInput, Note, UpdateNoteInput } from '@notes/entities/notes';
 import { JwtAuthGuard } from '@notes/auth-helpers';
 import { EDataLoader, UserLoader } from '../data-loader/IDataLoaders';
 import { NotesService } from './notes.service';
 import { Loader } from '../data-loader/decorators/loader.decorator';
 import { User } from '../user/get-user.decorator';
+import { lastValueFrom } from 'rxjs';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => Note)
@@ -87,5 +90,24 @@ export class NotesResolver {
     @Loader(EDataLoader.user) loader: UserLoader
   ) {
     return loader.load(note.userId);
+  }
+
+  @Mutation(() => Note, { name: 'collabUpdateNote' })
+  async collabUpdateNote(
+    @User() user: { userId: string },
+    @Args('updateNoteInput') updateNoteInput: UpdateNoteInput
+  ) {
+    const updateNote = await lastValueFrom(
+      this.notesService.collabUpdateNote(user.userId, updateNoteInput)
+    );
+
+    this.pubSub.publish('noteUpdated', { noteUpdated: updateNote });
+
+    return updateNote;
+  }
+
+  @Subscription(() => Note)
+  noteUpdated() {
+    return this.pubSub.asyncIterator('noteUpdated');
   }
 }
