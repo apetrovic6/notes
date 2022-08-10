@@ -18,7 +18,10 @@ import { User } from '../user/get-user.decorator';
 @UseGuards(JwtAuthGuard)
 @Resolver(() => Note)
 export class NotesResolver {
-  constructor(private readonly notesService: NotesService) {}
+  constructor(
+    private readonly notesService: NotesService,
+    @Inject('PUB_SUB') private readonly pubSub: PubSub
+  ) {}
 
   @Mutation(() => Note)
   createNote(
