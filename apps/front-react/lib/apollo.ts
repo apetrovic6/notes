@@ -4,10 +4,14 @@ import {
   InMemoryCache,
   makeVar,
   NormalizedCacheObject,
+  split,
 } from '@apollo/client';
 import isEqual from 'lodash/isEqual';
 import merge from 'deepmerge';
 import { useMemo } from 'react';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 
 export const APOLLO_STATE_PROP_NAME = 'APOLLO_STATE';
 
@@ -15,6 +19,34 @@ export let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
 export const loggedIn = makeVar(false);
 export const loggedUser = makeVar(null);
+
+const httpLink = new HttpLink({
+  uri: 'http://localhost:3333/graphql',
+  credentials: 'include',
+});
+
+const wsLink =
+  typeof window !== 'undefined' &&
+  new GraphQLWsLink(
+    createClient({
+      url: 'ws://localhost:3333/graphql',
+    })
+  );
+
+const splitLink =
+  typeof window !== 'undefined' && wsLink != null
+    ? split(
+        ({ query }) => {
+          const definition = getMainDefinition(query);
+          return (
+            definition.kind === 'OperationDefinition' &&
+            definition.operation === 'subscription'
+          );
+        },
+        wsLink,
+        httpLink
+      )
+    : httpLink;
 
 function createApolloClient() {
   return new ApolloClient({
@@ -36,10 +68,7 @@ function createApolloClient() {
         },
       },
     }),
-    link: new HttpLink({
-      uri: 'http://localhost:3333/graphql',
-      credentials: 'include',
-    }),
+    link: splitLink,
     ssrMode: typeof window === 'undefined',
   });
 }
