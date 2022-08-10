@@ -1,0 +1,7 @@
+subscription noteUpdated {
+  noteUpdated {
+    id
+    title
+    content
+  }
+}
