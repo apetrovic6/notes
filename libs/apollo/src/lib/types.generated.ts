@@ -50,6 +50,8 @@ export type Folder = {
   notes?: Maybe<Array<Note>>;
   /** Folder name */
   title: Scalars['String'];
+  /** Last updated */
+  updatedAt: Scalars['DateTime'];
   /** User who owns the folder */
   user: User;
 };
@@ -57,6 +59,7 @@ export type Folder = {
 export type Mutation = {
   __typename?: 'Mutation';
   addCollaborator: Note;
+  collabUpdateNote: Note;
   createFolder: Folder;
   createNote: Note;
   createUser: User;
@@ -74,6 +77,10 @@ export type Mutation = {
 export type MutationAddCollaboratorArgs = {
   collaboratorEmail: Scalars['String'];
   noteId: Scalars['String'];
+};
+
+export type MutationCollabUpdateNoteArgs = {
+  updateNoteInput: UpdateNoteInput;
 };
 
 export type MutationCreateFolderArgs = {
@@ -134,6 +141,8 @@ export type Note = {
   id: Scalars['ID'];
   /** Title of the note */
   title: Scalars['String'];
+  /** Last updated */
+  updatedAt: Scalars['DateTime'];
   /** User who created the note */
   user: User;
 };
@@ -169,6 +178,11 @@ export type QueryNoteArgs = {
 
 export type QueryUserArgs = {
   id: Scalars['ID'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  noteUpdated: Note;
 };
 
 export type UpdateFolderInput = {
@@ -210,6 +224,8 @@ export type User = {
   /** Unique identifier */
   id: Scalars['ID'];
   notes?: Maybe<Array<Note>>;
+  /** Last updated */
+  updatedAt: Scalars['DateTime'];
 };
 
 export type UserInput = {
@@ -330,6 +346,20 @@ export type UpdateNoteMutation = {
   };
 };
 
+export type CollabUpdateNoteMutationVariables = Exact<{
+  updateNoteInput: UpdateNoteInput;
+}>;
+
+export type CollabUpdateNoteMutation = {
+  __typename?: 'Mutation';
+  collabUpdateNote: {
+    __typename?: 'Note';
+    id: string;
+    title: string;
+    content: string;
+  };
+};
+
 export type GetNoteQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -342,6 +372,18 @@ export type GetNoteQuery = {
     title: string;
     content: string;
     createdAt: any;
+  };
+};
+
+export type NoteUpdatedSubscriptionVariables = Exact<{ [key: string]: never }>;
+
+export type NoteUpdatedSubscription = {
+  __typename?: 'Subscription';
+  noteUpdated: {
+    __typename?: 'Note';
+    id: string;
+    title: string;
+    content: string;
   };
 };
 
@@ -909,6 +951,58 @@ export type UpdateNoteMutationOptions = Apollo.BaseMutationOptions<
   UpdateNoteMutation,
   UpdateNoteMutationVariables
 >;
+export const CollabUpdateNoteDocument = gql`
+  mutation collabUpdateNote($updateNoteInput: UpdateNoteInput!) {
+    collabUpdateNote(updateNoteInput: $updateNoteInput) {
+      id
+      title
+      content
+    }
+  }
+`;
+export type CollabUpdateNoteMutationFn = Apollo.MutationFunction<
+  CollabUpdateNoteMutation,
+  CollabUpdateNoteMutationVariables
+>;
+
+/**
+ * __useCollabUpdateNoteMutation__
+ *
+ * To run a mutation, you first call `useCollabUpdateNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCollabUpdateNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [collabUpdateNoteMutation, { data, loading, error }] = useCollabUpdateNoteMutation({
+ *   variables: {
+ *      updateNoteInput: // value for 'updateNoteInput'
+ *   },
+ * });
+ */
+export function useCollabUpdateNoteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CollabUpdateNoteMutation,
+    CollabUpdateNoteMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CollabUpdateNoteMutation,
+    CollabUpdateNoteMutationVariables
+  >(CollabUpdateNoteDocument, options);
+}
+export type CollabUpdateNoteMutationHookResult = ReturnType<
+  typeof useCollabUpdateNoteMutation
+>;
+export type CollabUpdateNoteMutationResult =
+  Apollo.MutationResult<CollabUpdateNoteMutation>;
+export type CollabUpdateNoteMutationOptions = Apollo.BaseMutationOptions<
+  CollabUpdateNoteMutation,
+  CollabUpdateNoteMutationVariables
+>;
 export const GetNoteDocument = gql`
   query getNote($id: ID!) {
     note(id: $id) {
@@ -960,6 +1054,48 @@ export type GetNoteQueryResult = Apollo.QueryResult<
   GetNoteQuery,
   GetNoteQueryVariables
 >;
+export const NoteUpdatedDocument = gql`
+  subscription noteUpdated {
+    noteUpdated {
+      id
+      title
+      content
+    }
+  }
+`;
+
+/**
+ * __useNoteUpdatedSubscription__
+ *
+ * To run a query within a React component, call `useNoteUpdatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNoteUpdatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNoteUpdatedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNoteUpdatedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    NoteUpdatedSubscription,
+    NoteUpdatedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useSubscription<
+    NoteUpdatedSubscription,
+    NoteUpdatedSubscriptionVariables
+  >(NoteUpdatedDocument, options);
+}
+export type NoteUpdatedSubscriptionHookResult = ReturnType<
+  typeof useNoteUpdatedSubscription
+>;
+export type NoteUpdatedSubscriptionResult =
+  Apollo.SubscriptionResult<NoteUpdatedSubscription>;
 export const UpdateFolderDocument = gql`
   mutation updateFolder($updateFolderInput: UpdateFolderInput!) {
     updateFolder(updateFolderInput: $updateFolderInput) {
