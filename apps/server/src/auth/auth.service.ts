@@ -23,6 +23,7 @@ export class AuthService {
         req?.res?.cookie('Authorization', token, {
           httpOnly: true,
           secure: true,
+          sameSite: 'none',
         });
 
         return { token: 'signed in' };
@@ -50,6 +51,7 @@ export class AuthService {
               req.res?.cookie('Authorization', token, {
                 httpOnly: true,
                 secure: true,
+                sameSite: 'none',
               });
 
               return { token: 'signed in' };
