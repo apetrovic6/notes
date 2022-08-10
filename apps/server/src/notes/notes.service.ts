@@ -139,4 +139,10 @@ export class NotesService {
       },
     });
   }
+
+  collabUpdateNote(userId: string, updateNoteInput: UpdateNoteInput) {
+    return from(
+      this.noteRepository.update(updateNoteInput.id, updateNoteInput)
+    ).pipe(switchMap(() => this.findOne(updateNoteInput.id, userId)));
+  }
 }
