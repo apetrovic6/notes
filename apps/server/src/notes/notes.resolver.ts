@@ -16,7 +16,7 @@ import { EDataLoader, UserLoader } from '../data-loader/IDataLoaders';
 import { NotesService } from './notes.service';
 import { Loader } from '../data-loader/decorators/loader.decorator';
 import { User } from '../user/get-user.decorator';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, mergeMap, of } from 'rxjs';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => Note)
@@ -52,11 +52,14 @@ export class NotesResolver {
     @User() user: { userId: string },
     @Args('updateNoteInput') updateNoteInput: UpdateNoteInput
   ) {
-    return this.notesService.update(
-      updateNoteInput.id,
-      updateNoteInput,
-      user.userId
-    );
+    return this.notesService
+      .update(updateNoteInput.id, updateNoteInput, user.userId)
+      .pipe(
+        mergeMap(note => {
+          this.pubSub.publish('noteUpdated', { noteUpdated: note });
+          return of(note);
+        })
+      );
   }
 
   @Mutation(() => Note)
