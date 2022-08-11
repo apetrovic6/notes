@@ -1,20 +1,14 @@
 import { useState } from 'react';
 import Head from 'next/head';
+import { ApolloProvider } from '@apollo/client';
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
-import { ApolloProvider } from '@apollo/client';
+import { ModalsProvider } from '@mantine/modals';
 import { useApollo } from '../lib/apollo';
 import AppShell from '../components/AppShell';
 
 import type { AppProps } from 'next/app';
-import type { NextPage } from 'next';
 import type { ColorScheme } from '@mantine/core';
-import type { ReactElement, ReactNode } from 'react';
-import { ModalsProvider } from '@mantine/modals';
-
-export type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
