@@ -372,6 +372,7 @@ export type GetNoteQuery = {
     title: string;
     content: string;
     createdAt: any;
+    collaborators: Array<{ __typename?: 'User'; id: string; email: string }>;
   };
 };
 
@@ -1010,6 +1011,10 @@ export const GetNoteDocument = gql`
       title
       content
       createdAt
+      collaborators {
+        id
+        email
+      }
     }
   }
 `;
