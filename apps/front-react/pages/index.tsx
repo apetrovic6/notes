@@ -1,4 +1,3 @@
-import styles from './index.module.css';
 import { useMeQuery } from '@notes/apollo';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
