@@ -20,6 +20,7 @@ import {
 import { Editor } from '@mantine/rte';
 import { showNotification } from '@mantine/notifications';
 import { GetServerSideProps } from 'next';
+import { IconUserPlus } from '@tabler/icons';
 
 interface INewNote extends Omit<CreateNoteInput, 'folder'> {
   id: string;
