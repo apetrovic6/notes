@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DataLoaderService } from '../data-loader/data-loader.service';
 import { DataLoaderModule } from '../data-loader/data-loader.module';
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 
 @Module({
   imports: [
@@ -10,6 +11,8 @@ import { DataLoaderModule } from '../data-loader/data-loader.module';
       driver: ApolloDriver,
       imports: [DataLoaderModule],
       useFactory: (dataLoaderService: DataLoaderService) => ({
+        playground: false,
+        plugins: [ApolloServerPluginLandingPageLocalDefault],
         autoSchemaFile: true,
         sortSchema: true,
         introspection: true,
@@ -27,7 +30,7 @@ import { DataLoaderModule } from '../data-loader/data-loader.module';
           },
         },
         cors: {
-          origin: 'http://localhost:4200',
+          origin: ['http://localhost:4200', 'https://studio.apollographql.com'],
           credentials: true,
         },
         context: ({ req, res }) => ({
