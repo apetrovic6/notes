@@ -41,6 +41,8 @@ export const NewNote: FC<INewNote> = () => {
     },
   });
 
+  useNoteUpdatedSubscription({ skip: !query.shared });
+
   useEffect(() => {
     !query.noteId && replace('/dashboard');
   }, []);
