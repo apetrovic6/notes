@@ -10,11 +10,7 @@ import AppShell from '../components/AppShell';
 import type { AppProps } from 'next/app';
 import type { ColorScheme } from '@mantine/core';
 
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
-
-function CustomApp({ Component, pageProps }) {
+function CustomApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
   const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
   const toggleColorScheme = (value?: ColorScheme) =>
