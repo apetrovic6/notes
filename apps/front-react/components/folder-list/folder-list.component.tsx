@@ -62,6 +62,36 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
     });
   };
 
+  const onUpdateFolder = folder =>
+    openModal({
+      title: 'Edit Title',
+      children: (
+        <CreateUpdateFolder
+          possibleTitle={folder.title}
+          mutation={() => updateFolder}
+          payload={{
+            variables: {
+              updateFolderInput: { title: null, id: folder.id },
+            },
+          }}
+        />
+      ),
+    });
+
+  const onCreateNote = folder => {
+    createNote({
+      variables: {
+        createNoteInput: {
+          folder: { id: folder.id },
+          title: 'New Note',
+          content: 'Example content',
+        },
+      },
+    }).then(({ data: { createNote } }) =>
+      afterCreateNote(createNote.id, folder)
+    );
+  };
+
   return (
     <>
       {folders?.map(folder => (
@@ -89,22 +119,7 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
               }}
             >
               <Menu.Item
-                onClick={() =>
-                  openModal({
-                    title: 'Edit Title',
-                    children: (
-                      <CreateUpdateFolder
-                        possibleTitle={folder.title}
-                        mutation={() => updateFolder}
-                        payload={{
-                          variables: {
-                            updateFolderInput: { title: null, id: folder.id },
-                          },
-                        }}
-                      />
-                    ),
-                  })
-                }
+                onClick={onUpdateFolder.bind(this, folder)}
                 icon={<IconEdit size={15} />}
               >
                 Edit
@@ -150,19 +165,7 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                 cursor: 'pointer',
               }}
               size={20}
-              onClick={() => {
-                createNote({
-                  variables: {
-                    createNoteInput: {
-                      folder: { id: folder.id },
-                      title: 'New Note',
-                      content: 'Example content',
-                    },
-                  },
-                }).then(({ data: { createNote } }) =>
-                  afterCreateNote(createNote.id, folder)
-                );
-              }}
+              onClick={onCreateNote.bind(this, folder)}
             />
           </Box>
         </Box>
