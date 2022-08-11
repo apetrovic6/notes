@@ -4,5 +4,9 @@ query getNote($id: ID!) {
     title
     content
     createdAt
+    collaborators {
+      id
+      email
+    }
   }
 }
