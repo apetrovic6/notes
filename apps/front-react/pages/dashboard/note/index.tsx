@@ -3,8 +3,20 @@ import RichTextEditor from '../../../components/RichTextEditor';
 import { useRouter } from 'next/router';
 import { CreateNoteInput } from '@notes/entities/notes';
 
-import { useGetNoteQuery, useUpdateNoteMutation } from '@notes/apollo';
-import { LoadingOverlay, TextInput } from '@mantine/core';
+import {
+  useCollabUpdateNoteMutation,
+  useGetNoteQuery,
+  useNoteUpdatedSubscription,
+  useUpdateNoteMutation,
+} from '@notes/apollo';
+import {
+  LoadingOverlay,
+  TextInput,
+  Box,
+  ActionIcon,
+  Avatar,
+  Tooltip,
+} from '@mantine/core';
 import { Editor } from '@mantine/rte';
 import { showNotification } from '@mantine/notifications';
 import { GetServerSideProps } from 'next';
@@ -97,24 +109,48 @@ export const NewNote: FC<INewNote> = () => {
 
   return (
     <>
-      <TextInput
-        placeholder="Title"
-        label="Title"
-        radius="xl"
-        size="lg"
-        value={fullNote.title}
-        my={20}
-        onChange={e =>
-          setFullNote(state => ({ ...state, title: e.target.value }))
-        }
-        required
-      />
-      <RichTextEditor
-        editorRef={editorRef}
-        radius={'xl'}
-        value={fullNote.content}
-        onChange={e => setFullNote(state => ({ ...state, content: e }))}
-      />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}
+      >
+        <Tooltip.Group openDelay={300} closeDelay={100}>
+          <Avatar.Group spacing="sm">
+            {data?.note?.collaborators.map(user => (
+              <Tooltip label={user.email} key={user.id} withArrow>
+                <Avatar src="" radius="xl" />
+              </Tooltip>
+            ))}
+          </Avatar.Group>
+        </Tooltip.Group>
+        <Tooltip label="Add a collaborator" openDelay={300} closeDelay={100}>
+          <ActionIcon mx={50} radius={'lg'} variant={'subtle'}>
+            <IconUserPlus />
+          </ActionIcon>
+        </Tooltip>
+      </Box>
+      <Box>
+        <TextInput
+          placeholder="Title"
+          label="Title"
+          radius="xl"
+          size="lg"
+          value={fullNote.title}
+          my={20}
+          onChange={e =>
+            setFullNote(state => ({ ...state, title: e.target.value }))
+          }
+          required
+        />
+        <RichTextEditor
+          editorRef={editorRef}
+          radius={'xl'}
+          value={fullNote.content}
+          onChange={e => setFullNote(state => ({ ...state, content: e }))}
+        />
+      </Box>
     </>
   );
 };
