@@ -7,8 +7,10 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { showNotification } from '@mantine/notifications';
 
+import { User } from '@notes/entities/user';
+
 export interface INote {
-  notes: Pick<Note, 'id' | 'title'>[];
+  notes: (Pick<Note, 'id' | 'title' | 'shared'> & { user: Pick<User, 'id'> })[];
 }
 
 export const NoteList: FC<INote> = ({ notes }) => {
