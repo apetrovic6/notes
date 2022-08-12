@@ -6,6 +6,8 @@ import { Note } from '@notes/entities/notes';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { showNotification } from '@mantine/notifications';
+import { useReactiveVar } from '@apollo/client';
+import { loggedUser } from '../../lib/apollo';
 
 import { User } from '@notes/entities/user';
 
@@ -14,6 +16,8 @@ export interface INote {
 }
 
 export const NoteList: FC<INote> = ({ notes }) => {
+  const user = useReactiveVar(loggedUser);
+
   const { replace, query } = useRouter();
   const [removeNote] = useRemoveNoteMutation({
     refetchQueries: [{ query: GetFoldersDocument }],
