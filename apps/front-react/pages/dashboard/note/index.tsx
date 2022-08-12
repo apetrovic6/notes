@@ -22,6 +22,8 @@ import { Editor } from '@mantine/rte';
 import { showNotification } from '@mantine/notifications';
 import { GetServerSideProps } from 'next';
 import { IconUserPlus } from '@tabler/icons';
+import { openModal } from '@mantine/modals';
+import { TestModal } from '../../../components/testModal';
 
 interface INewNote extends Omit<CreateNoteInput, 'folder'> {
   id: string;
@@ -149,7 +151,12 @@ export const NewNote: FC<INewNote> = () => {
           </Avatar.Group>
         </Tooltip.Group>
         <Tooltip label="Add a collaborator" openDelay={300} closeDelay={100}>
-          <ActionIcon mx={50} radius={'lg'} variant={'subtle'}>
+          <ActionIcon
+            mx={50}
+            radius={'lg'}
+            variant={'subtle'}
+            onClick={addCollab}
+          >
             <IconUserPlus />
           </ActionIcon>
         </Tooltip>
