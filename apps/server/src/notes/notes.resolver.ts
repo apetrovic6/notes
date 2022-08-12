@@ -65,8 +65,8 @@ export class NotesResolver {
   @Mutation(() => Note)
   addCollaborator(
     @User() user: { userId: string },
-    @Args('noteId') noteId: string,
-    @Args('collaboratorEmail') collaboratorEmail: string
+    @Args('noteId', { type: () => String }) noteId: string,
+    @Args('collaboratorEmail', { type: () => String }) collaboratorEmail: string
   ) {
     return this.notesService.addCollaborator(
       noteId,
