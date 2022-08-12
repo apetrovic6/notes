@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { from, map, merge, of, switchMap } from 'rxjs';
+import { from, map, merge, switchMap } from 'rxjs';
 import { CreateUserInput } from '@notes/entities/user';
 import { PasswordService } from '@notes/auth-helpers';
 import { JwtUtilsService } from '@notes/auth-helpers';
