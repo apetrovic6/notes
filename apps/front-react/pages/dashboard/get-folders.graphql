@@ -5,6 +5,10 @@ query getFolders {
     notes {
       id
       title
+      shared
+      user {
+        id
+      }
     }
   }
 }

@@ -2,9 +2,13 @@ query getSharedNotes {
   getNotesForCollaborator {
     id
     title
+    user {
+      id
+    }
     folder {
       id
       title
     }
+    shared
   }
 }

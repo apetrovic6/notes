@@ -4,6 +4,7 @@ query getNote($id: ID!) {
     title
     content
     createdAt
+    shared
     collaborators {
       id
       email

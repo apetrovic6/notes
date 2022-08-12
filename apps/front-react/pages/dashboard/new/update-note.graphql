@@ -3,5 +3,6 @@ mutation updateNote($updateNoteInput: UpdateNoteInput!) {
     id
     title
     content
+    shared
   }
 }
