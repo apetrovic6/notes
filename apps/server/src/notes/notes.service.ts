@@ -108,8 +108,13 @@ export class NotesService {
       this.userService.findByEmail(collaboratorEmail)
     );
 
-    note.collaborators = [...note.collaborators, user];
-    return this.noteRepository.save(note);
+    const updatedNote = {
+      ...note,
+      collaborators: [...note.collaborators, user],
+      shared: true,
+    };
+
+    return this.noteRepository.save(updatedNote);
   }
 
   // TODO - add tests
