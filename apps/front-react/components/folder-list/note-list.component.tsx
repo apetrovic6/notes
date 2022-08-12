@@ -45,7 +45,7 @@ export const NoteList: FC<INote> = ({ notes }) => {
             key={note.id}
             href={{
               pathname: '/dashboard/note',
-              query: { noteId: note.id },
+              query: { noteId: note.id, shared: note.shared },
             }}
             as={'/dashboard/note'}
             passHref
