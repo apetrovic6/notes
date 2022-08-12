@@ -12,4 +12,7 @@ export class CreateNoteInput extends OmitType(BaseInput, ['id'] as const) {
 
   @Field(type => BaseInput, { description: 'Folder of the note' })
   folder: Folder;
+
+  @Field(() => Boolean, { description: 'Shared note', nullable: true })
+  shared: boolean;
 }
