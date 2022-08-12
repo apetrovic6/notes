@@ -6,6 +6,7 @@ import { CreateNoteInput } from '@notes/entities/notes';
 import {
   useCollabUpdateNoteMutation,
   useGetNoteQuery,
+  useIsOnlineSubscription,
   useNoteUpdatedSubscription,
   useUpdateNoteMutation,
 } from '@notes/apollo';
@@ -53,6 +54,15 @@ export const NewNote: FC<INewNote> = () => {
       },
     },
   });
+
+  const [online, setOnline] = useState([]);
+
+  const { data: sub, variables, error } = useIsOnlineSubscription();
+  console.log('SUB: ', sub);
+  useEffect(() => {
+    setOnline(s => [...s, sub?.isOnline?.id]);
+  }, [sub]);
+
   const addCollab = () => {
     openModal({
       title: 'Add collaborator',
@@ -127,7 +137,13 @@ export const NewNote: FC<INewNote> = () => {
           <Avatar.Group spacing="sm">
             {data?.note?.collaborators.map(user => (
               <Tooltip label={user.email} key={user.id} withArrow>
-                <Avatar src="" radius="xl" />
+                <Avatar
+                  src=""
+                  radius="xl"
+                  color={
+                    online.find(online => online === user.id) ? 'green' : 'gray'
+                  }
+                />
               </Tooltip>
             ))}
           </Avatar.Group>
