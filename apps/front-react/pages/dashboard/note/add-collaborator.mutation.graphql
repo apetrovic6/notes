@@ -1,0 +1,8 @@
+mutation addCollaborator($collaboratorEmail: String!, $noteId: String!) {
+  addCollaborator(collaboratorEmail: $collaboratorEmail, noteId: $noteId) {
+    id
+    title
+    content
+    shared
+  }
+}
