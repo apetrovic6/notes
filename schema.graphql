@@ -53,6 +53,7 @@ type Note {
   folder: Folder!
   "Unique identifier"
   id: ID!
+  shared: Boolean!
   "Title of the note"
   title: String!
   "Last updated"
@@ -73,6 +74,7 @@ type Query {
 }
 
 type Subscription {
+  isOnline: isOnline!
   noteUpdated: Note!
 }
 
@@ -90,12 +92,22 @@ type User {
   updatedAt: DateTime!
 }
 
+type isOnline {
+  email: String
+  id: ID
+}
+
 "A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format."
 scalar DateTime
 
 input BaseInput {
   "Unique identifier"
   id: ID!
+}
+
+input CollabInput {
+  email: String!
+  id: String!
 }
 
 input CreateFolderInput {
@@ -110,6 +122,8 @@ input NoteInput {
   content: String
   "Folder of the note"
   folder: BaseInput!
+  "Shared note"
+  shared: Boolean
   "Title of the note"
   title: String!
 }
@@ -123,12 +137,15 @@ input UpdateFolderInput {
 }
 
 input UpdateNoteInput {
+  "Array of the collaborators"
+  collaborators: [CollabInput!]
   "Content of the note"
   content: String
   "Folder of the note"
   folder: BaseInput
   "Unique identifier"
   id: ID!
+  shared: Boolean
   "Title of the note"
   title: String
 }

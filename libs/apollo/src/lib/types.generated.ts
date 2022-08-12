@@ -33,6 +33,11 @@ export type BaseInput = {
   id: Scalars['ID'];
 };
 
+export type CollabInput = {
+  email: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type CreateFolderInput = {
   /** Notes in the folder */
   notes?: InputMaybe<Array<BaseInput>>;
@@ -139,6 +144,7 @@ export type Note = {
   folder: Folder;
   /** Unique identifier */
   id: Scalars['ID'];
+  shared: Scalars['Boolean'];
   /** Title of the note */
   title: Scalars['String'];
   /** Last updated */
@@ -152,6 +158,8 @@ export type NoteInput = {
   content?: InputMaybe<Scalars['String']>;
   /** Folder of the note */
   folder: BaseInput;
+  /** Shared note */
+  shared?: InputMaybe<Scalars['Boolean']>;
   /** Title of the note */
   title: Scalars['String'];
 };
@@ -182,6 +190,7 @@ export type QueryUserArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  isOnline: IsOnline;
   noteUpdated: Note;
 };
 
@@ -194,12 +203,15 @@ export type UpdateFolderInput = {
 };
 
 export type UpdateNoteInput = {
+  /** Array of the collaborators */
+  collaborators?: InputMaybe<Array<CollabInput>>;
   /** Content of the note */
   content?: InputMaybe<Scalars['String']>;
   /** Folder of the note */
   folder?: InputMaybe<BaseInput>;
   /** Unique identifier */
   id: Scalars['ID'];
+  shared?: InputMaybe<Scalars['Boolean']>;
   /** Title of the note */
   title?: InputMaybe<Scalars['String']>;
 };
@@ -233,6 +245,12 @@ export type UserInput = {
   email: Scalars['String'];
   /** User password */
   password: Scalars['String'];
+};
+
+export type IsOnline = {
+  __typename?: 'isOnline';
+  email?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
 };
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
@@ -302,7 +320,13 @@ export type GetFoldersQuery = {
     __typename?: 'Folder';
     id: string;
     title: string;
-    notes?: Array<{ __typename?: 'Note'; id: string; title: string }> | null;
+    notes?: Array<{
+      __typename?: 'Note';
+      id: string;
+      title: string;
+      shared: boolean;
+      user: { __typename?: 'User'; id: string };
+    }> | null;
   }>;
 };
 
@@ -314,6 +338,8 @@ export type GetSharedNotesQuery = {
     __typename?: 'Note';
     id: string;
     title: string;
+    shared: boolean;
+    user: { __typename?: 'User'; id: string };
     folder: { __typename?: 'Folder'; id: string; title: string };
   }>;
 };
@@ -343,6 +369,23 @@ export type UpdateNoteMutation = {
     id: string;
     title: string;
     content: string;
+    shared: boolean;
+  };
+};
+
+export type AddCollaboratorMutationVariables = Exact<{
+  collaboratorEmail: Scalars['String'];
+  noteId: Scalars['String'];
+}>;
+
+export type AddCollaboratorMutation = {
+  __typename?: 'Mutation';
+  addCollaborator: {
+    __typename?: 'Note';
+    id: string;
+    title: string;
+    content: string;
+    shared: boolean;
   };
 };
 
@@ -372,7 +415,19 @@ export type GetNoteQuery = {
     title: string;
     content: string;
     createdAt: any;
+    shared: boolean;
     collaborators: Array<{ __typename?: 'User'; id: string; email: string }>;
+  };
+};
+
+export type IsOnlineSubscriptionVariables = Exact<{ [key: string]: never }>;
+
+export type IsOnlineSubscription = {
+  __typename?: 'Subscription';
+  isOnline: {
+    __typename?: 'isOnline';
+    id?: string | null;
+    email?: string | null;
   };
 };
 
@@ -734,6 +789,10 @@ export const GetFoldersDocument = gql`
       notes {
         id
         title
+        shared
+        user {
+          id
+        }
       }
     }
   }
@@ -791,10 +850,14 @@ export const GetSharedNotesDocument = gql`
     getNotesForCollaborator {
       id
       title
+      user {
+        id
+      }
       folder {
         id
         title
       }
+      shared
     }
   }
 `;
@@ -906,6 +969,7 @@ export const UpdateNoteDocument = gql`
       id
       title
       content
+      shared
     }
   }
 `;
@@ -951,6 +1015,60 @@ export type UpdateNoteMutationResult =
 export type UpdateNoteMutationOptions = Apollo.BaseMutationOptions<
   UpdateNoteMutation,
   UpdateNoteMutationVariables
+>;
+export const AddCollaboratorDocument = gql`
+  mutation addCollaborator($collaboratorEmail: String!, $noteId: String!) {
+    addCollaborator(collaboratorEmail: $collaboratorEmail, noteId: $noteId) {
+      id
+      title
+      content
+      shared
+    }
+  }
+`;
+export type AddCollaboratorMutationFn = Apollo.MutationFunction<
+  AddCollaboratorMutation,
+  AddCollaboratorMutationVariables
+>;
+
+/**
+ * __useAddCollaboratorMutation__
+ *
+ * To run a mutation, you first call `useAddCollaboratorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddCollaboratorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addCollaboratorMutation, { data, loading, error }] = useAddCollaboratorMutation({
+ *   variables: {
+ *      collaboratorEmail: // value for 'collaboratorEmail'
+ *      noteId: // value for 'noteId'
+ *   },
+ * });
+ */
+export function useAddCollaboratorMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddCollaboratorMutation,
+    AddCollaboratorMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    AddCollaboratorMutation,
+    AddCollaboratorMutationVariables
+  >(AddCollaboratorDocument, options);
+}
+export type AddCollaboratorMutationHookResult = ReturnType<
+  typeof useAddCollaboratorMutation
+>;
+export type AddCollaboratorMutationResult =
+  Apollo.MutationResult<AddCollaboratorMutation>;
+export type AddCollaboratorMutationOptions = Apollo.BaseMutationOptions<
+  AddCollaboratorMutation,
+  AddCollaboratorMutationVariables
 >;
 export const CollabUpdateNoteDocument = gql`
   mutation collabUpdateNote($updateNoteInput: UpdateNoteInput!) {
@@ -1011,6 +1129,7 @@ export const GetNoteDocument = gql`
       title
       content
       createdAt
+      shared
       collaborators {
         id
         email
@@ -1059,6 +1178,47 @@ export type GetNoteQueryResult = Apollo.QueryResult<
   GetNoteQuery,
   GetNoteQueryVariables
 >;
+export const IsOnlineDocument = gql`
+  subscription isOnline {
+    isOnline {
+      id
+      email
+    }
+  }
+`;
+
+/**
+ * __useIsOnlineSubscription__
+ *
+ * To run a query within a React component, call `useIsOnlineSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useIsOnlineSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIsOnlineSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIsOnlineSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    IsOnlineSubscription,
+    IsOnlineSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useSubscription<
+    IsOnlineSubscription,
+    IsOnlineSubscriptionVariables
+  >(IsOnlineDocument, options);
+}
+export type IsOnlineSubscriptionHookResult = ReturnType<
+  typeof useIsOnlineSubscription
+>;
+export type IsOnlineSubscriptionResult =
+  Apollo.SubscriptionResult<IsOnlineSubscription>;
 export const NoteUpdatedDocument = gql`
   subscription noteUpdated {
     noteUpdated {
