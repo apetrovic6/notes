@@ -124,6 +124,7 @@ describe('NotesResolver', () => {
         title: noteStub.title,
         content: noteStub.content,
         folder: folderStub,
+        shared: noteStub.shared,
       };
 
       beforeEach(done => {
@@ -167,6 +168,8 @@ describe('NotesResolver', () => {
         updateNoteInput = {
           id: noteStub.id,
           title: 'Updated Title',
+          shared: false,
+          collaborators: [],
         };
         noteResolver
           .updateNote(userStub.id, updateNoteInput)

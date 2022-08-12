@@ -9,4 +9,5 @@ export const noteStub = {
   createdAt: new Date('2022-07-23T00:00:00.000Z'),
   userId: '6c4aa2d2-9b6f-4661-b68d-17ffaef0aa95',
   folder: folderStub,
+  shared: false,
 };

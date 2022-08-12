@@ -103,7 +103,12 @@ describe('NotesService', () => {
       });
 
       it('It should return an updated note', () => {
-        const updatedNote = { id: noteStub.id, title: 'Updated Title' };
+        const updatedNote = {
+          id: noteStub.id,
+          title: 'Updated Title',
+          shared: false,
+          collaborators: [],
+        };
 
         service.update(noteStub.id, updatedNote, userStub.id).subscribe(res => {
           expect(res).toEqual(noteStub);
