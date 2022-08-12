@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput, User } from '@notes/entities/user';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -51,7 +50,7 @@ export class UserService {
     return from(this.userRepository.findOne({ where: { email } })).pipe(
       map(user => {
         if (!user) {
-          throw new UnauthorizedException('Invalid credentials');
+          throw new NotFoundException('User not found');
         }
         return user;
       })
