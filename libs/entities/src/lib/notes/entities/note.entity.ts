@@ -21,6 +21,10 @@ export class Note extends BaseEntity {
   @Column()
   folderId: string;
 
+  @Field()
+  @Column({ nullable: true })
+  shared: boolean;
+
   @Field(() => User, { description: 'User who created the note' })
   @ManyToOne(() => User, user => user.notes)
   user: User;
