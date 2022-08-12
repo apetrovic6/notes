@@ -1,0 +1,6 @@
+subscription isOnline {
+  isOnline {
+    id
+    email
+  }
+}
