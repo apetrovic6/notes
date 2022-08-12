@@ -48,9 +48,11 @@ export const NoteList: FC<INote> = ({ notes }) => {
           >
             <NavLink key={note.id} label={note.title} component={'a'} />
           </Link>
-          <ActionIcon variant={'subtle'}>
-            <IconTrash onClick={onDeleteNote.bind(this, note)} />
-          </ActionIcon>
+          {note?.user?.id === user?.id && (
+            <ActionIcon variant={'subtle'}>
+              <IconTrash onClick={onDeleteNote.bind(this, note)} />
+            </ActionIcon>
+          )}
         </Box>
       ))}
     </>
