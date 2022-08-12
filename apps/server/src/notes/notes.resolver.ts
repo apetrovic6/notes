@@ -17,6 +17,7 @@ import { NotesService } from './notes.service';
 import { Loader } from '../data-loader/decorators/loader.decorator';
 import { User } from '../user/get-user.decorator';
 import { lastValueFrom, mergeMap, of } from 'rxjs';
+import { IsOnlineInput } from '@notes/entities/notes';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => Note)
@@ -44,6 +45,13 @@ export class NotesResolver {
     @User() user: { userId: string },
     @Args('id', { type: () => ID }) id: string
   ) {
+    this.pubSub.publish('isOnline', {
+      isOnline: {
+        id: user.userId,
+        email: 'dummy@dummy.com',
+      },
+    });
+
     return this.notesService.findOne(id, user.userId);
   }
 
@@ -76,6 +84,12 @@ export class NotesResolver {
   }
   @Query(() => [Note], { name: 'getNotesForCollaborator' })
   getNotesForCollaborator(@User() user: { userId: string }) {
+    this.pubSub.publish('isOnline', {
+      isOnline: {
+        id: user.userId,
+        email: 'dummy@dummy.com',
+      },
+    });
     return this.notesService.getNotesForCollaborator(user.userId);
   }
 
@@ -105,12 +119,16 @@ export class NotesResolver {
     );
 
     this.pubSub.publish('noteUpdated', { noteUpdated: updateNote });
-
     return updateNote;
   }
 
   @Subscription(() => Note)
   noteUpdated() {
     return this.pubSub.asyncIterator('noteUpdated');
+  }
+
+  @Subscription(() => IsOnlineInput)
+  isOnline() {
+    return this.pubSub.asyncIterator('isOnline');
   }
 }
