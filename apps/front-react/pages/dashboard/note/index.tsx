@@ -53,6 +53,12 @@ export const NewNote: FC<INewNote> = () => {
       },
     },
   });
+  const addCollab = () => {
+    openModal({
+      title: 'Add collaborator',
+      children: <TestModal noteId={data?.note?.id} />,
+    });
+  };
 
   useNoteUpdatedSubscription({ skip: !query.shared });
 
