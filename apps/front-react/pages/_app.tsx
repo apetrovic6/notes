@@ -9,10 +9,13 @@ import AppShell from '../components/AppShell';
 
 import type { AppProps } from 'next/app';
 import type { ColorScheme } from '@mantine/core';
+import { useColorScheme } from '@mantine/hooks';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
-  const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+  const preferredColorScheme = useColorScheme();
+  const [colorScheme, setColorScheme] =
+    useState<ColorScheme>(preferredColorScheme);
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
