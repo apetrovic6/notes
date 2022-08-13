@@ -12,7 +12,9 @@ import { loggedUser } from '../../lib/apollo';
 import { User } from '@notes/entities/user';
 
 export interface INote {
-  notes: (Pick<Note, 'id' | 'title' | 'shared'> & { user: Pick<User, 'id'> })[];
+  notes?: (Pick<Note, 'id' | 'title' | 'shared'> & {
+    user: Pick<User, 'id'>;
+  })[];
 }
 
 export const NoteList: FC<INote> = ({ notes }) => {
