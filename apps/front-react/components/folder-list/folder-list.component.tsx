@@ -1,5 +1,5 @@
 import { Box, Menu, NavLink } from '@mantine/core';
-import { NoteList } from './note-list.component';
+import { INote, NoteList } from './note-list.component';
 import {
   IconCirclePlus,
   IconDotsVertical,
@@ -19,13 +19,10 @@ import { FC } from 'react';
 import { Note } from '@notes/entities/notes';
 import { openModal } from '@mantine/modals';
 import { CreateUpdateFolder } from '../CreateUpdateFolder';
+import { Folder } from '@notes/entities/folders';
 
 export interface IFolderList {
-  folders: {
-    id: string;
-    title: string;
-    notes?: Pick<Note, 'id' | 'title'>[];
-  }[];
+  folders: (Pick<Folder, 'id' | 'title'> & INote)[];
 }
 
 export const FolderList: FC<IFolderList> = ({ folders }) => {
