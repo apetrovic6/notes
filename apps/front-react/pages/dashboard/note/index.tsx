@@ -47,6 +47,7 @@ export const NewNote = () => {
         id: fullNote.id,
         title: fullNote.title,
         content: fullNote.content,
+        shared: fullNote.shared,
       },
     },
   });
