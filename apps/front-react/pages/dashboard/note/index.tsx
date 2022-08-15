@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import RichTextEditor from '../../../components/RichTextEditor';
 import { useRouter } from 'next/router';
 import { CreateNoteInput } from '@notes/entities/notes';
@@ -25,12 +25,7 @@ import { IconUserPlus } from '@tabler/icons';
 import { openModal } from '@mantine/modals';
 import { TestModal } from '../../../components/testModal';
 
-interface INewNote extends Omit<CreateNoteInput, 'folder'> {
-  id: string;
-  folder: { id: string };
-}
-
-export const NewNote: FC<INewNote> = () => {
+export const NewNote = () => {
   const { query, replace } = useRouter();
   const editorRef = useRef<Editor>();
 
