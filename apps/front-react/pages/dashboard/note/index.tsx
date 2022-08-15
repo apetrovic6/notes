@@ -54,7 +54,7 @@ export const NewNote = () => {
 
   const [online, setOnline] = useState([]);
 
-  const { data: sub, variables, error } = useIsOnlineSubscription();
+  const { data: sub, variables, error: subError } = useIsOnlineSubscription();
   console.log('SUB: ', sub);
   useEffect(() => {
     setOnline(s => [...s, sub?.isOnline?.id]);
