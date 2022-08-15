@@ -8,7 +8,6 @@ import {
   Parent,
   Subscription,
 } from '@nestjs/graphql';
-import { PubSub } from 'graphql-subscriptions';
 import { Inject, UseGuards } from '@nestjs/common';
 import { CreateNoteInput, Note, UpdateNoteInput } from '@notes/entities/notes';
 import { JwtAuthGuard } from '@notes/auth-helpers';
@@ -18,13 +17,14 @@ import { Loader } from '../data-loader/decorators/loader.decorator';
 import { User } from '../user/get-user.decorator';
 import { lastValueFrom, mergeMap, of } from 'rxjs';
 import { IsOnlineInput } from '@notes/entities/notes';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => Note)
 export class NotesResolver {
   constructor(
     private readonly notesService: NotesService,
-    @Inject('PUB_SUB') private readonly pubSub: PubSub
+    @Inject('PUB_SUB') private readonly pubSub: RedisPubSub
   ) {}
 
   @Mutation(() => Note)
