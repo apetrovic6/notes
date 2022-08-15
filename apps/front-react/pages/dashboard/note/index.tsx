@@ -67,8 +67,9 @@ export const NewNote = () => {
     });
   };
 
-  useNoteUpdatedSubscription({ skip: !query.shared });
-
+  const { data: updateSub, error } = useNoteUpdatedSubscription({
+    skip: !query.shared,
+  });
   useEffect(() => {
     !query.noteId && replace('/dashboard');
   }, []);
