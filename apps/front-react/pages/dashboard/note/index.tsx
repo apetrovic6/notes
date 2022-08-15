@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import RichTextEditor from '../../../components/RichTextEditor';
 import { useRouter } from 'next/router';
-import { CreateNoteInput } from '@notes/entities/notes';
 
 import {
   useCollabUpdateNoteMutation,
