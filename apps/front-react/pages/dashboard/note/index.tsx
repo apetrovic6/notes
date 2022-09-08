@@ -3,7 +3,6 @@ import RichTextEditor from '../../../components/RichTextEditor';
 import { useRouter } from 'next/router';
 
 import {
-  useCollabUpdateNoteMutation,
   useGetNoteQuery,
   useIsOnlineSubscription,
   useNoteUpdatedSubscription,
@@ -23,6 +22,8 @@ import { GetServerSideProps } from 'next';
 import { IconUserPlus } from '@tabler/icons';
 import { openModal } from '@mantine/modals';
 import { TestModal } from '../../../components/testModal';
+import { loggedUser } from '../../../lib/apollo';
+import { useReactiveVar } from '@apollo/client';
 
 export const NewNote = () => {
   const { query, replace } = useRouter();
@@ -54,8 +55,7 @@ export const NewNote = () => {
 
   const [online, setOnline] = useState([]);
 
-  const { data: sub, variables, error: subError } = useIsOnlineSubscription();
-  console.log('SUB: ', sub);
+  const { data: sub, error: subError } = useIsOnlineSubscription();
   useEffect(() => {
     setOnline(s => [...s, sub?.isOnline?.id]);
   }, [sub]);
@@ -67,9 +67,13 @@ export const NewNote = () => {
     });
   };
 
+  const user = useReactiveVar(loggedUser);
+
   const { data: updateSub, error } = useNoteUpdatedSubscription({
     skip: !query.shared,
+    variables: { id: user?.id },
   });
+
   useEffect(() => {
     !query.noteId && replace('/dashboard');
   }, []);
@@ -93,7 +97,7 @@ export const NewNote = () => {
   }, [data, editorRef.current?.editor, data?.note?.content]);
 
   useEffect(() => {
-    const test = setTimeout(() => {
+    const debouncedUpdateTimeout = setTimeout(() => {
       // Get and set the caret state before it updates
       setCaret(() => editorRef?.current?.editor.getSelection()?.index);
       if (fullNote?.id) {
@@ -102,7 +106,7 @@ export const NewNote = () => {
     }, 800);
 
     return () => {
-      clearTimeout(test);
+      clearTimeout(debouncedUpdateTimeout);
     };
   }, [fullNote.title, fullNote.content]);
 
@@ -133,7 +137,7 @@ export const NewNote = () => {
       >
         <Tooltip.Group openDelay={300} closeDelay={100}>
           <Avatar.Group spacing="sm">
-            {data?.note?.collaborators.map(user => (
+            {data?.note?.collaborators?.map(user => (
               <Tooltip label={user.email} key={user.id} withArrow>
                 <Avatar
                   src=""
