@@ -43,10 +43,7 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
     push(
       {
         pathname: '/dashboard/note',
-        query: {
-          noteId: noteId,
-          folderId: folderId,
-        },
+        query: { noteId, folderId },
       },
       '/dashboard/note'
     );
