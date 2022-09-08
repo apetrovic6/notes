@@ -1,5 +1,5 @@
-subscription noteUpdated {
-  noteUpdated {
+subscription noteUpdated($id: String!) {
+  noteUpdated(id: $id) {
     id
     title
     content
