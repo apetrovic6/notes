@@ -16,7 +16,8 @@
     "prepare": "husky install",
     "generate": "graphql-codegen --config codegen.yml --watch",
     "prestart": "yarn generate",
-    "predev": "yarn generate"
+    "predev": "yarn generate",
+    "start:dev": "docker compose -f dev.yml up & yarn start server & yarn start front-react & yarn generate"
   },
   "private": true,
   "dependencies": {
