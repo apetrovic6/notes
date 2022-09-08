@@ -14,7 +14,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return {
         ...ctx,
         cookies: {
-          Authorization: ctx.req.cookie.split('Authorization=')[1],
+          Authorization: ctx?.req?.cookie?.split('Authorization=')[1],
         },
       };
     }
@@ -24,7 +24,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return {
         ...ctx,
         cookies: {
-          Authorization: ctx.headers.cookie.split('Authorization=')[1],
+          Authorization: ctx?.headers?.cookie?.split('Authorization=')[1],
         },
       };
     }
