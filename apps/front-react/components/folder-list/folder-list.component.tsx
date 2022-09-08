@@ -1,4 +1,4 @@
-import { Box, Menu, NavLink } from '@mantine/core';
+import { Box, Menu, NavLink, Text } from '@mantine/core';
 import { INote, NoteList } from './note-list.component';
 import {
   IconCirclePlus,
@@ -15,11 +15,11 @@ import {
 } from '@notes/apollo';
 import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
-import { Note } from '@notes/entities/notes';
 import { openModal } from '@mantine/modals';
 import { CreateUpdateFolder } from '../CreateUpdateFolder';
 import { Folder } from '@notes/entities/folders';
+
+import type { FC } from 'react';
 
 export interface IFolderList {
   folders: (Pick<Folder, 'id' | 'title'> & INote)[];
