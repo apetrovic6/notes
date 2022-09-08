@@ -13,7 +13,7 @@ import { NextLink } from '@mantine/next';
 import { IconCheck, IconMoon, IconSunHigh } from '@tabler/icons';
 import { Header as MantineHeader } from '@mantine/core';
 import { useReactiveVar } from '@apollo/client';
-import { loggedIn, loggedUser } from '../lib/apollo';
+import { loggedIn, loggedUser } from '../../lib/apollo';
 import { useRouter } from 'next/router';
 import { showNotification } from '@mantine/notifications';
 import { useLogoutMutation } from '@notes/apollo';

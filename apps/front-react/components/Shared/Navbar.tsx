@@ -4,10 +4,7 @@ import {
   SegmentedControl,
   Skeleton,
 } from '@mantine/core';
-import { FolderList } from './folder-list/folder-list.component';
-import { NoteList } from './folder-list/note-list.component';
 import { openModal } from '@mantine/modals';
-import { CreateUpdateFolder } from './CreateUpdateFolder';
 import {
   GetFoldersDocument,
   useCreateFolderMutation,
@@ -15,6 +12,9 @@ import {
   useGetSharedNotesQuery,
 } from '@notes/apollo';
 import { useState } from 'react';
+import { CreateUpdateFolder } from '../CreateUpdateFolder';
+import { FolderList } from '../folder-list/folder-list.component';
+import { NoteList } from '../folder-list/note-list.component';
 
 export const Navbar = ({ opened }) => {
   const [showShared, setShowShared] = useState('my-notes');
