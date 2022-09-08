@@ -39,6 +39,13 @@ Currently, only Postgres and Redis are running as containers.
 
 ## How to run the project?
 
+
+### Prerequisites
+- Docker
+- Docker compose
+- Node
+- Yarn
+
 ```
   git clone https://github.com/apetrovic6/notes.git
   cd notes
