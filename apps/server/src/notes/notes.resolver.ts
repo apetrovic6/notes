@@ -15,7 +15,7 @@ import { EDataLoader, UserLoader } from '../data-loader/IDataLoaders';
 import { NotesService } from './notes.service';
 import { Loader } from '../data-loader/decorators/loader.decorator';
 import { User } from '../user/get-user.decorator';
-import { lastValueFrom, mergeMap, of } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 import { IsOnlineInput } from '@notes/entities/notes';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 
@@ -56,18 +56,19 @@ export class NotesResolver {
   }
 
   @Mutation(() => Note)
-  updateNote(
+  async updateNote(
     @User() user: { userId: string },
     @Args('updateNoteInput') updateNoteInput: UpdateNoteInput
   ) {
-    return this.notesService
-      .update(updateNoteInput.id, updateNoteInput, user.userId)
-      .pipe(
-        mergeMap(note => {
-          this.pubSub.publish('noteUpdated', { noteUpdated: note });
-          return of(note);
-        })
-      );
+    // TODO Refactor this into RxJS stream
+
+    const updateNote = await lastValueFrom(
+      this.notesService.update(updateNoteInput.id, updateNoteInput, user.userId)
+    );
+
+    this.pubSub.publish('noteUpdated', { noteUpdated: updateNote });
+
+    return of(updateNote);
   }
 
   @Mutation(() => Note)
