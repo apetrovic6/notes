@@ -102,19 +102,12 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                 style={{
                   marginRight: -10,
                   marginLeft: -15,
-                  position: 'absolute',
-                  top: 6,
+                  alignSelf: 'flex-start',
+                  marginTop: 7,
                 }}
               />
             </Menu.Target>
-            <Menu.Dropdown
-              sx={{
-                marginRight: -10,
-                marginLeft: -15,
-                position: 'absolute',
-                top: 30,
-              }}
-            >
+            <Menu.Dropdown sx={{ alignSelf: 'flex-start', marginTop: 7 }}>
               <Menu.Item
                 onClick={onUpdateFolder.bind(this, folder)}
                 icon={<IconEdit size={15} />}
@@ -143,7 +136,7 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                 alignItems: 'center',
               }}
             >
-              <div style={{ display: 'block', width: '90%' }}>
+              <div style={{ display: 'block', width: '100%' }}>
                 <NavLink
                   variant={'filled'}
                   label={folder.title}
@@ -156,9 +149,8 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
             </Box>
             <IconCirclePlus
               style={{
-                position: 'absolute',
-                right: '-5',
-                top: '8',
+                alignSelf: 'flex-start',
+                marginTop: 9,
                 cursor: 'pointer',
               }}
               size={20}
