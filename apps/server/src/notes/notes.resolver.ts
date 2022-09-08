@@ -122,8 +122,13 @@ export class NotesResolver {
     return updateNote;
   }
 
-  @Subscription(() => Note)
-  noteUpdated() {
+  @Subscription(() => Note, {
+    filter: (payload, variables) =>
+      payload.noteUpdated.collaborators.find(
+        collab => collab.id === variables.id
+      ) || payload.noteUpdated.userId === variables.id,
+  })
+  noteUpdated(@Args('id') id: string) {
     return this.pubSub.asyncIterator('noteUpdated');
   }
 
