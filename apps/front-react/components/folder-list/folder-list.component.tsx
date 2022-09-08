@@ -140,7 +140,13 @@ export const FolderList: FC<IFolderList> = ({ folders }) => {
                   key={folder.id}
                   childrenOffset={20}
                 >
-                  <NoteList notes={folder.notes} />
+                  {folder?.notes?.length > 0 ? (
+                    <NoteList notes={folder.notes} />
+                  ) : (
+                    <Text align={'center'} py={2} size={'sm'}>
+                      No notes in this folder
+                    </Text>
+                  )}
                 </NavLink>
               </div>
             </Box>
