@@ -3,13 +3,14 @@ import Head from 'next/head';
 import { ApolloProvider } from '@apollo/client';
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
+import { useColorScheme } from '@mantine/hooks';
 import { ModalsProvider } from '@mantine/modals';
+
 import { useApollo } from '../lib/apollo';
-import AppShell from '../components/AppShell';
+import AppShell from '../components/Shared/AppShell';
 
 import type { AppProps } from 'next/app';
 import type { ColorScheme } from '@mantine/core';
-import { useColorScheme } from '@mantine/hooks';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
